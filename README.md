@@ -1,7 +1,5 @@
 Developer Readme
 ================
-
-# expert system README
 This document is in Markdown format. Please a markdown viewer for optimal viewing.
 
 ## Purpose
