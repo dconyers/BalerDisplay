@@ -15,6 +15,10 @@ In order to setup your development environment, run the following:
 * Obtain the necessary dependencies - `npm install`
 * Run the application - `npm start`
 
+## Building Addon
+In order for the addon to work with electron, the following command must be used to build:
+`HOME=~/.electron-gyp node-gyp rebuild --target=0.36.7  --dist-url=https://atom.io/download/atom-shell`
+
 ## TODO
 This is a prototype. There are lots of things that need to be done to make this a production package:
 * Convert to Typescript
