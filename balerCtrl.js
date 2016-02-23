@@ -10,4 +10,13 @@ angular
       return $scope.weight;
     }
 
+    $scope.getLowWeight = function() {
+      return 100;
+    }
+
+
+    $scope.getHighWeight = function() {
+      return 2000;
+    }
+
 });
