@@ -1,6 +1,6 @@
 #!/bin/sh
 npm run clean
 mkdir build
-npm run tslint $1
+npm run tslint
 npm run tsc
-npm run coverage
+npm run build_addon

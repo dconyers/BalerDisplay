@@ -12,16 +12,16 @@ This document is designed to provide full instructions to allow a developer to g
 
 ## Setup
 In order to setup your development environment, run the following:
-* Obtain the necessary dependencies - `npm install`
+* Obtain the necessary Node dependencies - `npm install`
+* Obtain the necessary Typescript Definitions - `npm run typings install`
+* Build the addon - `npm run build_addon`
+* Transcompile the Typescript to Javascript - `npm run tsc`
 * Run the application - `npm start`
-
-## Building Addon
-In order for the addon to work with electron, the following command must be used to build:
-`HOME=~/.electron-gyp node-gyp rebuild --target=0.36.7  --dist-url=https://atom.io/download/atom-shell`
 
 ## TODO
 This is a prototype. There are lots of things that need to be done to make this a production package:
-* Convert to Typescript
+* Add Comments / Function Headers
+* Add Typescript Lint
 * Add Logging Capabilities
 * Add Unit Tests
 * Make Chromium Developer Tools enabled/disabled via npm script.

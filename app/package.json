@@ -7,10 +7,11 @@
     "start": "electron main.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "bash npm-scripts/build.sh dev",
-    "clean": "rm -rf build && rm -rf coverage && find . -name '*.js' -type f -not -path './node_modules' -delete && find . -name '*.js.map' -type f -not -path './node_modules' -delete",
+    "clean": "rm -rf build && rm -rf load_cell_addon/build && find . -name '*.js' -type f -not -path './node_modules/*' -delete && find . -name '*.js.map' -type f -not -path './node_modules/*' -delete",
     "tslint": "bash npm-scripts/tslint.sh",
     "tsc": "tsc || exit 0",
-    "tsd": "tsd",
+    "typings": "typings",
+    "build_addon": "cd load_cell_addon && node-gyp rebuild --target=0.36.7  --dist-url=https://atom.io/download/atom-shell",
     "noop": "echo noop"
   },
   "author": "Doug Conyers",
