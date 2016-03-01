@@ -17,26 +17,39 @@
     <title>Hello World!</title>
   </head>
   <body>
-    <div class="container">
-      <div class="row">
-        <div id="balerWeight" ng-controller="BalerCtrl" class="col-md-1 pull-right">
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="sidebar-nav">
+          <div class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+              <ul class="nav nav-pills nav-stacked">
+                <li role="presentation"><a href="#">Material Setting</a></li>
+                <li role="presentation"><a href="#">Worker Management</a></li>
+                <li role="presentation"><a href="#">Machine Setting</a></li>
+                <li role="presentation"><a href="#">Modify Password</a></li>
+                <li role="presentation"><a href="#">Other Setting</a></li>
+                <li role="presentation"><a href="#">Go Back</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-9">
+        <div id="balerWeight" ng-controller="BalerCtrl">
           <div> Current Weight: {{getWeight()}} </div>
         </div>
 
-        <div id="balerLowWeight" ng-controller="BalerCtrl" class="col-md-1 pull-right">
+        <div id="balerLowWeight" ng-controller="BalerCtrl">
           <div> Low Weight: {{getLowWeight()}} </div>
         </div>
 
-        <div id="balerHighWeight" ng-controller="BalerCtrl" class="col-md-1 pull-right">
+        <div id="balerHighWeight" ng-controller="BalerCtrl">
           <div> High Weight: {{getHighWeight()}} </div>
         </div>
 
-        <div id="balerAddonWeight" ng-controller="BalerCtrl" class="col-md-1 pull-right">
+        <div id="balerAddonWeight" ng-controller="BalerCtrl">
           <div> Addon Weight: {{getAddonWeight()}} </div>
         </div>
-
-
       </div>
-    </div>
-  </body>
+    </body>
 </html>

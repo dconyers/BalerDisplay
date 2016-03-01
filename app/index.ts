@@ -1,7 +1,6 @@
 "use strict";
 
 setInterval(function() {
-  console.log("hello?");
   let scope: any = angular.element(document.querySelector("#balerWeight")).scope();
   scope.$apply(function(){
       scope.weight += randomIntFromInterval(-1, 1);
