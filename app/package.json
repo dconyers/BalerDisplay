@@ -17,7 +17,6 @@
   "author": "Doug Conyers",
   "license": "ISC",
   "devDependencies": {
-    "angular": "^1.5.0",
     "electron-prebuilt": "^0.36.7",
     "electron-rebuild": "^1.1.3",
     "tslint": "^3.5.0",
@@ -25,6 +24,9 @@
     "typings": "^0.6.8"
   },
   "dependencies": {
+    "angular": "^1.5.0",
+    "angular-animate": "^1.5.0",
+    "angular-ui-bootstrap": "^1.2.2",
     "bootstrap": "^3.3.6",
     "jquery": "^2.2.1",
     "nan": "^2.2.0"

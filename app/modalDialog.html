@@ -1,13 +1,37 @@
+<script type="text/javascript">
+$(document).ready(function () {
+    var location = window.location;
+    var found = false;
+    $("#tab-container a").each(function(){
+        var href = $(this).attr("href");
+        if(href==location){
+            $(this).parent().addClass("selected");
+            found = true;
+        }
+    });
+    if(!found){
+        $("#tab-container li:first").addClass("selected");
+    }
+});
+</script>
+
 <div class="modal-header">
     <h3 class="modal-title">Doug modal!</h3>
 </div>
 <div class="modal-body">
-    <ul>
-        <li ng-repeat="item in items">
-            <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
-        </li>
-    </ul>
-    Selected: <b>{{ selected.item }}</b>
+    <div id="tab-container">
+        <ul>
+            <li><a href="#">Material Settings</a></li>
+            <li><a href="#">Worker Management</a></li>
+            <li><a href="#">Machine Setting</a></li>
+            <li><a href="#">Other Settings</a></li>
+            <li><a href="#">Go Back</a></li>
+        </ul>
+    </div>
+    <div id="main-container">
+        TODO: Add Settings Content Here
+    </div>
+
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>

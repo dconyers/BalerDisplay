@@ -1,55 +1,31 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="balerApp">
-  <head>
+<html lang="en" ng-app="balerApp" ng-controller="BalerCtrl">
+<head>
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap-theme.css">
     <link rel="stylesheet" href="css/index.css">
-
     <script type="text/javascript">
-        window.$ = window.jQuery = require("./node_modules/jquery/dist/jquery.js")
+    window.$ = window.jQuery = require("./node_modules/jquery/dist/jquery.js")
     </script>
-    <script src="./index.js"></script>
+
     <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="./node_modules/angular/angular.js"></script>
-    <script type="text/javascript" src="./balerCtrl.js"></script>
+    <script src="./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+    <script src="./node_modules/angular-animate/angular-animate.js"></script>
+    <script type="text/javascript" src="./app.js"></script>
+    <script src="./modalDialog.js"></script>
 
     <meta charset="UTF-8" name="viewport" content="user-scalable=no">
     <title>Hello World!</title>
-  </head>
-  <body>
-    <div class="row">
-      <div class="col-sm-3">
-        <div class="sidebar-nav">
-          <div class="navbar navbar-default" role="navigation">
-            <div class="navbar-header">
-              <ul class="nav nav-pills nav-stacked">
-                <li role="presentation"><a href="#">Material Setting</a></li>
-                <li role="presentation"><a href="#">Worker Management</a></li>
-                <li role="presentation"><a href="#">Machine Setting</a></li>
-                <li role="presentation"><a href="#">Modify Password</a></li>
-                <li role="presentation"><a href="#">Other Setting</a></li>
-                <li role="presentation"><a href="#">Go Back</a></li>
-              </ul>
-            </div>
-          </div>
+</head>
+<body>
+    <div id="main-container">
+        <div ng-controller="ModalDemoCtrl">
+            <button ng-click="open()">
+                Settings Dialog
+            </button>
         </div>
-      </div>
-      <div class="col-sm-9">
-        <div id="balerWeight" ng-controller="BalerCtrl">
-          <div> Current Weight: {{getWeight()}} </div>
-        </div>
-
-        <div id="balerLowWeight" ng-controller="BalerCtrl">
-          <div> Low Weight: {{getLowWeight()}} </div>
-        </div>
-
-        <div id="balerHighWeight" ng-controller="BalerCtrl">
-          <div> High Weight: {{getHighWeight()}} </div>
-        </div>
-
-        <div id="balerAddonWeight" ng-controller="BalerCtrl">
-          <div> Addon Weight: {{getAddonWeight()}} </div>
-        </div>
-      </div>
-    </body>
+        <baler-stats-panel ng-controller="BalerCtrl as balerCtrl"></baler-stats-panel>
+    </div>
+</body>
 </html>

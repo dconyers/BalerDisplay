@@ -1,24 +1,24 @@
 "use strict";
-const load_cell_addon = require ("./load_cell_addon/load_cell_addon");
+const load_cell_addon = require("./load_cell_addon/load_cell_addon");
 
-angular.module("balerApp", []).controller("BalerCtrl", function($scope) {
-    $scope.weight = 1234;
-    $scope.getWeight = function() {
-      return $scope.weight;
+export function BalerCtrl($scope) {
+    this.balerData = {
+        lowWeight: 1000,
+        currentWeight: 2345,
+        highWeight: 3000,
     };
 
-    $scope.getLowWeight = function() {
-      return 100;
-    };
-
-
-    $scope.getHighWeight = function() {
-      return 2000;
-    };
-
-    $scope.getAddonWeight = function() {
-      return load_cell_addon.getLoadCellWeight();
+    this.getLowWeight = function() {
+        return this.balerData.lowWeight;
     };
 
 
-});
+    this.getHighWeight = function() {
+        return this.balerData.highWeight;
+    };
+
+    this.getCurrentWeight = function() {
+        this.balerData.currentWeight = load_cell_addon.getLoadCellWeight();
+        return this.balerData.currentWeight;
+    };
+};

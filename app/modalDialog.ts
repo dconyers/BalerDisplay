@@ -1,18 +1,18 @@
 (function() {
 
-    let app = angular.module("modal-dialog", ['ngAnimate', 'ui.bootstrap']);
-    app.controller('ModalDemoCtrl', function($scope, $uibModal, $log) {
+    let app = angular.module("modal-dialog", ["ngAnimate", "ui.bootstrap"]);
+    app.controller("ModalDemoCtrl", function($scope, $uibModal, $log) {
 
-        $scope.items = ['item1', 'item2', 'item3'];
+        $scope.items = ["item1", "item2", "item3"];
 
         $scope.animationsEnabled = true;
 
         $scope.open = function(size) {
 
-            var modalInstance = $uibModal.open({
+            let modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: 'modalDialog.html',
-                controller: 'ModalInstanceCtrl',
+                templateUrl: "modalDialog.html",
+                controller: "ModalInstanceCtrl",
                 size: size,
                 backdrop: "static",
                 windowClass: "app-modal-window",
@@ -26,7 +26,7 @@
             modalInstance.result.then(function(selectedItem) {
                 $scope.selected = selectedItem;
             }, function() {
-                $log.info('Modal dismissed at: ' + new Date());
+                $log.info("Modal dismissed at: " + new Date());
             });
         };
 
@@ -39,7 +39,7 @@
     // Please note that $uibModalInstance represents a modal window (instance) dependency.
     // It is not the same as the $uibModal service used above.
 
-    app.controller('ModalInstanceCtrl', function($scope, $uibModalInstance, items) {
+    app.controller("ModalInstanceCtrl", function($scope, $uibModalInstance, items) {
 
         $scope.items = items;
         $scope.selected = {
@@ -51,7 +51,7 @@
         };
 
         $scope.cancel = function() {
-            $uibModalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss("cancel");
         };
     });
-} ();
+}) ();
