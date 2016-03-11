@@ -29,6 +29,7 @@
     "angular-translate": "^2.10.0",
     "angular-translate-handler-log": "^2.10.0",
     "angular-ui-bootstrap": "^1.2.2",
+    "angular-virtual-keyboard": "^0.4.3",
     "bootstrap": "^3.3.6",
     "jquery": "^2.2.1",
     "nan": "^2.2.0"
