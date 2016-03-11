@@ -26,5 +26,4 @@ This is a prototype. There are lots of things that need to be done to make this 
 * Add Unit Tests
 * Make Chromium Developer Tools enabled/disabled via npm script.
 * Add bootstrap
-* Add internationalization/localization
 * ... and lots more!

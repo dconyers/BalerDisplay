@@ -10,21 +10,24 @@
 
     <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="./node_modules/angular/angular.js"></script>
-    <script src="./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
     <script src="./node_modules/angular-animate/angular-animate.js"></script>
+    <script src="./node_modules/angular-translate/dist/angular-translate.js"></script>
+    <script src="./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
     <script type="text/javascript" src="./app.js"></script>
     <script src="./modalDialog.js"></script>
 
     <meta charset="UTF-8" name="viewport" content="user-scalable=no">
-    <title>Hello World!</title>
+    <title translate>BalerDisplay.TITLE</title>
 </head>
 <body>
     <div id="main-container">
         <div ng-controller="ModalDemoCtrl">
-            <button ng-click="open()">
-                Settings Dialog
+            <button type="button" class="btn btn-primary btn-lg" ng-click="open()" translate>
+                BalerDisplay.SettingsDialogButton
             </button>
         </div>
+        <localization-chooser></localization-chooser>
+
         <baler-stats-panel ng-controller="BalerCtrl as balerCtrl"></baler-stats-panel>
     </div>
 </body>
