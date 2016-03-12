@@ -13,5 +13,9 @@ const resources: ITranslationTable = {
             currentWeight: "Current Weight",
             highWeight: "High Weight",
     },
+    SETTINGS: "Settings",
+    REPORT: "Report",
+    LANGUAGE: "Language",
+    LOGOUT: "Logout"
 };
 export = resources;

@@ -13,6 +13,7 @@
     <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="./node_modules/angular/angular.js"></script>
     <script src="./node_modules/angular-mocks/angular-mocks.js"></script>
+    <script src="./node_modules/angular-route/angular-route.min.js"></script>
     <script src="./node_modules/angular-animate/angular-animate.js"></script>
     <script src="./node_modules/angular-translate/dist/angular-translate.js"></script>
     <script src="./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
@@ -25,25 +26,48 @@
     <title translate>BalerDisplay.TITLE</title>
 </head>
 <body>
-    <div id="main-container">
+    <!-- <div id="main-container">
         <div ng-controller="ModalDemoCtrl">
             <button type="button" class="btn btn-primary btn-lg" ng-click="open()" translate>
                 BalerDisplay.SettingsDialogButton
             </button>
         </div>
         <localization-chooser></localization-chooser>
-
-        <div ng-controller="TextBtnCtrl">
-          <span editable-text="user.name" e-form="textBtnForm" e-ng-virtual-keyboard>
-            {{ user.name || 'empty' }}
-          </span>
-          <button class="btn btn-default" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible">
-            edit
-          </button>
-        </div>
-
-        <!--<input type='text' ng-model="t02" ng-virtual-keyboard/>-->
-        <baler-stats-panel></baler-stats-panel>
+        <input type='text' ng-model="t02" ng-virtual-keyboard/>
+        <baler-stats-panel ng-controller="BalerCtrl as balerCtrl"></baler-stats-panel>
+    </div> -->
+  <nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-left"><span class="glyphicon glyphicon-chevron-left"></span></button>
+        <p class="navbar-text">Logged in as</p>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
     </div>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="#" translate>SETTINGS</a></li>
+        <li><a href="#" translate>REPORT</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" translate>LANGUAGE<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+             <li ng-click="selectLanguage('en_us')"><a href="#" translate>BalerDisplay.English</a></li>
+             <li ng-click="selectLanguage('es_us')"><a href="#" translate>BalerDisplay.Spanish</a></li>
+          </ul>
+        </li>
+        <li><a href="#" translate>LOGOUT</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<!-- Hook for main content -->
+<div ng-view class="bjn-main-content"></div>
+
 </body>
 </html>

@@ -21,11 +21,13 @@ app.on("window-all-closed", function() {
 // initialization and is ready to create browser windows.
 app.on("ready", function() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow(
+    {
     frame: true,
     resizable: true,
     width: 800,
-    height: 480});
+    height: 480}
+  );
 
   // and load the index.html of the app.
   mainWindow.loadURL("file://" + __dirname + "/index.html");
