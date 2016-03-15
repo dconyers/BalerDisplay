@@ -2,6 +2,7 @@
 const load_cell_addon = require("./load_cell_addon/load_cell_addon");
 
 export function BalerCtrl($scope) {
+    console.log("Top of BalerCtrl function");
     this.balerData = {
         lowWeight: 1000,
         currentWeight: 2345,

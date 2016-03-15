@@ -18,7 +18,7 @@ $(document).ready(function () {
 <div class="modal-header">
     <h3 class="modal-title">Doug modal!</h3>
 </div>
-<div class="modal-body">
+<div class="modal-body" ng-app="balerApp" >
     <div id="tab-container">
         <ul>
             <li><a href="#">Material Settings</a></li>
@@ -29,7 +29,7 @@ $(document).ready(function () {
         </ul>
     </div>
     <div id="main-container">
-        TODO: Add Settings Content Here
+        <Bale-Types-Panel></Bale-Types-Panel>
     </div>
 
 </div>

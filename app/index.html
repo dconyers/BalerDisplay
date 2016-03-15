@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="balerApp" ng-controller="BalerCtrl">
+<html lang="en" ng-app="balerApp">
 <head>
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap-theme.css">
     <link rel="stylesheet" href="css/index.css">
     <link href="./node_modules/angular-virtual-keyboard/css/angular-virtual-keyboard.css" rel="stylesheet">
+    <link href="./node_modules/angular-xeditable-npm/dist/css/xeditable.css" rel="stylesheet">
     <script type="text/javascript">
     window.$ = window.jQuery = require("./node_modules/jquery/dist/jquery.js")
     </script>
 
     <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="./node_modules/angular/angular.js"></script>
+    <script src="./node_modules/angular-mocks/angular-mocks.js"></script>
     <script src="./node_modules/angular-animate/angular-animate.js"></script>
     <script src="./node_modules/angular-translate/dist/angular-translate.js"></script>
     <script src="./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
     <script src="./node_modules/angular-virtual-keyboard/release/angular-virtual-keyboard.js"></script>
+    <script src="./node_modules/angular-xeditable-npm/dist/js/xeditable.js"></script>
     <script type="text/javascript" src="./app.js"></script>
     <script src="./modalDialog.js"></script>
 
@@ -30,8 +33,17 @@
         </div>
         <localization-chooser></localization-chooser>
 
-        <input type='text' ng-model="t02" ng-virtual-keyboard/>
-        <baler-stats-panel ng-controller="BalerCtrl as balerCtrl"></baler-stats-panel>
+        <div ng-controller="TextBtnCtrl">
+          <span editable-text="user.name" e-form="textBtnForm" e-ng-virtual-keyboard>
+            {{ user.name || 'empty' }}
+          </span>
+          <button class="btn btn-default" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible">
+            edit
+          </button>
+        </div>
+
+        <!--<input type='text' ng-model="t02" ng-virtual-keyboard/>-->
+        <baler-stats-panel></baler-stats-panel>
     </div>
 </body>
 </html>
