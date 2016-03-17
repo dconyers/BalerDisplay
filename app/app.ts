@@ -16,8 +16,8 @@ angular.module("balerApp", [
     .config(["$translateProvider", LocalizationProvider])
     .service("BaleTypesDataStoreService", BaleTypesDataStore)
     .controller("BalerCtrl", BalerCtrl)
+    .controller("LocalizationCtrl", LocalizationCtrl)
     .controller("BaleTypesCtrl", BaleTypesCtrl)
-    .directive("balerStatsPanel", BalerStatsPanel)
     .directive("baleTypesPanel", BaleTypesPanel)
     .controller("TextBtnCtrl", function($scope) {
         $scope.user = {

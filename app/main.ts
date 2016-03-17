@@ -22,19 +22,11 @@ app.on("window-all-closed", function() {
 app.on("ready", function() {
   // Create the browser window.
   mainWindow = new BrowserWindow(
-<<<<<<< HEAD
     {
     frame: true,
     resizable: true,
     width: 800,
     height: 480}
-=======
-    // {
-    // frame: true,
-    // resizable: false,
-    // width: 800,
-    // height: 480}
->>>>>>> got translation working
   );
 
   // and load the index.html of the app.
