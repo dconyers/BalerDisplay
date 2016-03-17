@@ -1,6 +1,5 @@
 import { BalerCtrl } from "./balerCtrl";
 import { BaleTypesCtrl } from "./BaleTypes/baleTypesCtrl";
-import { BaleTypesPanel } from "./BaleTypes/BaleTypesPanel";
 import { BaleTypesDataStore } from "./BaleTypes/BaleTypesDataStore";
 import {LocalizationProvider} from "./Localization/LocalizationProvider";
 import {LocalizationCtrl} from "./Localization/LocalizationCtrl";
@@ -21,7 +20,6 @@ angular.module("balerApp", [
     .controller("LocalizationCtrl", LocalizationCtrl)
     .controller("BaleTypesCtrl", BaleTypesCtrl)
     .controller("SettingsMenuCtrl", SettingsMenuCtrl)
-    .directive("baleTypesPanel", BaleTypesPanel)
     .controller("TextBtnCtrl", function($scope) {
         $scope.user = {
             name: "Test Edit"
@@ -46,6 +44,12 @@ angular.module("balerApp", [
             templateUrl: "SettingsMenu/SettingsMenu.html",
             controller: "SettingsMenuCtrl",
             controllerAs: "SettingsMenuCtrl"
+          }).
+          when("/BaleTypes", {
+            title: "MATERIAL_SETTINGS",
+            templateUrl: "BaleTypes/BaleTypesPanel.html",
+            controller: "BaleTypesCtrl",
+            controllerAs: "baleTypesCtrl"
           }).
           otherwise({
             redirectTo: "/BalerStats"

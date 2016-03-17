@@ -123,3 +123,7 @@
     text-align: center;
     margin-top: -20px;
 }
+
+body {
+  padding-top: 60px;
+}
