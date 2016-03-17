@@ -39,8 +39,8 @@
   <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-        <button type="button" class="navbar-left"><span class="glyphicon glyphicon-chevron-left"></span></button>
-        <p class="navbar-text">Logged in as</p>
+        <button type="button" class="navbar-left" go-back><span class="glyphicon glyphicon-chevron-left"></span></button>
+        <p class="navbar-text" ng-bind="title | translate">Logged in as</p>
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">        <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -50,17 +50,17 @@
 
   <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="#" translate>SETTINGS</a></li>
-        <li><a href="#" translate>REPORT</a></li>
+      <ul ng-controller="MenuCtrl as menuCtrl" class="nav navbar-nav">
+        <li><a href="#SettingsMenu" ng-click="menuCtrl.closeMenu()" translate>SETTINGS</a></li>
+        <li><a href="#" ng-click="menuCtrl.closeMenu()" translate>REPORT</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" translate>LANGUAGE<span class="caret"></span></a>
           <ul class="dropdown-menu" ng-controller="LocalizationCtrl as localizationCtrl">
-             <li ng-click="localizationCtrl.selectLanguage('en_us')"><a href="#" translate>BalerDisplay.English</a></li>
-             <li ng-click="localizationCtrl.selectLanguage('es_us')"><a href="#" translate>BalerDisplay.Spanish</a></li>
+             <li ng-click="localizationCtrl.selectLanguage('en_us'); menuCtrl.closeMenu()"><a href="#" translate>BalerDisplay.English</a></li>
+             <li ng-click="localizationCtrl.selectLanguage('es_us'); menuCtrl.closeMenu()"><a href="#" translate>BalerDisplay.Spanish</a></li>
           </ul>
         </li>
-        <li><a href="#" translate>LOGOUT</a></li>
+        <li><a href="#" ng-click="menuCtrl.closeMenu()" translate>LOGOUT</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

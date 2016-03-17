@@ -16,6 +16,12 @@ const resources: ITranslationTable = {
     SETTINGS: "Settings",
     REPORT: "Report",
     LANGUAGE: "Language",
-    LOGOUT: "Logout"
+    LOGOUT: "Logout",
+    MATERIAL_SETTINGS: "Material Settings",
+    WORKER_MANAGEMENT: "Worker Management",
+    MACHINE_SETTINGS: "Machine Settings",
+    OTHER_SETTINGS: "Other",
+    BALER_STATS: "Baler Stats",
+    SETTINGS_MENU: "Settings Menu"
 };
 export = resources;

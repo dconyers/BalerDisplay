@@ -4,6 +4,8 @@ import { BaleTypesPanel } from "./BaleTypes/BaleTypesPanel";
 import { BaleTypesDataStore } from "./BaleTypes/BaleTypesDataStore";
 import {LocalizationProvider} from "./Localization/LocalizationProvider";
 import {LocalizationCtrl} from "./Localization/LocalizationCtrl";
+import {SettingsMenuCtrl} from "./SettingsMenu/SettingsMenuCtrl";
+import {MenuCtrl} from "./MenuCtrl";
 
 angular.module("balerApp", [
                              "modal-dialog",
@@ -18,6 +20,7 @@ angular.module("balerApp", [
     .controller("BalerCtrl", BalerCtrl)
     .controller("LocalizationCtrl", LocalizationCtrl)
     .controller("BaleTypesCtrl", BaleTypesCtrl)
+    .controller("SettingsMenuCtrl", SettingsMenuCtrl)
     .directive("baleTypesPanel", BaleTypesPanel)
     .controller("TextBtnCtrl", function($scope) {
         $scope.user = {
@@ -28,16 +31,37 @@ angular.module("balerApp", [
         editableOptions.theme = "bs3";
     })
     .controller("LocalizationCtrl", LocalizationCtrl)
+    .controller("MenuCtrl", MenuCtrl)
     .config(["$routeProvider",
       function($routeProvider) {
         $routeProvider.
           when("/BalerStats", {
+            title: "BALER_STATS",
             templateUrl: "BalerStatsPanel/BalerStatsPanel.html",
             controller: "BalerCtrl",
             controllerAs: "balerCtrl"
+          }).
+          when("/SettingsMenu", {
+            title: "SETTINGS_MENU",
+            templateUrl: "SettingsMenu/SettingsMenu.html",
+            controller: "SettingsMenuCtrl",
+            controllerAs: "SettingsMenuCtrl"
           }).
           otherwise({
             redirectTo: "/BalerStats"
           });
       }])
+    .run(['$rootScope', function($rootScope) {
+      $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+        $rootScope.title = current.$$route !== undefined ? current.$$route.title : 'BALER_STATS';
+      });
+    }])
+    .directive('goBack', function($window){
+      return function($scope, $element){
+        $element.on('click', function(){
+          console.log("back");
+          $window.history.back();
+        })
+      }
+    })
 ;

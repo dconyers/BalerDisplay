@@ -22,11 +22,11 @@ app.on("window-all-closed", function() {
 app.on("ready", function() {
   // Create the browser window.
   mainWindow = new BrowserWindow(
-    {
-    frame: true,
-    resizable: true,
-    width: 800,
-    height: 480}
+//    {
+    // frame: true,
+    // resizable: true,
+    // width: 800,
+    // height: 480}
   );
 
   // and load the index.html of the app.
