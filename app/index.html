@@ -55,9 +55,9 @@
         <li><a href="#" translate>REPORT</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" translate>LANGUAGE<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-             <li ng-click="selectLanguage('en_us')"><a href="#" translate>BalerDisplay.English</a></li>
-             <li ng-click="selectLanguage('es_us')"><a href="#" translate>BalerDisplay.Spanish</a></li>
+          <ul class="dropdown-menu" ng-controller="LocalizationCtrl as localizationCtrl">
+             <li ng-click="localizationCtrl.selectLanguage('en_us')"><a href="#" translate>BalerDisplay.English</a></li>
+             <li ng-click="localizationCtrl.selectLanguage('es_us')"><a href="#" translate>BalerDisplay.Spanish</a></li>
           </ul>
         </li>
         <li><a href="#" translate>LOGOUT</a></li>

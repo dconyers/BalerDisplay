@@ -3,6 +3,7 @@ import { BaleTypesCtrl } from "./BaleTypes/baleTypesCtrl";
 import { BaleTypesPanel } from "./BaleTypes/BaleTypesPanel";
 import { BaleTypesDataStore } from "./BaleTypes/BaleTypesDataStore";
 import {LocalizationProvider} from "./Localization/LocalizationProvider";
+import {LocalizationCtrl} from "./Localization/LocalizationCtrl";
 
 angular.module("balerApp", [
                              "modal-dialog",
@@ -26,12 +27,14 @@ angular.module("balerApp", [
     .run((editableOptions: any) => { // setting up xeditable options
         editableOptions.theme = "bs3";
     })
+    .controller("LocalizationCtrl", LocalizationCtrl)
     .config(["$routeProvider",
       function($routeProvider) {
         $routeProvider.
           when("/BalerStats", {
             templateUrl: "BalerStatsPanel/BalerStatsPanel.html",
-            controller: "BalerCtrl"
+            controller: "BalerCtrl",
+            controllerAs: "balerCtrl"
           }).
           otherwise({
             redirectTo: "/BalerStats"
