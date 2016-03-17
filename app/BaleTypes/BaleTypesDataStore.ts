@@ -1,51 +1,23 @@
 import NeDBDataStore = require("nedb");
 import * as q from "q";
+import * as Persistence from "../persistence/PersistentDataStore";
 
-export class BaleTypesDataStore extends NeDBDataStore {
+export interface BaleType {
+    material: string;
+    type: string;
+    gui: string;
+    min: number;
+    max: number;
+};
+
+export class BaleTypesDataStore extends Persistence.PersistentDataStore<BaleType> {
     constructor() {
-            super(BaleTypesDataStore.options);
-            this.loadDatabase(this.onload);
+            super("BaleTypes");
     };
 
-    static options: NeDB.DataStoreOptions = {
-        filename : "BaleTypes.dat",
-        inMemoryOnly : false,
-        autoload : false,
-    };
+    getInitData(): Array<BaleType> {
 
-    onload = (error: Error) => {
-        if (error === null) {
-            this.count({}, (err, cnt) => {
-                if (err !== null) {
-                    console.log("count returned error: " + err);
-                }
-                if (cnt === 0) {
-                    this.insert(BaleTypesDataStore.initData, (err) => {
-                        console.log("Insert returned error: " + err);
-                    });
-                }
-            });
-        }
-    };
-
-    deleteRow(stuff: any) {
-        console.log("deleteRow called");
-    }
-
-    insertRow(stuff: any) {
-        console.log("insertRow called");
-    }
-
-    updateRow(stuff: any) {
-        console.log("updateRow called");
-    }
-
-    loadData() {
-        let find_synch = q.nbind(this.find, this);
-        return find_synch({});
-    }
-
-    static initData = [
+        return [
         {material: "PAP", type: "OCC", gui: "Cardboard", min: 1200, max: 1300},
         {material: "HDP", type: "BB",  gui: "Detergent Bottles", min: 900, max: 1000},
         {material: "HDP", type: "BB",  gui: "Milk Bottles", min: 900, max: 1000},
@@ -57,6 +29,7 @@ export class BaleTypesDataStore extends NeDBDataStore {
         {material: "PET", type: "ST",  gui: "Strapping", min: 900, max: 1000},
         {material: "PPH", type: "WF",  gui: "Super Sacks", min: 900, max: 1000},
         {material: "PET", type: "BB",  gui: "Water Bottles", min: 900, max: 1000}
-    ];
+        ];
+    };
 
 };

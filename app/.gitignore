@@ -2,4 +2,4 @@ typings/
 *.swp
 node_modules/
 *.js
-*.dat
+*.db

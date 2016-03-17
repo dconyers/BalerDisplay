@@ -1,3 +1,7 @@
+import * as BaleTypeDataStore from "./BaleTypesDataStore";
+
+type BaleType = BaleTypeDataStore.BaleType;
+
 export function BaleTypesCtrl($scope, $filter, $http, BaleTypesDataStoreService) {
 
     this.$inject = [
@@ -7,12 +11,28 @@ export function BaleTypesCtrl($scope, $filter, $http, BaleTypesDataStoreService)
         "BaleTypesDataStoreService"
     ];
 
-    BaleTypesDataStoreService.loadData().then((return_val): void =>  {
+    BaleTypesDataStoreService.loadDatabasePromise()
+    .then((): void => {
+        console.log("Database loaded, abot to count rows");
+        return BaleTypesDataStoreService.countAllRows();
+    })
+    .then((return_val: number): void => {
+        console.log("got back row count of: " + return_val);
+        if (return_val === 0) {
+            return BaleTypesDataStoreService.insertInitializationData();
+        }
+    })
+    .then((): void => {
+        return BaleTypesDataStoreService.loadData();
+    })
+    .then((return_val: Array<BaleType>): void =>  {
         this.baleTypes = return_val;
+        console.log("promise returned: " + return_val);
         $scope.$apply();
     }).catch(function (error) {
             console.log("Got error from find_synch: " + error);
     }).done();
+
 
     this.saveBaleType = function(data, id) {
         angular.extend(data, {id: id});
