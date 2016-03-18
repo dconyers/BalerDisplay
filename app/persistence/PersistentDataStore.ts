@@ -4,9 +4,6 @@ import * as q from "q";
 export abstract class PersistentDataStore<T> extends NeDBDataStore {
     constructor(filenamePrefix: string) {
             super(PersistentDataStore.getOptions(filenamePrefix));
-            // console.log("Before calling loadDatabase");
-            // this.loadDatabase(this.onload);
-            // console.log("After  calling loadDatabase");
     };
 
     abstract getInitData(): Array<T>;
@@ -40,16 +37,22 @@ export abstract class PersistentDataStore<T> extends NeDBDataStore {
         }
     };
 
-    deleteRow(stuff: any) {
+    deleteRow(id: any) {
         console.log("deleteRow called");
+        let myDelete: (query: any) => q.Promise<number> = q.nbind<number>(this.remove, this);
+        return myDelete({"_id": id});
     }
 
-    insertRow(stuff: any) {
-        console.log("insertRow called");
+    insertRow(newRow: T): q.Promise<void> {
+        let myInsertRow: (newRow: T) => q.Promise<void> = q.nbind<void>(this.insert, this);
+        return myInsertRow(newRow);
     }
 
-    updateRow(stuff: any) {
-        console.log("updateRow called");
+    // update(query:any, updateQuery:any, options?:NeDB.UpdateOptions, cb?:(err:Error, numberOfUpdated:number, upsert:boolean)=>void):void;
+
+    updateRow(id: any, updated: T): q.Promise<number> {
+        let myUpdate: (query: any, updated: T, options?: NeDB.UpdateOptions) => q.Promise<number> = q.nbind<number>(this.update, this);
+        return myUpdate({"_id": id}, updated, {});
     }
 
     loadDatabasePromise(): q.Promise<void> {

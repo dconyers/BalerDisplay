@@ -1,8 +1,9 @@
 import * as BaleTypeDataStore from "./BaleTypesDataStore";
+import * as q from "q";
 
 type BaleType = BaleTypeDataStore.BaleType;
 
-export function BaleTypesCtrl($scope, $filter, $http, BaleTypesDataStoreService) {
+export function BaleTypesCtrl($scope, $filter, $http, $q, BaleTypesDataStoreService) {
 
     this.$inject = [
         "$scope",
@@ -11,49 +12,65 @@ export function BaleTypesCtrl($scope, $filter, $http, BaleTypesDataStoreService)
         "BaleTypesDataStoreService"
     ];
 
-    BaleTypesDataStoreService.loadDatabasePromise()
-    .then((): void => {
-        console.log("Database loaded, abot to count rows");
-        return BaleTypesDataStoreService.countAllRows();
-    })
-    .then((return_val: number): void => {
-        console.log("got back row count of: " + return_val);
-        if (return_val === 0) {
-            return BaleTypesDataStoreService.insertInitializationData();
-        }
-    })
-    .then((): void => {
-        return BaleTypesDataStoreService.loadData();
-    })
-    .then((return_val: Array<BaleType>): void =>  {
-        this.baleTypes = return_val;
-        console.log("promise returned: " + return_val);
-        $scope.$apply();
-    }).catch(function (error) {
+    this.reloadBaleTypes = function(): void {
+        BaleTypesDataStoreService.initializeDataStore()
+        .then((return_val: Array<BaleType>): void => {
+            console.log("got return value: " + return_val);
+            return $q((resolve): void => {
+                this.baleTypes = return_val;
+                resolve();
+                $scope.$apply();
+                for (let baleType of return_val) {
+                    console.log(baleType);
+                }
+            });
+        }).catch(function(error) {
             console.log("Got error from find_synch: " + error);
-    }).done();
-
-
-    this.saveBaleType = function(data, id) {
-        angular.extend(data, {id: id});
-        BaleTypesDataStoreService.updateRow(id);
+        }).done();
+    };
+    this.saveBaleType = function(data: BaleType, id: any): q.Promise<any> {
+        console.log("got save request for id: " + id);
+        angular.extend(data, {_id: id});
+        console.log(data);
+        return BaleTypesDataStoreService.updateRow(id, data)
+        .then((updateCount: number): any => {
+            console.log("updated row count: " + updateCount);
+            if (updateCount !== 1) {
+                return "Error, Expected updateCount of 1, got: " + updateCount;
+            }
+            return true;
+        });
     };
 
     // remove user
-    this.removeBaleType = function(index) {
-        BaleTypesDataStoreService.deleteRow(index);
+    this.removeBaleType = function(id: any): q.Promise<any> {
+        console.log("got delete request for id: " + id);
+        return BaleTypesDataStoreService.deleteRow(id)
+        .then((deleteCount: number): any => {
+            console.log("deleted row count: " + deleteCount);
+            if (deleteCount !== 1) {
+                return "Error, Expected deleteCount of 1, got: " + deleteCount;
+            }
+            return this.reloadBaleTypes();
+        }).done();
     };
 
-    // add user
+    // add Bale Type
     this.addBaleType = function() {
-        $scope.inserted = {
+        let inserted: BaleType = {
             material: "New",
             type: undefined,
             gui: undefined,
             min: undefined,
             max: undefined
         };
-        this.baleTypes.push($scope.inserted);
-        BaleTypesDataStoreService.insertRow($scope.inserted);
+        BaleTypesDataStoreService.insertRow(inserted)
+        .then((): any => {
+            return this.reloadBaleTypes();
+        }).catch(function(error) {
+            console.log("addBaleType returned error: " + error);
+        }).done();
     };
+
+    this.reloadBaleTypes();
 };

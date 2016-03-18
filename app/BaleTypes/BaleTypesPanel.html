@@ -10,38 +10,38 @@
   <tr ng-repeat="baleType in baleTypesCtrl.baleTypes">
     <td>
       <!-- editable username (text with validation) -->
-      <span editable-text="baleType.material" e-name="baleType.material" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
+      <span editable-text="baleType.material" e-name="material" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
         {{ baleType.material || 'empty' }}
       </span>
     </td>
     <td>
       <!-- editable username (text with validation) -->
-      <span editable-text="baleType.type" e-name="baleType.type" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
+      <span editable-text="baleType.type" e-name="type" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
         {{ baleType.type || 'empty' }}
       </span>
     </td>
     <td>
       <!-- editable username (text with validation) -->
-      <span editable-text="baleType.gui" e-name="baleType.gui" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
+      <span editable-text="baleType.gui" e-name="gui" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
         {{ baleType.gui || 'empty' }}
       </span>
     </td>
     <td>
       <!-- editable username (text with validation) -->
-      <span editable-text="baleType.min" e-name="baleType.min" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
+      <span editable-text="baleType.min" e-name="min" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
         {{ baleType.min || 'empty' }}
       </span>
     </td>
     <td>
       <!-- editable username (text with validation) -->
-      <span editable-text="baleType.max" e-name="baleType.max" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
+      <span editable-text="baleType.max" e-name="max" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
         {{ baleType.max || 'empty' }}
       </span>
     </td>
 
     <td style="white-space: nowrap">
       <!-- form -->
-      <form editable-form name="rowform" onbeforesave="" ng-show="rowform.$visible" class="form-buttons form-inline" shown="">
+      <form editable-form name="rowform" onbeforesave="baleTypesCtrl.saveBaleType($data, baleType._id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="">
         <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
           save
         </button>
@@ -51,7 +51,7 @@
       </form>
       <div class="buttons" ng-show="!rowform.$visible">
         <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
-        <button class="btn btn-danger" ng-click="">del</button>
+        <button class="btn btn-danger" ng-click="baleTypesCtrl.removeBaleType(baleType._id)">del</button>
       </div>
     </td>
   </tr>
