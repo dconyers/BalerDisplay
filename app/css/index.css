@@ -170,6 +170,11 @@ a.list-group-item, button.list-group-item {
   color: black;
 }
 
+.btn {
+  font-size: 18px;
+  color: black;
+}
+
 #baler-panel {
   font-size: 22px;
 }
