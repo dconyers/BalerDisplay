@@ -111,9 +111,10 @@
 }
 
 .navbar-left {
-    float:left;
+    float:left !important;
     margin-left:15px;
-    padding:6px 10px;
+    margin-top: 13px;
+    z-index: 1;
 }
 
 .navbar-text {
@@ -121,15 +122,58 @@
     width: 100%;
     left: 0;
     text-align: center;
-    margin-top: -20px;
+    margin-top: 8px;
+  font-size: 24px;
+  z-index: -1;
+}
+
+.navbar-default .navbar-text {
+  color: black;
+  border-color: black;
+}
+
+.navbar-default .navbar-toggle {
+  border-color: black;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: black;
 }
 
 body {
-  padding-top: 60px;
+  padding-top: 50px;
+  color: black;
+  font-size: 18px;
 }
 
 .webcam-live {
   display: block;
   margin-right: auto;
   margin-left: auto;
+}
+
+.badge {
+  background-color: black;
+  font-size: 18px;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: black;
+}
+
+a.list-group-item, button.list-group-item {
+    color: black;
+}
+
+.form-control {
+  font-size: 18px;
+  color: black;
+}
+
+#baler-panel {
+  font-size: 22px;
+}
+
+#baler-panel .badge {
+  font-size: 22px;
 }

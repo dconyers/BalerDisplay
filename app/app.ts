@@ -73,7 +73,6 @@ angular.module("balerApp", [
     .directive('goBack', function($window){
       return function($scope, $element){
         $element.on('click', function(){
-          console.log("back");
           $window.history.back();
         })
       }

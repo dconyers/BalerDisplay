@@ -1,13 +1,6 @@
 
 <div class="jumbotron">
-    <div ng-controller="TextBtnCtrl">
-      <span editable-text="user.name" e-form="textBtnForm" e-ng-virtual-keyboard>
-        {{ user.name || 'empty' }}
-      </span>
-      <button class="btn btn-default" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible">
-        edit
-      </button>
-    </div>
+  <div id="baler-panel">
     <ul class="list-group" ng-repeat="(key,value) in balerCtrl.balerData">
         <li class="list-group-item">
             <span translate>{{"BalerStatsPanel." + key}}
@@ -17,4 +10,5 @@
             </span>
         </li>
     </ul>
+  </div>
 </div>
