@@ -22,6 +22,13 @@ const resources: ITranslationTable = {
     MACHINE_SETTINGS: "Machine Settings",
     OTHER_SETTINGS: "Other",
     BALER_STATS: "Baler Stats",
-    SETTINGS_MENU: "Settings Menu"
+    SETTINGS_MENU: "Settings Menu",
+    CAMERA_TEST: "Camera Test",
+    CAM_UNINIT: "Camera uninitialized.",
+    CAM_SUCCESS: "Successfully accessed camera.",
+    TAKE_PICTURE: "Take Picture",
+    CLOSE: "Close",
+    TAKING_PICTURE: "Taking Picture",
+    PICTURE_TAKEN: "Picture Taken"
 };
 export = resources;

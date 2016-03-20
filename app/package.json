@@ -37,6 +37,7 @@
     "nan": "^2.2.0",
     "nedb": "^1.8.0",
     "q": "^1.4.1",
-    "angular-route": "~1.5.0"
+    "angular-route": "~1.5.0",
+    "webcam-directive": "~3.0.0"
   }
 }

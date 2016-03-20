@@ -4,14 +4,17 @@ import { BaleTypesDataStore } from "./BaleTypes/BaleTypesDataStore";
 import {LocalizationProvider} from "./Localization/LocalizationProvider";
 import {LocalizationCtrl} from "./Localization/LocalizationCtrl";
 import {SettingsMenuCtrl} from "./SettingsMenu/SettingsMenuCtrl";
+import {CameraTestCtrl} from "./CameraTest/CameraTestCtrl";
 import {MenuCtrl} from "./MenuCtrl";
+import {PictureModalCtrl} from "./CameraTest/PictureModalCtrl";
 
 angular.module("balerApp", [
-                             "modal-dialog",
+                             "ui.bootstrap",
                              "pascalprecht.translate",
                              "angular-virtual-keyboard",
                              "ngRoute",
-                             "xeditable"
+                             "xeditable",
+                             "webcam"
                            ]
 )
     .config(["$translateProvider", LocalizationProvider])
@@ -20,6 +23,8 @@ angular.module("balerApp", [
     .controller("LocalizationCtrl", LocalizationCtrl)
     .controller("BaleTypesCtrl", BaleTypesCtrl)
     .controller("SettingsMenuCtrl", SettingsMenuCtrl)
+    .controller("CameraTestCtrl", CameraTestCtrl)
+    .controller("PictureModalCtrl", PictureModalCtrl)
     .controller("TextBtnCtrl", function($scope) {
         $scope.user = {
             name: "Test Edit"
@@ -28,7 +33,6 @@ angular.module("balerApp", [
     .run((editableOptions: any) => { // setting up xeditable options
         editableOptions.theme = "bs3";
     })
-    .controller("LocalizationCtrl", LocalizationCtrl)
     .controller("MenuCtrl", MenuCtrl)
     .config(["$routeProvider",
       function($routeProvider) {
@@ -50,6 +54,12 @@ angular.module("balerApp", [
             templateUrl: "BaleTypes/BaleTypesPanel.html",
             controller: "BaleTypesCtrl",
             controllerAs: "baleTypesCtrl"
+          }).
+          when("/CameraTest", {
+            title: "CAMERA_TEST",
+            templateUrl: "CameraTest/CameraTest.html",
+            controller: "CameraTestCtrl",
+            controllerAs: "cameraTestCtrl"
           }).
           otherwise({
             redirectTo: "/BalerStats"

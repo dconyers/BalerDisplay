@@ -1,0 +1,9 @@
+<p class="text-center">{{cameraTestCtrl.picStatus | translate}}</p>
+<button class="center-block" ng-click="cameraTestCtrl.takePicture();" translate>TAKE_PICTURE</button>
+<p class="text-center">{{cameraTestCtrl.statusMsg | translate}}</p>
+<webcam class="center-block"
+  channel="cameraTestCtrl.myChannel"
+  on-stream="cameraTestCtrl.onStream(stream)"
+  on-streaming="cameraTestCtrl.onSuccess()"
+  on-error="cameraTestCtrl.onError(err)">
+</webcam>

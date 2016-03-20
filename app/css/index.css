@@ -127,3 +127,9 @@
 body {
   padding-top: 60px;
 }
+
+.webcam-live {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
