@@ -25,17 +25,5 @@ angular.module("balerApp", [
     .controller("SettingsMenuCtrl", SettingsMenuCtrl)
     .controller("CameraTestCtrl", CameraTestCtrl)
     .controller("PictureModalCtrl", PictureModalCtrl)
-    .controller("TextBtnCtrl", function($scope) {
-        $scope.user = {
-            name: "Test Edit"
-        };
-    })
     .controller("MenuCtrl", MenuCtrl)
-    .directive('goBack', function($window){
-      return function($scope, $element){
-        $element.on('click', function(){
-          $window.history.back();
-        })
-      }
-    })
 ;
