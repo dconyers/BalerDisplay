@@ -14,7 +14,8 @@ angular.module("balerApp", [
                              "angular-virtual-keyboard",
                              "ngRoute",
                              "xeditable",
-                             "webcam"
+                             "webcam",
+                             'appRoutes'
                            ]
 )
     .config(["$translateProvider", LocalizationProvider])
@@ -34,37 +35,6 @@ angular.module("balerApp", [
         editableOptions.theme = "bs3";
     })
     .controller("MenuCtrl", MenuCtrl)
-    .config(["$routeProvider",
-      function($routeProvider) {
-        $routeProvider.
-          when("/BalerStats", {
-            title: "BALER_STATS",
-            templateUrl: "BalerStatsPanel/BalerStatsPanel.html",
-            controller: "BalerCtrl",
-            controllerAs: "balerCtrl"
-          }).
-          when("/SettingsMenu", {
-            title: "SETTINGS_MENU",
-            templateUrl: "SettingsMenu/SettingsMenu.html",
-            controller: "SettingsMenuCtrl",
-            controllerAs: "SettingsMenuCtrl"
-          }).
-          when("/BaleTypes", {
-            title: "MATERIAL_SETTINGS",
-            templateUrl: "BaleTypes/BaleTypesPanel.html",
-            controller: "BaleTypesCtrl",
-            controllerAs: "baleTypesCtrl"
-          }).
-          when("/CameraTest", {
-            title: "CAMERA_TEST",
-            templateUrl: "CameraTest/CameraTest.html",
-            controller: "CameraTestCtrl",
-            controllerAs: "cameraTestCtrl"
-          }).
-          otherwise({
-            redirectTo: "/BalerStats"
-          });
-      }])
     .run(['$rootScope', function($rootScope) {
       $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
         $rootScope.title = current.$$route !== undefined ? current.$$route.title : 'BALER_STATS';
