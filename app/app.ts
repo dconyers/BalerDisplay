@@ -6,6 +6,7 @@ import {SettingsMenuCtrl} from "./SettingsMenu/SettingsMenuCtrl";
 import {CameraTestCtrl} from "./CameraTest/CameraTestCtrl";
 import {MenuCtrl} from "./MenuCtrl";
 import {PictureModalCtrl} from "./CameraTest/PictureModalCtrl";
+import {PictureSrvc} from "./services/PictureSrvc";
 
 angular.module("balerApp", [
                              "ui.bootstrap",
@@ -19,6 +20,7 @@ angular.module("balerApp", [
                            ]
 )
     .service("BaleTypesDataStoreService", BaleTypesDataStore)
+    .service("PictureSrvc", PictureSrvc)
     .controller("BalerCtrl", BalerCtrl)
     .controller("LocalizationCtrl", LocalizationCtrl)
     .controller("BaleTypesCtrl", BaleTypesCtrl)

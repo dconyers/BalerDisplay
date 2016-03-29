@@ -1,6 +1,6 @@
 const exec = require('child_process').exec;
 
-export function CameraTestCtrl($scope, $uibModal) {
+export function CameraTestCtrl($scope, $uibModal, PictureSrvc) {
   this.stream = null;
   this.statusMsg = "CAM_UNINIT";
   this.currModalInstance = null;
@@ -47,15 +47,12 @@ export function CameraTestCtrl($scope, $uibModal) {
     setTimeout(function() {
                  /* take picture at 1600x1200 resolution, skip 10 frames to
                     allow for camera to auto-adjust */
-                 let child = exec('fswebcam -r 1600x1200 -S 10 ' + obj.fileName,
-                                  function(err, stdout, stderr) {
-                                    obj.takePictureCallback(err, stdout, stderr);
-                                  });
+                 PictureSrvc.takePicture(obj.fileName, obj.takePictureCallback)
                },
                100);
   };
 
-  this.takePictureCallback = function(err, stdout, stderr) {
+  this.takePictureCallback = (pathname: string, err: string) => {
     if(err) {
       this.picStatus = err;
     }
