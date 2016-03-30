@@ -1,5 +1,4 @@
 const exec = require('child_process').exec;
-const SerialPort = require("./node_modules/serialport/serialport.js").SerialPort
 
 enum Sim800State {
   Connected,

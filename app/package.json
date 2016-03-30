@@ -27,6 +27,7 @@
   "dependencies": {
     "angular": "^1.5.0",
     "angular-animate": "^1.5.0",
+    "angular-route": "~1.5.0",
     "angular-translate": "^2.10.0",
     "angular-translate-handler-log": "^2.10.0",
     "angular-ui-bootstrap": "^1.2.2",
@@ -37,8 +38,6 @@
     "nan": "^2.2.0",
     "nedb": "^1.8.0",
     "q": "^1.4.1",
-    "angular-route": "~1.5.0",
-    "webcam-directive": "~3.0.0",
-    "serialport": "~2.0.6"
+    "webcam-directive": "~3.0.0"
   }
 }

@@ -21,5 +21,5 @@ function runs($rootScope, editableOptions) {
     }
   );
   editableOptions.theme = "bs3";
-  Sim800Srvc.start();
+//  Sim800Srvc.start();
 }
