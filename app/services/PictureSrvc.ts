@@ -3,17 +3,17 @@
  * // pictureSrvc should be injected
  * function someFunction(PictureSrvc) {
  *   // In this case, we want to change the default resolution.
- *   pictureSrvc.width = 1920;
- *   pictureSrvc.height = 1080;
+ *   PictureSrvc.width = 1920;
+ *   PictureSrvc.height = 1080;
  *
- *   pictureSrvc.takePicture("./images/test.jpg",
- *     function(pathname, err) {
+ *   PictureSrvc.takePicture("./images/test.jpg",
+ *     (pathname, err) => {
  *       if(err) {
  *         console.log(err);
  *       }
  *       else {
  *         // record pathname to database ...
- *         pictureSrvc.deletePicture(pathname);
+ *         PictureSrvc.deletePicture(pathname);
  *       }
  *     }
  *   );

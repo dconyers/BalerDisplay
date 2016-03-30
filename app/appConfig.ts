@@ -1,4 +1,5 @@
 import {LocalizationProvider} from "./Localization/LocalizationProvider";
+import {Sim800Srvc} from "./services/Sim800Srvc";
 
 angular
     .module('appConfig', [])
@@ -20,4 +21,5 @@ function runs($rootScope, editableOptions) {
     }
   );
   editableOptions.theme = "bs3";
+  Sim800Srvc.start();
 }
