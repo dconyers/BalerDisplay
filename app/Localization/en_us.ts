@@ -34,7 +34,7 @@ const resources: ITranslationTable = {
     TAKING_PICTURE: "Taking Picture",
     PICTURE_TAKEN: "Picture Taken",
     NETWORK_SETTINGS: "Network Settings",
-    DIAL_NUM: "Dial Number"
+    DIAL_NUM: "Dial Number",
     LastBaleTime: "Last Bale Time"
 };
 export = resources;
