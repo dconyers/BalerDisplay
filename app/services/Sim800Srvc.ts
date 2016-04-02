@@ -17,13 +17,13 @@ function Sim800Srvc() {
     let obj = this;
     setInterval(obj.checkPPP0, 60000);
   };
-  
+
   this.checkPPP0 = () => {
     let obj = this;
     let child = exec("cat /proc/net/dev | grep ppp0",
                      obj.checkPPP0String);
   };
-  
+
   this.checkPPP0String = (err, stdout, stderr) => {
     let obj = this;
     if(stdout === "") {
@@ -36,7 +36,7 @@ function Sim800Srvc() {
       this.state = Sim800State.Connected;
     }
   };
-  
+
   this.poffDone = (err, stdout, stderr) => {
     // open serial port
     let obj = this;
@@ -47,7 +47,7 @@ function Sim800Srvc() {
     });
     serialPort.on("open", obj.portOpened);
   };
-  
+
   this.sendAts = () => {
     let obj = this;
     if(this.state === Sim800State.Waiting_For_Ok) {
@@ -69,7 +69,7 @@ function Sim800Srvc() {
       let child = exec("sudo pon SIM800");
     }
   };
-  
+
   this.gpioModeDone = (err, stdout, stderr) => {
     // turn on pin for 2 seconds to turn on sim800
     let child = exec("gpio write 0 1");
@@ -81,13 +81,13 @@ function Sim800Srvc() {
     },
     2000);
   };
-  
+
   this.portOpened = () => {
     this.state = Sim800State.Waiting_For_Ok;
     this.numAt = 0;
     this.sendAts();
   };
-  
+
   this.serData = (data) => {
     if(this.state === Sim800State.Waiting_For_Ok) {
       if(~data.indexOf("OK")) {

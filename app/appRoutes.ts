@@ -1,7 +1,7 @@
 angular
-  .module('appRoutes', ['ngRoute'])
+  .module("appRoutes", ["ngRoute"])
   .config(config);
-  
+
 function config ($routeProvider) {
   $routeProvider.
     when("/BalerStats", {

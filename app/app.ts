@@ -7,6 +7,8 @@ import {CameraTestCtrl} from "./CameraTest/CameraTestCtrl";
 import {MenuCtrl} from "./MenuCtrl";
 import {PictureModalCtrl} from "./CameraTest/PictureModalCtrl";
 import {PictureSrvc} from "./services/PictureSrvc";
+import {LoadCellMonitorService} from "./services/LoadCellMonitorService";
+import {LoadCellDataService} from "./load_cell_addon/LoadCellDataService";
 
 angular.module("balerApp", [
                              "ui.bootstrap",
@@ -15,12 +17,14 @@ angular.module("balerApp", [
                              "ngRoute",
                              "xeditable",
                              "webcam",
-                             'appRoutes',
+                             "appRoutes",
                              "appConfig"
                            ]
 )
     .service("BaleTypesDataStoreService", BaleTypesDataStore)
     .service("PictureSrvc", PictureSrvc)
+    .service("LoadCellMonitorService", LoadCellMonitorService)
+    .service("LoadCellDataService", LoadCellDataService)
     .controller("BalerCtrl", BalerCtrl)
     .controller("LocalizationCtrl", LocalizationCtrl)
     .controller("BaleTypesCtrl", BaleTypesCtrl)
@@ -28,4 +32,6 @@ angular.module("balerApp", [
     .controller("CameraTestCtrl", CameraTestCtrl)
     .controller("PictureModalCtrl", PictureModalCtrl)
     .controller("MenuCtrl", MenuCtrl)
+    .run((LoadCellMonitorService) => {
+    })
 ;

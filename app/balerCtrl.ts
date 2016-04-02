@@ -1,25 +1,38 @@
-"use strict";
-const load_cell_addon = require("./load_cell_addon/load_cell_addon");
+import {LoadCellDataService} from "./load_cell_addon/LoadCellDataService";
 
-export function BalerCtrl($scope) {
-    console.log("Top of BalerCtrl function");
-    this.balerData = {
-        lowWeight: 1000,
-        currentWeight: 2345,
-        highWeight: 3000,
+export class BalerCtrl {
+
+    static $inject: string[] = [
+        "$log",
+        "LoadCellDataService"
+    ];
+
+    constructor(private $log: ng.ILogService, private loadCellDataService: LoadCellDataService) {
+        // console.log("Top of BalerCtrl function: " + LoadCellDataService);
+        $log.warn("Hello: " + loadCellDataService);
+    }
+
+    private balerData: any = {
+        lowWeight: this.getLowWeight,
+        currentWeight: this.getCurrentWeight,
+        highWeight: this.getHighWeight,
     };
 
-    this.getLowWeight = function() {
-        return this.balerData.lowWeight;
+    getLowWeight(): number {
+        return 1000;
+        // this.balerData.lowWeight;
+    }
+
+    getHighWeight(): number {
+        return 3000;
+        // this.balerData.highWeight;
     };
 
-
-    this.getHighWeight = function() {
-        return this.balerData.highWeight;
-    };
-
-    this.getCurrentWeight = function() {
-        this.balerData.currentWeight = load_cell_addon.getLoadCellWeight();
-        return this.balerData.currentWeight;
+    getCurrentWeight(): number {
+        // console.log("top of getCurrentWeight: " + this.LoadCellDataService);
+        this.$log.warn("Here?");
+        return this.loadCellDataService.getLoadCellWeight();
+        // this.balerData.currentWeight = this.LoadCellDataService.getLoadCellWeight();
+        // return this.balerData.currentWeight;
     };
 };
