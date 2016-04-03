@@ -4,13 +4,14 @@ import {Sim800Srvc} from "./services/Sim800Srvc";
 angular
     .module('appConfig', [])
     .config(configs)
+    .service("Sim800Srvc", Sim800Srvc)
     .run(runs);
 
 function configs($translateProvider) {
   LocalizationProvider($translateProvider);
 }
     
-function runs($rootScope, editableOptions) {
+function runs($rootScope, editableOptions, Sim800Srvc) {
   /* On route change, set title property on $rootScope to be used for header
      titles. */
   $rootScope.$on('$routeChangeSuccess',
@@ -21,5 +22,5 @@ function runs($rootScope, editableOptions) {
     }
   );
   editableOptions.theme = "bs3";
-//  Sim800Srvc.start();
+  Sim800Srvc.start();
 }

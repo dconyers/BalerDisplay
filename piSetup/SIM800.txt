@@ -1,0 +1,27 @@
+Disable linux's usage of serial port.
+- sudo systemctl stop serial-getty@ttyAMA0.service # Stops service
+- sudo systemctl disable serial-getty@ttyAMA0.service # Disables service
+
+Setup pppd:
+- cp configFiles/sim800 to /etc/ppp/peers/
+- Note: script is currently setup to use Cricket network, application will
+  need to turn off pppd and edit config file to change APN.
+- cp configFiles/1add-default-route /etc/ppp/ip-up.d/
+  
+Setup chatscript that pppd will use to issue AT commands:
+- cp configFiles/gprs to /etc/chatscripts/
+
+Need to add user to dialout group to access sim800 as serial port:
+- sudo usermod -a -G dialout bjn
+
+Need to add sudo policies to allow user to turn pppd on and off. Assuming
+application runs under the username "bjn":
+- cp configFiles/pppd /etc/sudoers.d/
+
+Install python-pip and pyserial to allow communication with AT commands:
+  sudo apt-get install python-pip
+  pip install pyserial
+
+Connection can be turned on and off with:
+- sudo pon sim800
+- sudo poff sim800

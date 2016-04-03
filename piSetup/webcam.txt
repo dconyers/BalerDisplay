@@ -1,0 +1,2 @@
+Webcam functionality requires fswebcam program:
+- sudo apt-get install fswebcam

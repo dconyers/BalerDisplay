@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Have to call twice for it to work. Not sure why.
+# Metric is 750 to give lower priority than both ethernet and wifi
+route add default gw $PPP_REMOTE metric 750 ppp0
+route add default gw $PPP_REMOTE metric 750 ppp0
+

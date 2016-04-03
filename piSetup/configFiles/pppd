@@ -1,0 +1,2 @@
+bjn	ALL=(ALL)	NOPASSWD:	/usr/bin/pon, /usr/bin/poff
+
