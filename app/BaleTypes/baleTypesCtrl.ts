@@ -3,7 +3,7 @@ import * as q from "q";
 
 type BaleType = BaleTypeDataStore.BaleType;
 
-export function BaleTypesCtrl($scope, $filter, $http, $q, BaleTypesDataStoreService) {
+export function BaleTypesCtrl($scope, $filter, $http, $q, baleTypesDataStoreService) {
 
     this.$inject = [
         "$scope",
@@ -13,7 +13,7 @@ export function BaleTypesCtrl($scope, $filter, $http, $q, BaleTypesDataStoreServ
     ];
 
     this.reloadBaleTypes = function(): void {
-        BaleTypesDataStoreService.initializeDataStore()
+        baleTypesDataStoreService.initializeDataStore()
         .then((return_val: Array<BaleType>): void => {
             console.log("got return value: " + return_val);
             return $q((resolve): void => {
@@ -32,7 +32,7 @@ export function BaleTypesCtrl($scope, $filter, $http, $q, BaleTypesDataStoreServ
         console.log("got save request for id: " + id);
         angular.extend(data, {_id: id});
         console.log(data);
-        return BaleTypesDataStoreService.updateRow(id, data)
+        return baleTypesDataStoreService.updateRow(id, data)
         .then((updateCount: number): any => {
             console.log("updated row count: " + updateCount);
             if (updateCount !== 1) {
@@ -45,7 +45,7 @@ export function BaleTypesCtrl($scope, $filter, $http, $q, BaleTypesDataStoreServ
     // remove user
     this.removeBaleType = function(id: any): q.Promise<any> {
         console.log("got delete request for id: " + id);
-        return BaleTypesDataStoreService.deleteRow(id)
+        return this.baleTypesDataStoreService.deleteRow(id)
         .then((deleteCount: number): any => {
             console.log("deleted row count: " + deleteCount);
             if (deleteCount !== 1) {
@@ -64,7 +64,7 @@ export function BaleTypesCtrl($scope, $filter, $http, $q, BaleTypesDataStoreServ
             min: undefined,
             max: undefined
         };
-        BaleTypesDataStoreService.insertRow(inserted)
+        this.BaleTypesDataStore.insertRow(inserted)
         .then((): any => {
             return this.reloadBaleTypes();
         }).catch(function(error) {
