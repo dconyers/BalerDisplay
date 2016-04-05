@@ -75,6 +75,12 @@ export class BalerCtrl {
         }).done;
 
         this.balerData.currentWeight = this.loadCellDataService.getLoadCellWeight();
+        this.$scope.$watch(() => {
+            return this.loadCellDataService.getLoadCellWeight();
+        }, () => {
+            this.balerData.currentWeight = this.loadCellDataService.getLoadCellWeight();
+            // this.$scope.$apply();
+        });
     }
 
 };
