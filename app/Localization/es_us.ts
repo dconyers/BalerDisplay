@@ -15,6 +15,7 @@ const resources: ITranslationTable = {
             highWeight: "El High Weight",
     },
     SETTINGS: "El Settings",
+    LastBaleTime: "El Last Bale Time",
     BALE_TYPE: "El Bale Type",
     REPORT: "El Report",
     TRANSER_REPORT: "El Bale Event Log",

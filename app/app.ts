@@ -11,6 +11,7 @@ import {PictureModalCtrl} from "./CameraTest/PictureModalCtrl";
 import {PictureSrvc} from "./services/PictureSrvc";
 import {LoadCellMonitorService} from "./services/LoadCellMonitorService";
 import {LoadCellDataService} from "./load_cell_addon/LoadCellDataService";
+import {BaleEventService} from "./BaleEvent/BaleEventService";
 
 angular.module("balerApp", [
                              "ui.bootstrap",
@@ -28,6 +29,7 @@ angular.module("balerApp", [
     .service("PictureSrvc", PictureSrvc)
     .service("LoadCellMonitorService", LoadCellMonitorService)
     .service("LoadCellDataService", LoadCellDataService)
+    .service("BaleEventService", BaleEventService)
     .controller("BalerCtrl", BalerCtrl)
     .controller("BaleEventReportCtrl", BaleEventReportCtrl)
     .controller("LocalizationCtrl", LocalizationCtrl)

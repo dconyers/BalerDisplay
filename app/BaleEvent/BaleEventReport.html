@@ -6,7 +6,7 @@
       <td style="width:30%">Weight</td>
       <td style="width:25%">Transmitted?</td>
   </tr>
-  <tr ng-repeat="baleEvent in baleEventReportCtrl.baleEvents">
+  <tr ng-repeat="baleEvent in baleEventReportCtrl.baleEventService.baleEvents">
       <td>
           <span>
             {{ baleEvent.baleDate.toLocaleDateString("en-US") || 'empty' }}

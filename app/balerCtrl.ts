@@ -1,5 +1,6 @@
 import {LoadCellDataService} from "./load_cell_addon/LoadCellDataService";
 import {BaleTypesService} from "./BaleTypes/BaleTypesService";
+import {BaleEventService} from "./BaleEvent/BaleEventService";
 import {BaleType} from "./BaleTypes/BaleType";
 import * as q from "q";
 import {BaleTypesDataStore} from "./BaleTypes/BaleTypesDataStore";
@@ -18,7 +19,8 @@ export class BalerCtrl {
         "$log",
         "LoadCellDataService",
         "BaleTypesService",
-        "BaleTypesDataStoreService"
+        "BaleTypesDataStoreService",
+        "BaleEventService"
     ];
 
     materialList: string[] = [];
@@ -34,7 +36,8 @@ export class BalerCtrl {
         private $log: ng.ILogService,
         private loadCellDataService: LoadCellDataService,
         private baleTypesService: BaleTypesService,
-        private baleTypesDataStoreService: BaleTypesDataStore) {
+        private baleTypesDataStoreService: BaleTypesDataStore,
+        private baleEventService: BaleEventService) {
         $log.debug("Top of BalerCtrl constructor");
         this.refreshData();
     }
