@@ -1,5 +1,6 @@
 import {BalerCtrl} from "./balerCtrl";
 import {BaleTypesCtrl} from "./BaleTypes/baleTypesCtrl";
+import {BaleEventReportCtrl} from "./BaleEvent/BaleEventReportCtrl";
 import {BaleTypesDataStore} from "./BaleTypes/BaleTypesDataStore";
 import {BaleTypesService} from "./BaleTypes/BaleTypesService";
 import {LocalizationCtrl} from "./Localization/LocalizationCtrl";
@@ -28,6 +29,7 @@ angular.module("balerApp", [
     .service("LoadCellMonitorService", LoadCellMonitorService)
     .service("LoadCellDataService", LoadCellDataService)
     .controller("BalerCtrl", BalerCtrl)
+    .controller("BaleEventReportCtrl", BaleEventReportCtrl)
     .controller("LocalizationCtrl", LocalizationCtrl)
     .controller("BaleTypesCtrl", BaleTypesCtrl)
     .controller("SettingsMenuCtrl", SettingsMenuCtrl)

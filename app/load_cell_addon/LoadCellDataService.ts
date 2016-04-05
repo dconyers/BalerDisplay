@@ -26,6 +26,6 @@ export class LoadCellDataService {
 
     getLoadCellWeight(): number  {
         return this.fakeData;
-        //return this.addon.getCurrentWeight();
+        // npm return this.addon.getCurrentWeight();
     }
 };

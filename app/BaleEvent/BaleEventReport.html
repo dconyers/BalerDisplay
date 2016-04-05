@@ -1,0 +1,42 @@
+<table class="table table-bordered table-hover table-condensed">
+  <tr style="font-weight: bold">
+      <td style="width:15%">Bale Date</td>
+      <td style="width:15%">Bale Time</td>
+      <td style="width:15%">Material Type</td>
+      <td style="width:30%">Weight</td>
+      <td style="width:25%">Transmitted?</td>
+  </tr>
+  <tr ng-repeat="baleEvent in baleEventReportCtrl.baleEvents">
+      <td>
+          <span>
+            {{ baleEvent.baleDate.toLocaleDateString("en-US") || 'empty' }}
+          </span>
+      </td>
+
+      <td>
+          <span>
+            {{ baleEvent.baleDate.toLocaleTimeString("en-US") || 'empty' }}
+          </span>
+      </td>
+
+      <td>
+        <span>
+          {{ baleEvent.baleType.gui || 'empty' }}
+        </span>
+    </td>
+
+    <td>
+        <span>
+          {{ baleEvent.weight || 'empty' }}
+        </span>
+    </td>
+
+    <td>
+        <span>
+          {{ baleEvent.transmitted }}
+        </span>
+    </td>
+
+
+  </tr>
+</table>

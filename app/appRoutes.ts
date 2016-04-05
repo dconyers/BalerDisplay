@@ -28,6 +28,12 @@ function config ($routeProvider) {
       controller: "CameraTestCtrl",
       controllerAs: "cameraTestCtrl"
     }).
+    when("/Report", {
+      title: "TRANSER_REPORT",
+      templateUrl: "BaleEvent/BaleEventReport.html",
+      controller: "BaleEventReportCtrl",
+      controllerAs: "baleEventReportCtrl"
+    }).
     otherwise({
       redirectTo: "/BalerStats"
     });

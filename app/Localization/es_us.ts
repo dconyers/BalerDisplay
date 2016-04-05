@@ -17,6 +17,7 @@ const resources: ITranslationTable = {
     SETTINGS: "El Settings",
     BALE_TYPE: "El Bale Type",
     REPORT: "El Report",
+    TRANSER_REPORT: "El Bale Event Log",
     LANGUAGE: "El Language",
     LOGOUT: "El Logout",
     MATERIAL_SETTINGS: "El Material Settings",

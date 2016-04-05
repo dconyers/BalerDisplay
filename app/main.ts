@@ -24,7 +24,7 @@ app.on("ready", function() {
   mainWindow = new BrowserWindow(
     {
      frame: true,
-     resizable: true,
+     resizable: false,
      width: 800,
      height: 480}
   );
