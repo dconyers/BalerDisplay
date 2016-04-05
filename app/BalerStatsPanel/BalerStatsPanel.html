@@ -1,7 +1,7 @@
 
 <div class="jumbotron">
   <div id="baler-panel">
-    <ul class="list-group" ng-repeat="(key,value) in balerCtrl.balerData">
+    <!-- <ul class="list-group" ng-repeat="(key,value) in balerCtrl.balerData">
         <li class="list-group-item">
             <span translate>{{"BalerStatsPanel." + key}}
             </span>
@@ -9,7 +9,7 @@
                 {{value}}
             </span>
         </li>
-    </ul>
+    </ul> -->
     <ul  class="list-group">
         <li class="list-group-item">
             <span translate>BALE_TYPE</span>
@@ -19,6 +19,31 @@
                 </a>
             </span>
         </li>
+
+        <li class="list-group-item">
+            <span translate>{{"BalerStatsPanel." + "currentWeight"}}
+            </span>
+            <span class="badge">
+                {{balerCtrl.balerData.currentWeight}}
+            </span>
+        </li>
+
+        <li class="list-group-item">
+            <span translate>{{"BalerStatsPanel." + "lowWeight"}}
+            </span>
+            <span class="badge">
+                {{balerCtrl.balerData.lowWeight}}
+            </span>
+        </li>
+
+        <li class="list-group-item">
+            <span translate>{{"BalerStatsPanel." + "highWeight"}}
+            </span>
+            <span class="badge">
+                {{balerCtrl.balerData.highWeight}}
+            </span>
+        </li>
+
     </ul>
   </div>
 </div>
