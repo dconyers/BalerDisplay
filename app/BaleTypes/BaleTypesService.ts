@@ -15,20 +15,18 @@ export class BaleTypesService {
     }
 
     public getCurrentBaleType(): q.Promise<BaleType> {
-        // return this.baleTypesDataStoreService.findOne({currentType: true});
-
-        return q.Promise<BaleType>((resolve, reject) => {
-            let baleType: BaleType = {material: "Doug", type: "Doug", gui: "Doug", min: 1, max: 13, currentType: false };
-            resolve(baleType);
+        return this.baleTypesDataStoreService.findOnePromise({currentType: true}).then((retVal: BaleType) => {
+            return retVal;
+        }).catch((exception: any) => {
+                this.$log.error("Really Got exception: "  + exception);
+                return exception;
+        }).finally(() => {
+                this.$log.debug("finally clause for getCurrentBT");
+                return undefined;
         });
     }
 
     public getMaterialList(): q.Promise<String[]> {
-        // return q.Promise<String[]>((resolve, reject) => {
-        //     resolve(["a", "b", "c"]);
-        // });
-
         return this.baleTypesDataStoreService.initializeDataStore();
-
     }
 }

@@ -9,11 +9,27 @@ export class BaleTypesDataStore extends Persistence.PersistentDataStore<BaleType
         "$log",
     ];
 
+    private initialized: boolean = false;
+
     constructor(private $log: ng.ILogService) {
             super("BaleTypes");
+            $log.debug("top of BaleTypesDataStore constructor");
     };
 
     initializeDataStore(): q.Promise<any> {
+        this.$log.debug("Top of BaleTypesDataStore::initializeDataStore");
+        if (this.initialized) {
+            this.$log.debug("BaleTypesDataStore::initializeDataStore - already inited, skipping.");
+            return this.loadDataPromise()
+                .then((retVal: Array<BaleType>) => {
+                        return retVal.sort((a: BaleType, b: BaleType) => {
+                            if (a.gui === undefined)
+                                return 1;
+                            return a.gui.localeCompare(b.gui);
+                        });
+                });
+        }
+        this.$log.debug("BaleTypesDataStore::initializeDataStore - initializing.");
         return this.loadDatabasePromise()
             .then((): q.Promise<number> => {
                 console.log("Database loaded, about to count rows");
@@ -26,23 +42,31 @@ export class BaleTypesDataStore extends Persistence.PersistentDataStore<BaleType
                 }
             })
             .then(() => {
-                return this.loadData();
+                this.initialized = true;
+                return this.loadDataPromise()
+                    .then((retVal: Array<BaleType>) => {
+                            return retVal.sort((a: BaleType, b: BaleType) => {
+                                if (a.gui === undefined)
+                                    return 1;
+                                return a.gui.localeCompare(b.gui);
+                            });
+                    });
             });
     }
 
     getInitData(): Array<BaleType> {
         return [
-        {material: "PAP", type: "OCC", gui: "Cardboard", min: 1200, max: 1300, currentType: true},
-        {material: "HDP", type: "BB",  gui: "Detergent Bottles", min: 900, max: 1000, currentType: false},
-        {material: "HDP", type: "BB",  gui: "Milk Bottles", min: 900, max: 1000, currentType: false},
-        {material: "PPH", type: undefined,  gui: "Crates (Milk, Fruit)", min: 900, max: 1000, currentType: false},
-        {material: "HDP", type: "FL", gui: "Grocery Bags", min: 1200, max: 1300, currentType: false},
-        {material: "LDP", type: "FL", gui: "Packaging Film", min: 1200, max: 1300, currentType: false},
-        {material: "HDP", type: undefined,  gui: "Pipe End Caps", min: 900, max: 1000, currentType: false},
-        {material: "LLD", type: "FL", gui: "Shrink Wrap", min: 1200, max: 1300, currentType: false},
-        {material: "PET", type: "ST",  gui: "Strapping", min: 900, max: 1000, currentType: false},
-        {material: "PPH", type: "WF",  gui: "Super Sacks", min: 900, max: 1000, currentType: false},
-        {material: "PET", type: "BB",  gui: "Water Bottles", min: 900, max: 1000, currentType: false}
+        {_id: undefined, material: "PAP", type: "OCC", gui: "Cardboard", min: 1200, max: 1300, currentType: false},
+        {_id: undefined, material: "HDP", type: "BB",  gui: "Detergent Bottles", min: 900, max: 1000, currentType: true},
+        {_id: undefined, material: "HDP", type: "BB",  gui: "Milk Bottles", min: 900, max: 1000, currentType: false},
+        {_id: undefined, material: "PPH", type: undefined,  gui: "Crates (Milk, Fruit)", min: 900, max: 1000, currentType: false},
+        {_id: undefined, material: "HDP", type: "FL", gui: "Grocery Bags", min: 1200, max: 1300, currentType: false},
+        {_id: undefined, material: "LDP", type: "FL", gui: "Packaging Film", min: 1200, max: 1300, currentType: false},
+        {_id: undefined, material: "HDP", type: undefined,  gui: "Pipe End Caps", min: 900, max: 1000, currentType: false},
+        {_id: undefined, material: "LLD", type: "FL", gui: "Shrink Wrap", min: 1200, max: 1300, currentType: false},
+        {_id: undefined, material: "PET", type: "ST",  gui: "Strapping", min: 900, max: 1000, currentType: false},
+        {_id: undefined, material: "PPH", type: "WF",  gui: "Super Sacks", min: 900, max: 1000, currentType: false},
+        {_id: undefined, material: "PET", type: "BB",  gui: "Water Bottles", min: 900, max: 1000, currentType: false}
         ];
     };
 

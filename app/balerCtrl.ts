@@ -2,6 +2,7 @@ import {LoadCellDataService} from "./load_cell_addon/LoadCellDataService";
 import {BaleTypesService} from "./BaleTypes/BaleTypesService";
 import {BaleType} from "./BaleTypes/BaleType";
 import * as q from "q";
+import {BaleTypesDataStore} from "./BaleTypes/BaleTypesDataStore";
 
 export interface BalerData {
     baleType: BaleType;
@@ -17,6 +18,7 @@ export class BalerCtrl {
         "$log",
         "LoadCellDataService",
         "BaleTypesService",
+        "BaleTypesDataStoreService"
     ];
 
     materialList: string[] = [];
@@ -29,17 +31,26 @@ export class BalerCtrl {
     };
 
     constructor(private $scope: ng.IScope,
-                private $log: ng.ILogService,
-                private loadCellDataService: LoadCellDataService,
-                private baleTypesService: BaleTypesService) {
+        private $log: ng.ILogService,
+        private loadCellDataService: LoadCellDataService,
+        private baleTypesService: BaleTypesService,
+        private baleTypesDataStoreService: BaleTypesDataStore) {
         $log.debug("Top of BalerCtrl constructor");
         this.refreshData();
     }
 
-    public materialTypeChange(data: BaleType): boolean {
-        // TODO: DEC - This needs to be implemented
-        this.$log.debug("test called for material: " + data.gui);
-        return true;
+    public currentBaleTypeChangeRequest(newCurrent: BaleType): q.Promise<any> {
+        return q.fcall(() => {
+            if (this.balerData.baleType !== null) {
+                this.$log.debug("it's not undefined: " + this.balerData.baleType);
+                return this.baleTypesDataStoreService.updateRowPromise(this.balerData.baleType._id, { $set: { currentType: false } }, {});
+            }
+        }).then(() => {
+            return this.baleTypesDataStoreService.updateRowPromise(newCurrent._id, { $set: { currentType: true } }, {});
+        }).catch((exception: any) => {
+                this.$log.error("balerCtrl::currentBaleTypeChangeRequest Got exception" + exception);
+                return exception;
+        });
     }
 
     public loadBaleTypeData(): q.Promise<any> {
@@ -51,22 +62,17 @@ export class BalerCtrl {
 
     private refreshData() {
         this.$log.debug("Top of refreshData()");
-        this.baleTypesService.getCurrentBaleType().then((baleType: BaleType) => {
-            this.$log.debug("promise resolved with bale type: " + baleType.material);
-            this.balerData.baleType = baleType;
-            this.balerData.lowWeight = baleType.min;
-            this.balerData.highWeight = baleType.max;
-            this.$scope.$apply();
-        }).catch((error) => {
-            this.$log.error("Promise generated exception: " + error);
-        }).done();
 
-        // this.baleTypesService.getMaterialList().then((retVal: string[]) => {
-        //     this.materialList = retVal;
-        //     this.$scope.$apply();
-        // }).catch((error) => {
-        //     this.$log.error("Promise generated exception: " + error);
-        // }).done();
+        this.baleTypesDataStoreService.initializeDataStore()
+        .then(() => {
+            return this.baleTypesService.getCurrentBaleType();
+        }).then ((returnVal: BaleType) => {
+            this.$log.debug("balerCtrl::refreshData");
+            this.balerData.baleType = returnVal;
+            this.balerData.lowWeight = returnVal.min;
+            this.balerData.highWeight = returnVal.max;
+            this.$scope.$apply();
+        }).done;
 
         this.balerData.currentWeight = this.loadCellDataService.getLoadCellWeight();
     }

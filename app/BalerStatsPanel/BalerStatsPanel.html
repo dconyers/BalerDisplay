@@ -12,10 +12,10 @@
     </ul>
     <ul  class="list-group">
         <li class="list-group-item">
-            <span translate>Current Material</span>
+            <span translate>BALE_TYPE</span>
             <span class="badge">
-                <a href="#" editable-select="balerCtrl.balerData.baleType" onshow="balerCtrl.loadBaleTypeData()" onbeforesave="balerCtrl.materialTypeChange($data)" e-ng-options="item as item.gui for item in balerCtrl.materialList">
-                    {{ balerCtrl.balerData.baleType.gui }}
+                <a href="#" editable-select="balerCtrl.balerData.baleType" onshow="balerCtrl.loadBaleTypeData()" onbeforesave="balerCtrl.currentBaleTypeChangeRequest($data)" onaftersave="balerCtrl.refreshData()" e-ng-options="item as item.gui for item in balerCtrl.materialList">
+                    {{ balerCtrl.balerData.baleType.gui || "Please Select" }}
                 </a>
             </span>
         </li>

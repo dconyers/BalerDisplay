@@ -31,7 +31,7 @@ export function BaleTypesCtrl($scope, $log: ng.ILogService, $filter, $http, $q, 
         $log.debug("got save request for id: " + id);
         angular.extend(data, {_id: id});
         $log.debug(data);
-        return BaleTypesDataStoreService.updateRow(id, data)
+        return BaleTypesDataStoreService.updateRowPromise(id, { $set: data} , {})
         .then((updateCount: number): any => {
             $log.debug("updated row count: " + updateCount);
             if (updateCount !== 1) {
@@ -57,14 +57,15 @@ export function BaleTypesCtrl($scope, $log: ng.ILogService, $filter, $http, $q, 
     // add Bale Type
     this.addBaleType = function() {
         let inserted: BaleType = {
-            material: "New",
+            _id: undefined,
+            material: undefined,
             type: undefined,
             gui: undefined,
             min: undefined,
             max: undefined,
             currentType: false,
         };
-        this.BaleTypesDataStore.insertRow(inserted)
+        BaleTypesDataStoreService.insertRowPromise(inserted)
         .then((): any => {
             return this.reloadBaleTypes();
         }).catch(function(error) {

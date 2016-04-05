@@ -15,6 +15,7 @@ const resources: ITranslationTable = {
             highWeight: "High Weight",
     },
     SETTINGS: "Settings",
+    BALE_TYPE: "Bale Type",
     REPORT: "Report",
     LANGUAGE: "Language",
     LOGOUT: "Logout",

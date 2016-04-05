@@ -43,24 +43,16 @@ export abstract class PersistentDataStore<T> extends NeDBDataStore {
         return myDelete({"_id": id});
     }
 
-    insertRow(newRow: T): q.Promise<void> {
-        let myInsertRow: (newRow: T) => q.Promise<void> = q.nbind<void>(this.insert, this);
-        return myInsertRow(newRow);
+    insertRowPromise(newRow: T): q.Promise<void> {
+        let insertPromise: (newRow: T) => q.Promise<void> = q.nbind<void>(this.insert, this);
+        return insertPromise(newRow);
     }
 
 
-    updateRow(id: any, updated: T, options?: NeDB.UpdateOptions): q.Promise<number> {
-        let myUpdate: (query: any, updated: T, options?: NeDB.UpdateOptions) => q.Promise<number> = q.nbind<number>(this.update, this);
-        return myUpdate({"_id": id}, updated, options);
+    updateRowPromise(id: any, updated: any, options: NeDB.UpdateOptions): q.Promise<number> {
+        let updatePromise: (query: any, updated: any, options?: NeDB.UpdateOptions) => q.Promise<number> = q.nbind<number>(this.update, this);
+        return updatePromise({"_id": id}, updated, options);
     }
-
-    // update(query:any, updateQuery:any, options?:NeDB.UpdateOptions, cb?:(err:Error, numberOfUpdated:number, upsert:boolean)=>void):void;
-    update(query: any, updated: T, options?: NeDB.UpdateOptions): q.Promise<number> {
-        let myUpdate: (query: any, updated: T, options?: NeDB.UpdateOptions) => q.Promise<number> = q.nbind<number>(this.update, this);
-        return myUpdate(query, updated, options);
-    }
-
-
 
     loadDatabasePromise(): q.Promise<void> {
         let myLoadDatabase: () => q.Promise<void> = q.nbind<void>(this.loadDatabase, this);
@@ -73,16 +65,15 @@ export abstract class PersistentDataStore<T> extends NeDBDataStore {
         return myInitDatabase(this.getInitData());
     }
 
-    loadData(): q.Promise<Array<T>> {
+    loadDataPromise(): q.Promise<Array<T>> {
         let find: (query: any) => q.Promise<Array<T>> = q.nbind<Array<T>>(this.find, this);
         return find({});
     }
 
-    findOne(query: any): q.Promise<T> {
-        let findOne: (query: any) => q.Promise<T> = q.nbind<T>(this.findOne, this);
-        return findOne({});
+    findOnePromise(query: any): q.Promise<T> {
+        let findOnePromise: (query: any) => q.Promise<T> = q.nbind<T>(this.findOne, this);
+        return findOnePromise(query);
     }
-
 
     // count(query:any, callback:(err:Error, n:number)=>void):void;
     countAllRows(): q.Promise<number> {
