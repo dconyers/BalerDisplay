@@ -48,12 +48,19 @@ export abstract class PersistentDataStore<T> extends NeDBDataStore {
         return myInsertRow(newRow);
     }
 
-    // update(query:any, updateQuery:any, options?:NeDB.UpdateOptions, cb?:(err:Error, numberOfUpdated:number, upsert:boolean)=>void):void;
 
-    updateRow(id: any, updated: T): q.Promise<number> {
+    updateRow(id: any, updated: T, options?: NeDB.UpdateOptions): q.Promise<number> {
         let myUpdate: (query: any, updated: T, options?: NeDB.UpdateOptions) => q.Promise<number> = q.nbind<number>(this.update, this);
-        return myUpdate({"_id": id}, updated, {});
+        return myUpdate({"_id": id}, updated, options);
     }
+
+    // update(query:any, updateQuery:any, options?:NeDB.UpdateOptions, cb?:(err:Error, numberOfUpdated:number, upsert:boolean)=>void):void;
+    update(query: any, updated: T, options?: NeDB.UpdateOptions): q.Promise<number> {
+        let myUpdate: (query: any, updated: T, options?: NeDB.UpdateOptions) => q.Promise<number> = q.nbind<number>(this.update, this);
+        return myUpdate(query, updated, options);
+    }
+
+
 
     loadDatabasePromise(): q.Promise<void> {
         let myLoadDatabase: () => q.Promise<void> = q.nbind<void>(this.loadDatabase, this);
@@ -70,6 +77,12 @@ export abstract class PersistentDataStore<T> extends NeDBDataStore {
         let find: (query: any) => q.Promise<Array<T>> = q.nbind<Array<T>>(this.find, this);
         return find({});
     }
+
+    findOne(query: any): q.Promise<T> {
+        let findOne: (query: any) => q.Promise<T> = q.nbind<T>(this.findOne, this);
+        return findOne({});
+    }
+
 
     // count(query:any, callback:(err:Error, n:number)=>void):void;
     countAllRows(): q.Promise<number> {

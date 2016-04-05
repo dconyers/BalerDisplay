@@ -9,6 +9,7 @@ const resources: ITranslationTable = {
         Language: "Language",
     },
     BalerStatsPanel: {
+            baleType: "Bale Type",
             lowWeight: "Low Weight",
             currentWeight: "Current Weight",
             highWeight: "High Weight",

@@ -1,7 +1,7 @@
 
 <div class="jumbotron">
   <div id="baler-panel">
-    <ul class="list-group" ng-repeat="(key,value) in balerCtrl.getBalerData()">
+    <ul class="list-group" ng-repeat="(key,value) in balerCtrl.balerData">
         <li class="list-group-item">
             <span translate>{{"BalerStatsPanel." + key}}
             </span>
@@ -10,14 +10,15 @@
             </span>
         </li>
     </ul>
-    <!-- <ul  class="list-group">
+    <ul  class="list-group">
         <li class="list-group-item">
-            <span translate>Doug TODO
-            </span>
+            <span translate>Current Material</span>
             <span class="badge">
-                {{balerCtrl.getCurrentWeight()}}
+                <a href="#" editable-select="balerCtrl.balerData.baleType" onshow="balerCtrl.loadBaleTypeData()" onbeforesave="balerCtrl.materialTypeChange($data)" e-ng-options="item as item.gui for item in balerCtrl.materialList">
+                    {{ balerCtrl.balerData.baleType.gui }}
+                </a>
             </span>
         </li>
-    </ul> -->
+    </ul>
   </div>
 </div>

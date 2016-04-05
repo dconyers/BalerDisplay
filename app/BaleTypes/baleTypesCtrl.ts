@@ -1,40 +1,39 @@
-import * as BaleTypeDataStore from "./BaleTypesDataStore";
 import * as q from "q";
+import {BaleType} from "./BaleType";
 
-type BaleType = BaleTypeDataStore.BaleType;
-
-export function BaleTypesCtrl($scope, $filter, $http, $q, baleTypesDataStoreService) {
+export function BaleTypesCtrl($scope, $log: ng.ILogService, $filter, $http, $q, BaleTypesDataStoreService) {
 
     this.$inject = [
         "$scope",
+        "$log",
         "$filter",
         "$http",
         "BaleTypesDataStoreService"
     ];
 
     this.reloadBaleTypes = function(): void {
-        baleTypesDataStoreService.initializeDataStore()
+        BaleTypesDataStoreService.initializeDataStore()
         .then((return_val: Array<BaleType>): void => {
-            console.log("got return value: " + return_val);
+            $log.debug("got return value: " + return_val);
             return $q((resolve): void => {
                 this.baleTypes = return_val;
                 resolve();
                 $scope.$apply();
                 for (let baleType of return_val) {
-                    console.log(baleType);
+                    $log.debug(baleType);
                 }
             });
         }).catch(function(error) {
-            console.log("Got error from find_synch: " + error);
+            $log.error("Got error from find_synch: " + error);
         }).done();
     };
     this.saveBaleType = function(data: BaleType, id: any): q.Promise<any> {
-        console.log("got save request for id: " + id);
+        $log.debug("got save request for id: " + id);
         angular.extend(data, {_id: id});
-        console.log(data);
-        return baleTypesDataStoreService.updateRow(id, data)
+        $log.debug(data);
+        return BaleTypesDataStoreService.updateRow(id, data)
         .then((updateCount: number): any => {
-            console.log("updated row count: " + updateCount);
+            $log.debug("updated row count: " + updateCount);
             if (updateCount !== 1) {
                 return "Error, Expected updateCount of 1, got: " + updateCount;
             }
@@ -44,10 +43,10 @@ export function BaleTypesCtrl($scope, $filter, $http, $q, baleTypesDataStoreServ
 
     // remove user
     this.removeBaleType = function(id: any): q.Promise<any> {
-        console.log("got delete request for id: " + id);
-        return this.baleTypesDataStoreService.deleteRow(id)
+        $log.debug("got delete request for id: " + id);
+        return BaleTypesDataStoreService.deleteRow(id)
         .then((deleteCount: number): any => {
-            console.log("deleted row count: " + deleteCount);
+            $log.debug("deleted row count: " + deleteCount);
             if (deleteCount !== 1) {
                 return "Error, Expected deleteCount of 1, got: " + deleteCount;
             }
@@ -62,13 +61,14 @@ export function BaleTypesCtrl($scope, $filter, $http, $q, baleTypesDataStoreServ
             type: undefined,
             gui: undefined,
             min: undefined,
-            max: undefined
+            max: undefined,
+            currentType: false,
         };
         this.BaleTypesDataStore.insertRow(inserted)
         .then((): any => {
             return this.reloadBaleTypes();
         }).catch(function(error) {
-            console.log("addBaleType returned error: " + error);
+            $log.error("addBaleType returned error: " + error);
         }).done();
     };
 

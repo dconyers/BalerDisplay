@@ -1,6 +1,7 @@
-import { BalerCtrl } from "./balerCtrl";
-import { BaleTypesCtrl } from "./BaleTypes/baleTypesCtrl";
-import { BaleTypesDataStore } from "./BaleTypes/BaleTypesDataStore";
+import {BalerCtrl} from "./balerCtrl";
+import {BaleTypesCtrl} from "./BaleTypes/baleTypesCtrl";
+import {BaleTypesDataStore} from "./BaleTypes/BaleTypesDataStore";
+import {BaleTypesService} from "./BaleTypes/BaleTypesService";
 import {LocalizationCtrl} from "./Localization/LocalizationCtrl";
 import {SettingsMenuCtrl} from "./SettingsMenu/SettingsMenuCtrl";
 import {CameraTestCtrl} from "./CameraTest/CameraTestCtrl";
@@ -22,6 +23,7 @@ angular.module("balerApp", [
                            ]
 )
     .service("BaleTypesDataStoreService", BaleTypesDataStore)
+    .service("BaleTypesService", BaleTypesService)
     .service("PictureSrvc", PictureSrvc)
     .service("LoadCellMonitorService", LoadCellMonitorService)
     .service("LoadCellDataService", LoadCellDataService)
