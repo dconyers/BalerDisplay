@@ -36,6 +36,9 @@ export function Sim800Srvc() {
   this.checkPPP0String = (err, stdout, stderr) => {
     let obj = this;
     if(stdout === "") {
+      console.log("stdout=\"\"");
+      console.log("err: " + err);
+      console.log("stderr: " + stderr);
       // ppp0 does not exist. Try to see if sim800 is powered on
       // first tell pppd to stop trying to bring the sim800 up
       this.state = Sim800State.Not_Connected;
@@ -97,6 +100,7 @@ export function Sim800Srvc() {
   };
   
   this.restartPPPD = () => {
+    console.log("restartPPPD called");
     if(this.state !== Sim800State.Not_Connected) {
       this.state = Sim800State.Not_Connected;
       exec("poff sim800", () => {
