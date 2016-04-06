@@ -32,6 +32,7 @@ const resources: ITranslationTable = {
     TAKE_PICTURE: "Take Picture",
     CLOSE: "Close",
     TAKING_PICTURE: "Taking Picture",
-    PICTURE_TAKEN: "Picture Taken"
+    PICTURE_TAKEN: "Picture Taken",
+    LastBaleTime: "Last Bale Time"
 };
 export = resources;
