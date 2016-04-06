@@ -9,12 +9,15 @@ const resources: ITranslationTable = {
         Language: "Language",
     },
     BalerStatsPanel: {
+            baleType: "Bale Type",
             lowWeight: "Low Weight",
             currentWeight: "Current Weight",
             highWeight: "High Weight",
     },
     SETTINGS: "Settings",
+    BALE_TYPE: "Bale Type",
     REPORT: "Report",
+    TRANSER_REPORT: "Bale Event Log",
     LANGUAGE: "Language",
     LOGOUT: "Logout",
     MATERIAL_SETTINGS: "Material Settings",
@@ -32,5 +35,6 @@ const resources: ITranslationTable = {
     PICTURE_TAKEN: "Picture Taken",
     NETWORK_SETTINGS: "Network Settings",
     DIAL_NUM: "Dial Number"
+    LastBaleTime: "Last Bale Time"
 };
 export = resources;

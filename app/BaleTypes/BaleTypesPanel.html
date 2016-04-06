@@ -9,6 +9,12 @@
   </tr>
   <tr ng-repeat="baleType in baleTypesCtrl.baleTypes">
     <td>
+        <!-- editable username (text with validation) -->
+        <span editable-text="baleType.gui" e-name="gui" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
+          {{ baleType.gui || 'empty' }}
+        </span>
+    </td>
+    <td>
       <!-- editable username (text with validation) -->
       <span editable-text="baleType.material" e-name="material" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
         {{ baleType.material || 'empty' }}
@@ -18,12 +24,6 @@
       <!-- editable username (text with validation) -->
       <span editable-text="baleType.type" e-name="type" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
         {{ baleType.type || 'empty' }}
-      </span>
-    </td>
-    <td>
-      <!-- editable username (text with validation) -->
-      <span editable-text="baleType.gui" e-name="gui" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
-        {{ baleType.gui || 'empty' }}
       </span>
     </td>
     <td>

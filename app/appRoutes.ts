@@ -1,7 +1,7 @@
 angular
-  .module('appRoutes', ['ngRoute'])
+  .module("appRoutes", ["ngRoute"])
   .config(config);
-  
+
 function config ($routeProvider) {
   $routeProvider.
     when("/BalerStats", {
@@ -33,6 +33,12 @@ function config ($routeProvider) {
       templateUrl: "NetworkSettings/NetworkSettings.html",
       controller: "NetworkSettingsCtrl",
       controllerAs: "networkSettingsCtrl"
+    }).
+    when("/Report", {
+      title: "TRANSER_REPORT",
+      templateUrl: "BaleEvent/BaleEventReport.html",
+      controller: "BaleEventReportCtrl",
+      controllerAs: "baleEventReportCtrl"
     }).
     otherwise({
       redirectTo: "/BalerStats"

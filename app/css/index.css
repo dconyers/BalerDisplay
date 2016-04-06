@@ -182,3 +182,30 @@ a.list-group-item, button.list-group-item {
 #baler-panel .badge {
   font-size: 22px;
 }
+
+.info-title {
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+}
+
+.no-side-borders {
+  border-left: none;
+  border-right: none;
+}
+
+.editable-click, a.editable-click {
+  font-weight: bold;
+  color: #3175b0 !important;
+  border-bottom: dashed 1px #3175b0;
+}
+
+.bale-type-picker {
+  text-align: center;
+  display: flex;
+}
+
+.jumbotron {
+    margin-bottom: none;
+}
+
