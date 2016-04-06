@@ -29,6 +29,8 @@ const resources: ITranslationTable = {
     TAKE_PICTURE: "Take Picture",
     CLOSE: "Close",
     TAKING_PICTURE: "Taking Picture",
-    PICTURE_TAKEN: "Picture Taken"
+    PICTURE_TAKEN: "Picture Taken",
+    NETWORK_SETTINGS: "Network Settings",
+    DIAL_NUM: "Dial Number"
 };
 export = resources;

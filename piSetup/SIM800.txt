@@ -10,13 +10,15 @@ Setup pppd:
   
 Setup chatscript that pppd will use to issue AT commands:
 - cp configFiles/gprs to /etc/chatscripts/
+- sudo chgrp dip /etc/chatscripts/gprs
+- sudo chmod 664 /etc/chatscripts/gprs
+- sudo chmod 770 /etc/chatscripts
 
 Need to add user to dialout group to access sim800 as serial port:
 - sudo usermod -a -G dialout bjn
 
-Need to add sudo policies to allow user to turn pppd on and off. Assuming
-application runs under the username "bjn":
-- cp configFiles/pppd /etc/sudoers.d/
+Need to add user to dip group to access use pppd and modify configuration files.
+- sudo usermod -a -G dip bjn
 
 Install python-pip and pyserial to allow communication with AT commands:
   sudo apt-get install python-pip

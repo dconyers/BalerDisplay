@@ -7,6 +7,7 @@ import {CameraTestCtrl} from "./CameraTest/CameraTestCtrl";
 import {MenuCtrl} from "./MenuCtrl";
 import {PictureModalCtrl} from "./CameraTest/PictureModalCtrl";
 import {PictureSrvc} from "./services/PictureSrvc";
+import {NetworkSettingsCtrl} from "./NetworkSettings/NetworkSettingsCtrl"
 
 angular.module("balerApp", [
                              "ui.bootstrap",
@@ -28,4 +29,5 @@ angular.module("balerApp", [
     .controller("CameraTestCtrl", CameraTestCtrl)
     .controller("PictureModalCtrl", PictureModalCtrl)
     .controller("MenuCtrl", MenuCtrl)
+    .controller("NetworkSettingsCtrl", NetworkSettingsCtrl)
 ;

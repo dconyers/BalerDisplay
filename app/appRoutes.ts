@@ -28,6 +28,12 @@ function config ($routeProvider) {
       controller: "CameraTestCtrl",
       controllerAs: "cameraTestCtrl"
     }).
+    when("/NetworkSettings", {
+      title: "NETWORK_SETTINGS",
+      templateUrl: "NetworkSettings/NetworkSettings.html",
+      controller: "NetworkSettingsCtrl",
+      controllerAs: "networkSettingsCtrl"
+    }).
     otherwise({
       redirectTo: "/BalerStats"
     });
