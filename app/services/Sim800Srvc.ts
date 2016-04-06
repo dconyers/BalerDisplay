@@ -84,7 +84,7 @@ export function Sim800Srvc() {
     if(this.configState === ConfigState.Invalid) {
       // read config
       exec(
-        "sed -i 's/\\(OK.*AT+CGDCONT.*,.*,\"\\).*\\(\",,0,0\\)/\\1" + this.apn +"\\2/' /etc/chatscripts/gprs",
+        "sed -n 's/OK.*AT+CGDCONT.*,.*,\"\\(.*\\)\",,0,0/\\1/p' ../piSetup/configFiles/gprs",
 //        "sed -n 's/OK.*AT+CGDCONT.*,.*,\"\\(.*\\)\",,0,0/\\1/p' ../piSetup/configFiles/gprs",
         this.configRead
       );
