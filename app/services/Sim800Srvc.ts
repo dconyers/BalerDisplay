@@ -4,7 +4,7 @@ enum Sim800State {
   Connected,
   Connecting,
   Not_Connected
-}cons
+}
 
 enum ConfigState {
   Invalid,
