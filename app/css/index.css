@@ -205,3 +205,7 @@ a.list-group-item, button.list-group-item {
   display: flex;
 }
 
+.jumbotron {
+    margin-bottom: none;
+}
+
