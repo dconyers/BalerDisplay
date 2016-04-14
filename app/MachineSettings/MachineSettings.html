@@ -1,0 +1,15 @@
+  <fieldset>
+    <legend>Calibration</legend>
+    <div class="form-group">
+      <div class="row no-side-borders">
+        <label class="col-sm-2">m:</label>
+        <span type="text" class="col-sm-7">{{machineSettingsCtrl.getM()}}</span>
+        <button class="btn btn-primary col-sm-3" ng-click="machineSettingsCtrl.setCal();" translate>SET_CAL</button>
+      </div>
+      <div class="row no-side-borders">
+        <label class="col-sm-2">b:</label>
+        <span type="text" class="col-sm-7">{{machineSettingsCtrl.getB()}}</span>
+        <button class="btn btn-primary col-sm-3" ng-click="machineSettingsCtrl.calibrate();" translate>CALIBRATE</button>
+      </div>
+    </div>
+  </fieldset>

@@ -35,6 +35,11 @@ const resources: ITranslationTable = {
     PICTURE_TAKEN: "Picture Taken",
     NETWORK_SETTINGS: "Network Settings",
     DIAL_NUM: "Dial Number",
-    LastBaleTime: "Last Bale Time"
+    LastBaleTime: "Last Bale Time",
+    SET_CAL: "Manually Set Params",
+    CALIBRATE: "Calibrate",
+    ZERO_BALER: "Take all weight off baler and press next",
+    NEXT: "Next",
+    BALER_KNOWN_WIEGHT: "Put weight on baler, and enter the weight"
 };
 export = resources;

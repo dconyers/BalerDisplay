@@ -11,7 +11,7 @@
     "tslint": "bash npm-scripts/tslint.sh",
     "tsc": "tsc || exit 0",
     "typings": "typings",
-    "build_addon": "cd load_cell_addon && node-gyp rebuild --target=0.36.7  --dist-url=https://atom.io/download/atom-shell",
+    "build_addon": "cd loadCell && make",
     "noop": "echo noop"
   },
   "author": "Doug Conyers",

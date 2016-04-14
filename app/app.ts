@@ -11,8 +11,11 @@ import {PictureModalCtrl} from "./CameraTest/PictureModalCtrl";
 import {PictureSrvc} from "./services/PictureSrvc";
 import {NetworkSettingsCtrl} from "./NetworkSettings/NetworkSettingsCtrl"
 import {LoadCellMonitorService} from "./services/LoadCellMonitorService";
-import {LoadCellDataService} from "./load_cell_addon/LoadCellDataService";
+import {LoadCellDataService} from "./loadCell/LoadCellDataService";
 import {BaleEventService} from "./BaleEvent/BaleEventService";
+import {MachineSettingsCtrl} from "./MachineSettings/MachineSettingsCtrl";
+import {SetCalModalCtrl} from "./MachineSettings/SetCalModalCtrl";
+import {CalibrationModalCtrl} from "./MachineSettings/CalibrationModalCtrl";
 
 angular.module("balerApp", [
                              "ui.bootstrap",
@@ -40,6 +43,9 @@ angular.module("balerApp", [
     .controller("PictureModalCtrl", PictureModalCtrl)
     .controller("MenuCtrl", MenuCtrl)
     .controller("NetworkSettingsCtrl", NetworkSettingsCtrl)
+    .controller("MachineSettingsCtrl", MachineSettingsCtrl)
+    .controller("SetCalModalCtrl", SetCalModalCtrl)
+    .controller("CalibrationModalCtrl", CalibrationModalCtrl)
     .run((LoadCellMonitorService) => {
     })
 ;

@@ -209,3 +209,12 @@ a.list-group-item, button.list-group-item {
     margin-bottom: none;
 }
 
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.btn-primary, .btn-danger {
+  color: white;
+}
+

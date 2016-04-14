@@ -40,6 +40,12 @@ function config ($routeProvider) {
       controller: "BaleEventReportCtrl",
       controllerAs: "baleEventReportCtrl"
     }).
+    when("/MachineSettings", {
+      title: "MACHINE_SETTINGS",
+      templateUrl: "MachineSettings/MachineSettings.html",
+      controller: "MachineSettingsCtrl",
+      controllerAs: "machineSettingsCtrl"
+    }).
     otherwise({
       redirectTo: "/BalerStats"
     });
