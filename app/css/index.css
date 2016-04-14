@@ -206,10 +206,11 @@ a.list-group-item, button.list-group-item {
 }
 
 .jumbotron {
-    margin-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 46px;
 }
 
-.row {
+#machine-settings-fieldset .row {
   margin-left: 0 !important;
   margin-right: 0 !important;
 }

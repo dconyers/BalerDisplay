@@ -24,7 +24,6 @@ export function MachineSettingsCtrl($scope, $uibModal, LoadCellDataService) {
       controllerAs: "calibrationModalCtrl",
       backdrop: 'static',
       keyboard: false,
-      size: 'lg'
     });
   };
 }
