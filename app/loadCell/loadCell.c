@@ -471,12 +471,12 @@ void setCalibration() {
   int valid = 0;
   double inputSlope, inputIntercept;
   pthread_mutex_lock(&mutexLoadCellStatus);
-  enum loadCellStatusEnum prevStatus = loadCellStatus;
   while(loadCellStatus != IDLE && loadCellStatus != UNINITIALIZED) {
     waitingForSampleEnd =  1;
     pthread_cond_wait(&cvIdle, &mutexLoadCellStatus);
   }
   waitingForSampleEnd = 0;
+  enum loadCellStatusEnum prevStatus = loadCellStatus;
   loadCellStatus = CALIBRATING;
   pthread_mutex_unlock(&mutexLoadCellStatus);
   

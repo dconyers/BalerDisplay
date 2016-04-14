@@ -1,4 +1,5 @@
 const spawn = require('child_process').spawn;
+const exec = require('child_process').exec;
 
 enum LoadCellState {
   UNINITIALIZED,
@@ -20,6 +21,10 @@ enum ErrorState {
   SWITCH_FAILED
 }
 
+process.on('exit', function() {
+  exec("pkill loadCell");
+});
+
 export class LoadCellDataService {
 
     weight: number = 789;
@@ -37,15 +42,21 @@ export class LoadCellDataService {
     ];
 
     constructor(private $log: ng.ILogService, private $interval: ng.IIntervalService) {
-        console.log("LoadCellDataService Constructor");
         this.launchChildAndListen();
         this.$interval(() => this.getWeight(), 4000);
     }
     
     private launchChildAndListen() {
       let obj = this;
+      if(this.child) {
+        this.child.kill();
+        this.child = null;
+      }
       this.child = spawn("loadCell/loadCell");
-//        this.child.stderr.on("data", obj.dataCallback);
+      this.child.stderr.on("data", obj.stderrCallback);
+      process.on('exit', () => {
+        this.child.kill();
+      });
       this.child.stdout.on("data", obj.dataCallback);
       this.child.on('exit', obj.processTerminated);
       this.openDevice();
@@ -65,6 +76,10 @@ export class LoadCellDataService {
           // There is some type of error. Try to open device
           this.openDevice();
         }
+    }
+    
+    stderrCallback(data) {
+      console.log(data.toString());
     }
     
     /* Call this function once there is "zero" wieght on the baler. The callback
@@ -139,7 +154,7 @@ export class LoadCellDataService {
           case LoadCellState.WAITING_FOR_ZERO_PROMPT:
             if(lines[i] === 'EMPTY_AND_PRESS_ENTER') {
               this.loadCellState = LoadCellState.WAITING_FOR_WEIGHT_PROMPT;
-              this.child.stdin.write("\n");
+              this.child.stdin.write("\n");;
             }
             break;
           case LoadCellState.WAITING_FOR_WEIGHT_PROMPT:

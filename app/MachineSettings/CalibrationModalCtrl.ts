@@ -21,7 +21,6 @@ export function CalibrationModalCtrl($scope, LoadCellDataService) {
   };
   
   this.zeroDone = () => {
-    console.log("zero done");
     this.modalState = ModalState.WAITING_KNOWN_WEIGHT;
     $scope.$apply();
   };

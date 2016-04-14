@@ -1,4 +1,4 @@
-import {LoadCellDataService} from "./load_cell_addon/LoadCellDataService";
+import {LoadCellDataService} from "./loadCell/LoadCellDataService";
 import {BaleTypesService} from "./BaleTypes/BaleTypesService";
 import {BaleEventService} from "./BaleEvent/BaleEventService";
 import {BaleType} from "./BaleTypes/BaleType";
