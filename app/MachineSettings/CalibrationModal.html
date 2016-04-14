@@ -1,12 +1,14 @@
-<div ng-show="calibrationModalCtrl.showZero()">
-  <p translate>ZERO_BALER</p>
-  <button class="btn btn-primary" ng-click="calibrationModalCtrl.sampleZero()">NEXT</button>
-</div>
-<div ng-show="calibrationModalCtrl.showWaiting()">
-  <span class="glyphicon glyphicon-time text-center center-block"></span>
-</div>
-<div ng-show="calibrationModalCtrl.showKnown()">
-  <p translate>BALER_KNOWN_WIEGHT</p>
-  <input type="number" class="form-control" ng-model="calibrationModalCtrl.knownWeight" ng-virtual-keyboard></input>
-  <button class="btn btn-primary" ng-click="calibrationModalCtrl.calWeight(calibrationModalCtrl.knownWeight)">NEXT</button>
+<div class="calModal">
+  <div ng-show="calibrationModalCtrl.showZero()">
+    <p translate>ZERO_BALER</p>
+    <button class="btn btn-primary" ng-click="calibrationModalCtrl.sampleZero()">NEXT</button>
+  </div>
+  <div ng-show="calibrationModalCtrl.showWaiting()">
+    <span class="glyphicon glyphicon-time text-center center-block"></span>
+  </div>
+  <div ng-show="calibrationModalCtrl.showKnown()">
+    <p translate>BALER_KNOWN_WIEGHT</p>
+    <input type="number" class="form-control" ng-model="calibrationModalCtrl.knownWeight" ng-virtual-keyboard></input>
+    <button class="btn btn-primary" ng-click="calibrationModalCtrl.calWeight(calibrationModalCtrl.knownWeight)">NEXT</button>
+  </div>
 </div>

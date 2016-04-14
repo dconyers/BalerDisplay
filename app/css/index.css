@@ -219,3 +219,7 @@ a.list-group-item, button.list-group-item {
   color: white;
 }
 
+.calModal {
+  margin: 10px;
+}
+

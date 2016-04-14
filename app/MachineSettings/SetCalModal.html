@@ -1,5 +1,4 @@
-<form>
-  <fieldset class="form-group">
+<div class="calModal">
     <label>m:
       <input type="number" class="form-control" id="calSlope" ng-model="setCalModalCtrl.m" ng-virtual-keyboard>
     </label>
@@ -7,5 +6,4 @@
       <input type="number" class="form-control" id="calIntercept" ng-model="setCalModalCtrl.b" ng-virtual-keyboard>
     </label>
     <button type="submit" class="btn btn-primary" ng-click="setCalModalCtrl.update(setCalModalCtrl.m, setCalModalCtrl.b);" translate>SET_CAL</button>
-  </fieldset>
-</form>
+</div>
