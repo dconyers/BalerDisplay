@@ -2,7 +2,8 @@
   <fieldset class="form-group">
     <legend>GPRS</legend>
     <label for="dialNumInput" translate>DIAL_NUM</label>
-    <input type="text" class="form-control" id="dialNumInput" ng-virtual-keyboard>
+    <input type="text" class="form-control" id="dialNumInput" ng-model="networkSettingsCtrl.dialNumGetSet"
+      ng-model-options="{ getterSetter: true }" ng-virtual-keyboard>
     <label for="APNInput">APN</label>
     <input type="text" class="form-control" id="APNInput" ng-model="networkSettingsCtrl.APNGetSet"
       ng-model-options="{ getterSetter: true }" ng-virtual-keyboard>

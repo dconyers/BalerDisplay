@@ -20,6 +20,7 @@ export function Sim800Srvc() {
   this.interval = null;
   this.apn = "";
   this.configState = ConfigState.Invalid;
+  this.dialNum = "";
 
   this.start  = function() {
     let obj = this;
@@ -84,16 +85,16 @@ export function Sim800Srvc() {
     if(this.configState === ConfigState.Invalid) {
       // read config
       exec(
-        "sed -n 's/OK.*AT+CGDCONT.*,.*,\"\\(.*\\)\",,0,0/\\1/p' ../piSetup/configFiles/gprs",
-//        "sed -n 's/OK.*AT+CGDCONT.*,.*,\"\\(.*\\)\",,0,0/\\1/p' ../piSetup/configFiles/gprs",
+        "sed -n -e 's/OK.*AT+CGDCONT.*,.*,\"\\(.*\\)\",,0,0/\\1/p' -e 's/OK.*ATD\\(.*\\)/\\1/p' /etc/chatscripts/gprs",
+//        "sed -n -e 's/OK.*AT+CGDCONT.*,.*,\"\\(.*\\)\",,0,0/\\1/p' -e 's/OK.*ATD\\(.*\\)/\\1/p' ../piSetup/configFiles/gprs"
         this.configRead
       );
     }
     else if(this.configState === ConfigState.Dirty) {
       // write config
       exec(
-        "sed -i 's/\\(OK.*AT+CGDCONT.*,.*,\"\\).*\\(\",,0,0\\)/\\1" + this.apn +"\\2/' /etc/chatscripts/gprs",
-//      "sed -i 's/\\(OK.*AT+CGDCONT.*,.*,\"\\).*\\(\",,0,0\\)/\\1" + this.apn + "\\2/' ../piSetup/configFiles/gprs",
+        "sed -i -e 's/\\(OK.*AT+CGDCONT.*,.*,\"\\).*\\(\",,0,0\\)/\\1" + this.apn +"\\2/' -e 's/\\(OK.*ATD\\).*/\\1" + this.dialNum + "/' /etc/chatscripts/gprs",
+//      "sed -i -e 's/\\(OK.*AT+CGDCONT.*,.*,\"\\).*\\(\",,0,0\\)/\\1" + this.apn +"\\2/' -e 's/\\(OK.*ATD\\).*/\\1" + this.dialNum + "/' ../piSetup/configFiles/gprs",
       this.configWritten
       );
     }
@@ -111,7 +112,9 @@ export function Sim800Srvc() {
   }
   
   this.configRead = (err, stdout, stderr) => {
-    this.apn = stdout;
+    let lines = stdout.toString().trim().split('\n');
+    this.apn = lines[0];
+    this.dialNum = lines[1]
     this.configState = ConfigState.Valid;
   };
   
@@ -129,5 +132,14 @@ export function Sim800Srvc() {
   
   this.getApn = function() {
     return this.apn;
+  };
+  
+  this.getDialNum = function() {
+    return this.dialNum;
+  };
+  
+  this.setDialNum = function(dialNum) {
+    this.dialNum = dialNum;
+    this.configState = ConfigState.Dirty;
   };
 }
