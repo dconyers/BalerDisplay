@@ -228,6 +228,6 @@ a.list-group-item, button.list-group-item {
 }
 
 .status-icons {
-  margin-right: 40px;
+  margin-right: 30px !important;
 }
 
