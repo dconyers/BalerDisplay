@@ -85,16 +85,16 @@ export function Sim800Srvc() {
     if(this.configState === ConfigState.Invalid) {
       // read config
       exec(
-        "sed -n -e 's/OK.*AT+CGDCONT.*,.*,\"\\(.*\\)\",,0,0/\\1/p' -e 's/OK.*ATD\\(.*\\)/\\1/p' /etc/chatscripts/gprs",
-//        "sed -n -e 's/OK.*AT+CGDCONT.*,.*,\"\\(.*\\)\",,0,0/\\1/p' -e 's/OK.*ATD\\(.*\\)/\\1/p' ../piSetup/configFiles/gprs"
+        "sed -n -e 's/OK.*AT+CGDCONT.*,.*,\"\\(.*\\)\",.*,0,0/\\1/p' -e 's/OK.*ATD\\(.*\\)/\\1/p' /etc/chatscripts/gprs",
+//        "sed -n -e 's/OK.*AT+CGDCONT.*,.*,\"\\(.*\\)\",.*,0,0/\\1/p' -e 's/OK.*ATD\\(.*\\)/\\1/p' ../piSetup/configFiles/gprs"
         this.configRead
       );
     }
     else if(this.configState === ConfigState.Dirty) {
       // write config
       exec(
-        "sed -i -e 's/\\(OK.*AT+CGDCONT.*,.*,\"\\).*\\(\",,0,0\\)/\\1" + this.apn +"\\2/' -e 's/\\(OK.*ATD\\).*/\\1" + this.dialNum + "/' /etc/chatscripts/gprs",
-//      "sed -i -e 's/\\(OK.*AT+CGDCONT.*,.*,\"\\).*\\(\",,0,0\\)/\\1" + this.apn +"\\2/' -e 's/\\(OK.*ATD\\).*/\\1" + this.dialNum + "/' ../piSetup/configFiles/gprs",
+        "sed -i -e 's/\\(OK.*AT+CGDCONT.*,.*,\"\\).*\\(\",.*,0,0\\)/\\1" + this.apn +"\\2/' -e 's/\\(OK.*ATD\\).*/\\1" + this.dialNum + "/' /etc/chatscripts/gprs",
+//      "sed -i -e 's/\\(OK.*AT+CGDCONT.*,.*,\"\\).*\\(\",.*,0,0\\)/\\1" + this.apn +"\\2/' -e 's/\\(OK.*ATD\\).*/\\1" + this.dialNum + "/' ../piSetup/configFiles/gprs",
       this.configWritten
       );
     }

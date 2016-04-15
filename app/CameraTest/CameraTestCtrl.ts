@@ -42,7 +42,7 @@ export function CameraTestCtrl($scope, $uibModal, PictureSrvc) {
     this.stopWebcam();
     this.picStatus = "TAKING_PICTURE";
     let obj = this;
-    this.fileName = './photos/test'.concat(new Date().getTime(), '.jpg');
+    this.fileName = './photos/test'.concat((new Date().getTime()).toString(), '.jpg');
     // Wait a little bit for browser to release webcam device
     setTimeout(function() {
                  /* take picture at 1600x1200 resolution, skip 10 frames to

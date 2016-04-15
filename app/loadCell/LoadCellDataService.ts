@@ -11,6 +11,7 @@ enum LoadCellState {
   WAITING_FOR_WEIGHT_INPUT,
   WAITING_FOR_CAL_FINISH,
   WAITING_FOR_CAL_INTERCEPT,
+  WAITING_FOR_CAL_SLOPE,
   ERROR
 }
 
@@ -18,7 +19,8 @@ enum ErrorState {
   NONE,
   NO_DEVICE_FOUND,
   CONFIG_FAILED,
-  SWITCH_FAILED
+  SWITCH_FAILED,
+  WRONG_STATE
 }
 
 process.on('exit', function() {
@@ -33,6 +35,9 @@ export class LoadCellDataService {
     calSlope: number;
     calIntercept: number;
     stateAfterIntercept: LoadCellState;
+    child = null;
+    callbackZeroDone = null;
+    callbackWeightDone = null;
 
     static IID = "LoadCellDataService";
 

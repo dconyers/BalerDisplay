@@ -9,3 +9,15 @@
       ng-model-options="{ getterSetter: true }" ng-virtual-keyboard>
   </fieldset>
 </form>
+<!-- <form>
+  <fieldset class="form-group">
+    <legend>WIFI</legend>
+    <label translate>SSID
+      <a href="#" editable-select="balerCtrl.balerData.baleType" onshow="balerCtrl.loadBaleTypeData()" onbeforesave="balerCtrl.currentBaleTypeChangeRequest($data)" onaftersave="balerCtrl.refreshData()" e-ng-options="item as item.gui for item in balerCtrl.materialList" class="center-block">
+      </a>
+    </label>
+    <label for="APNInput">APN</label>
+    <input type="text" class="form-control" id="APNInput" ng-model="networkSettingsCtrl.APNGetSet"
+      ng-model-options="{ getterSetter: true }" ng-virtual-keyboard>
+  </fieldset>
+</form> -->
