@@ -36,10 +36,13 @@
     <div class="navbar-header">
        <a href="#" class="navbar-left" go-back ng-hide="menuCtrl.getLocation() === '/BalerStats'"><img src="./images/arrow-27323.svg" height="24" width="56"></img></a>
         <p class="navbar-text" ng-bind="title | translate">Logged in as</p>
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">        <span class="icon-bar"></span>
+        <button type="button" class="navbar-toggle collapsed navbar-right" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">        <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      <span class="status-icons navbar-right">
+        <img class="navbar-right" src="./images/3G.png" height="12px" width="20px" ng-show="menuCtrl.isConnected3g()"></img>
+      </span>
     </div>
   </div>
 

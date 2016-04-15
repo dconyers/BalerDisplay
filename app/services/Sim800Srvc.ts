@@ -142,4 +142,8 @@ export function Sim800Srvc() {
     this.dialNum = dialNum;
     this.configState = ConfigState.Dirty;
   };
+  
+  this.isConnected = function() {
+    return this.state === Sim800State.Connected;
+  };
 }
