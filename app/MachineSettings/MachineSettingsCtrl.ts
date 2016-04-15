@@ -26,4 +26,12 @@ export function MachineSettingsCtrl($scope, $uibModal, LoadCellDataService) {
       keyboard: false,
     });
   };
+  
+  this.testCam = function() {
+    this.currModalInstance= $uibModal.open({
+      templateUrl: './MachineSettings/CameraTestModal.html',
+      controller: 'CameraTestModalCtrl',
+      controllerAs: "cameraTestModalCtrl",
+    });
+  };
 }

@@ -40,6 +40,9 @@ const resources: ITranslationTable = {
     CALIBRATE: "Calibrate",
     ZERO_BALER: "Take all weight off baler and press next",
     NEXT: "Next",
-    BALER_KNOWN_WIEGHT: "Put weight on baler, and enter the weight"
+    BALER_KNOWN_WIEGHT: "Put weight on baler, and enter the weight",
+    TEST: "Test",
+    CAMERA: "Camera",
+    CALIBRATION: "Calibration"
 };
 export = resources;

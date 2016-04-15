@@ -16,6 +16,7 @@ import {BaleEventService} from "./BaleEvent/BaleEventService";
 import {MachineSettingsCtrl} from "./MachineSettings/MachineSettingsCtrl";
 import {SetCalModalCtrl} from "./MachineSettings/SetCalModalCtrl";
 import {CalibrationModalCtrl} from "./MachineSettings/CalibrationModalCtrl";
+import {CameraTestModalCtrl} from "./MachineSettings/CameraTestModalCtrl";
 
 angular.module("balerApp", [
                              "ui.bootstrap",
@@ -46,6 +47,7 @@ angular.module("balerApp", [
     .controller("MachineSettingsCtrl", MachineSettingsCtrl)
     .controller("SetCalModalCtrl", SetCalModalCtrl)
     .controller("CalibrationModalCtrl", CalibrationModalCtrl)
+    .controller("CameraTestModalCtrl", CameraTestModalCtrl)
     .run((LoadCellMonitorService) => {
     })
 ;

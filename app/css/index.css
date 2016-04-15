@@ -210,7 +210,7 @@ a.list-group-item, button.list-group-item {
     padding-bottom: 46px;
 }
 
-#machine-settings-fieldset .row {
+.machine-settings-fieldset .row {
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
@@ -219,7 +219,7 @@ a.list-group-item, button.list-group-item {
   color: white;
 }
 
-.calModal {
+.modalWithMargin {
   margin: 10px;
 }
 
