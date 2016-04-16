@@ -6,7 +6,7 @@ enum ModalState {
 }
   
 export function CalibrationModalCtrl($scope, LoadCellDataService) {
-  this.modalState = ModalState.WAITING_START; 
+  this.modalState = ModalState.WAITING_START;
 
   this.calWeight = (knownWeight) => {
     let obj = this;
@@ -43,4 +43,14 @@ export function CalibrationModalCtrl($scope, LoadCellDataService) {
   this.showKnown = () => {
     return this.modalState === ModalState.WAITING_KNOWN_WEIGHT;
   };
+  
+  this.checkLoadCell = () => {
+    if(!LoadCellDataService.isInit()) {
+      $scope.$close();
+    }
+  };
+  
+  let obj = this;
+  this.interval = setInterval(obj.checkLoadCell, 200);
+  
 }

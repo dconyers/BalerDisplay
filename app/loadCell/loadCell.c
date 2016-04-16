@@ -615,6 +615,14 @@ loadCellError_type calibrate() {
 }
 
 void printWeight() {
+  pthread_mutex_lock(&mutexLoadCellStatus);
+  if(loadCellStatus == UNINITIALIZED) {
+    pthread_mutex_unlock(&mutexLoadCellStatus);
+    printf("NO_DEVICE_FOUND\n");
+    return;
+  }
+  pthread_mutex_unlock(&mutexLoadCellStatus);
+
   pthread_mutex_lock(&mutexCurWeight);
   printf("%f\n", curWeight);
   pthread_mutex_unlock(&mutexCurWeight);

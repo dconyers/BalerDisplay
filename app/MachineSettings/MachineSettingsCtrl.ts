@@ -34,4 +34,8 @@ export function MachineSettingsCtrl($scope, $uibModal, LoadCellDataService) {
       controllerAs: "cameraTestModalCtrl",
     });
   };
+  
+  this.isLoadCellInit = function() {
+    return LoadCellDataService.isInit();
+  };
 }

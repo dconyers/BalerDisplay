@@ -9,7 +9,7 @@
     <div class="row no-side-borders">
       <label class="col-sm-2">b:</label>
       <span type="text" class="col-sm-7">{{machineSettingsCtrl.getB()}}</span>
-      <button class="btn btn-primary col-sm-3" ng-click="machineSettingsCtrl.calibrate();" translate>CALIBRATE</button>
+      <button class="btn btn-primary col-sm-3" ng-click="machineSettingsCtrl.calibrate();" translate ng-disabled="!machineSettingsCtrl.isLoadCellInit()">CALIBRATE</button>
     </div>
   </div>
 </fieldset>

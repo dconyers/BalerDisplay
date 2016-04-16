@@ -56,7 +56,7 @@ export function WifiService() {
   this.start = function() {
     let obj = this;
     this.checkStatus();
-    this.interval = setInterval(obj.checkStatus, 1000);
+    this.interval = setInterval(obj.checkStatus, 10000);
   };
   
   this.getSSIDs = function() {
@@ -85,13 +85,12 @@ export function WifiService() {
   };
   
   this.checkStatus = () => {
-    console.log("checkStatus called");
+    console.log("check status called");
     let obj = this;
     let child = exec("nmcli -m multiline c s", obj.parseStatus);
   };
   
   this.parseStatus = (err, stdout, stderr) => {
-    console.log("parseStatus called");
     if(err) {
       console.log(err);
       return;
@@ -122,7 +121,7 @@ export function WifiService() {
   };
   
   this.findConnectionFile = function(ssid: string) {
-    let files = exec("sudo grep -rnwl /etc/NetworkManager/system-connections/ -e 'ssid=bjnbox'").trim().split('\n');
+    let files = execSync("sudo grep -rnwl /etc/NetworkManager/system-connections/ -e 'ssid=" + ssid + "'").toString().trim().split('\n');
     return files;
   };
 }

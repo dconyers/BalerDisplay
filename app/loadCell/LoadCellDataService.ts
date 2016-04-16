@@ -184,5 +184,11 @@ export class LoadCellDataService {
             break;
         }
       }
+    };
+    
+    isInit() {
+      return this.loadCellState !== LoadCellState.UNINITIALIZED &&
+             this.loadCellState !== LoadCellState.WAITING_FOR_OPEN &&
+             this.loadCellState !== LoadCellState.ERROR;
     }
 };
