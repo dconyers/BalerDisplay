@@ -22,7 +22,8 @@ angular.module("balerApp", [
                              "xeditable",
                              "webcam",
                              "appRoutes",
-                             "appConfig"
+                             "appConfig",
+                             "jqwidgets"
                            ]
 )
     .service("BaleTypesDataStoreService", BaleTypesDataStore)

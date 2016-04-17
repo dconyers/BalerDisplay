@@ -35,6 +35,7 @@
     "angular-xeditable-npm": "^0.1.9",
     "bootstrap": "^3.3.6",
     "jquery": "^2.2.1",
+    "jqwidgets-framework": "^4.1.1",
     "nan": "^2.2.0",
     "nedb": "^1.8.0",
     "q": "^1.4.1",
