@@ -1,62 +1,37 @@
-
 <div class="jumbotron">
   <div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="panel panel-default">
-        <div class="panel-heading info-title" translate>
-          {{"BalerStatsPanel." + "currentWeight"}}
-        </div>
-        <div class="panel-body" id="gauge" style="position: relative; height: 380px;">
-          <!-- <span class="badge"> -->
-            <!-- {{balerCtrl.balerData.currentWeight}} -->
-            <jqx-gauge ng-model="balerCtrl.balerData.currentWeight" jqx-settings="balerCtrl.gaugeSettings" style="position: absolute; top: 0px; left: 0px;"></jqx-gauge>
-            <!-- <br /> -->
-          <!-- </span> -->
-        </div>
+    <div class="row">
+      <div class="col-sm-4" >
+        <jqx-gauge ng-model="balerCtrl.balerData.currentWeight" jqx-settings="balerCtrl.gaugeSettings" ></jqx-gauge>
       </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="panel panel-default">
-        <div class="panel-heading info-title" translate>
-          BALE_TYPE
-        </div>
-        <div class="panel-body">
-          <div class="bale-type-picker">
-            <a href="#" editable-select="balerCtrl.balerData.baleType" onshow="balerCtrl.loadBaleTypeData()" onbeforesave="balerCtrl.currentBaleTypeChangeRequest($data)" onaftersave="balerCtrl.refreshData()" e-ng-options="item as item.gui for item in balerCtrl.materialList" class="center-block">
-              {{ balerCtrl.balerData.baleType.gui || "Please Select" }}
-            </a>
-            <button ng-click="balerCtrl.dougTest()">Doug Test</button>
+      <div class="col-sm-8">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <ul  class="list-group list-group-flush">
+              <li class="list-group-item no-side-borders">
+                <span translate class="info-title">{{"CURRENT_BALE_TYPE"}}
+                </span>
+                <span class="clearfix">
+                  <div ng-controller="BaleTypeSelectorCtrl as baleTypeSelectorCtrl">
+                    <div class="small-image dougtest" float="right">
+                      <a href="#" class="thumbnail">
+                        <img class="center-block" ng-click="baleTypeSelectorCtrl.open()" ng-src="./BaleTypes/images/{{balerCtrl.balerData.baleType.imageName}}" />
+                      </a>
+                    </div>
+                  </div>
+                </span>
+              </li>
+              <li class="list-group-item no-side-borders">
+                <span translate class="info-title">{{"LAST_BALE_TIME"}}
+                </span>
+                <span class="badge">
+                  {{balerCtrl.baleEventService.baleEvents[0].baleDate.toLocaleDateString("en-US")}} {{balerCtrl.baleEventService.baleEvents[0].baleDate.toLocaleTimeString("en-US")}}
+                </span>
+              </li>
+            </ul>
           </div>
-          <ul  class="list-group list-group-flush">
-            <li class="list-group-item no-side-borders">
-                <span translate>{{"BalerStatsPanel." + "lowWeight"}}
-                </span>
-                <span class="badge">
-                    {{balerCtrl.balerData.lowWeight}}
-                </span>
-            </li>
-            <li class="list-group-item no-side-borders">
-                <span translate>{{"BalerStatsPanel." + "highWeight"}}
-                </span>
-                <span class="badge">
-                    {{balerCtrl.balerData.highWeight}}
-                </span>
-            </li>
-          </ul>
         </div>
       </div>
     </div>
-  </div>
-  <ul  class="list-group">
-    <li class="list-group-item">
-      <span translate class="info-title">{{"LastBaleTime"}}
-      </span>
-      <span class="badge">
-          {{balerCtrl.baleEventService.baleEvents[0].baleDate.toLocaleDateString("en-US") + " " + balerCtrl.baleEventService.baleEvents[0].baleDate.toLocaleTimeString("en-US")}}
-
-      </span>
-  </li>
-  </ul>
   </div>
 </div>
