@@ -33,6 +33,7 @@
     "angular-ui-bootstrap": "^1.2.2",
     "angular-virtual-keyboard": "^0.4.3",
     "angular-xeditable-npm": "^0.1.9",
+    "bootbox": "^4.4.0",
     "bootstrap": "^3.3.6",
     "jquery": "^2.2.1",
     "jqwidgets-framework": "^4.1.1",

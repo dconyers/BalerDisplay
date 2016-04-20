@@ -15,7 +15,7 @@ const resources: ITranslationTable = {
             highWeight: "High Weight",
     },
     SETTINGS: "Settings",
-    BALE_TYPE: "Bale Type",
+    CURRENT_BALE_TYPE: "Bale Type",
     REPORT: "Report",
     TRANSER_REPORT: "Bale Event Log",
     LANGUAGE: "Language",
@@ -24,8 +24,9 @@ const resources: ITranslationTable = {
     WORKER_MANAGEMENT: "Worker Management",
     MACHINE_SETTINGS: "Machine Settings",
     OTHER_SETTINGS: "Other",
-    BALER_STATS: "Baler Stats",
+    BALER_STATS: "Avangard Bale Monitoring System",
     SETTINGS_MENU: "Settings Menu",
+    SELECT_BALE_TYPE: "Select Bale Type:"
     CAMERA_TEST: "Camera Test",
     CAM_UNINIT: "Camera uninitialized.",
     CAM_SUCCESS: "Successfully accessed camera.",
@@ -35,6 +36,6 @@ const resources: ITranslationTable = {
     PICTURE_TAKEN: "Picture Taken",
     NETWORK_SETTINGS: "Network Settings",
     DIAL_NUM: "Dial Number",
-    LastBaleTime: "Last Bale Time"
+    LAST_BALE_TIME: "Last Bale Time"
 };
 export = resources;

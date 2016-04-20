@@ -1,3 +1,29 @@
+.jqx-gauge-caption
+{
+    font-size: 30px !important;
+}
+
+.dougtest
+{
+  margin: 4px;
+  display: block;
+  width: 80px;
+  height: 80px;
+}
+
+.dougtest a
+{
+  padding: 0px;
+  overflow: hidden;
+}
+
+.dougtest a img {
+    max-width: 75px;
+    max-height: 75px;
+    min-width: auto;
+    min-height: 75px;
+}
+
  #content
  {
     background-color: #f2f2f2;
@@ -206,6 +232,6 @@ a.list-group-item, button.list-group-item {
 }
 
 .jumbotron {
+    padding-top: 10px;
     margin-bottom: none;
 }
-

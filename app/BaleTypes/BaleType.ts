@@ -6,4 +6,5 @@ export interface BaleType {
     min: number;
     max: number;
     currentType: boolean;
+    imageName?: string;
 };

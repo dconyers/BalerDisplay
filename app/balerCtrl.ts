@@ -4,6 +4,7 @@ import {BaleEventService} from "./BaleEvent/BaleEventService";
 import {BaleType} from "./BaleTypes/BaleType";
 import * as q from "q";
 import {BaleTypesDataStore} from "./BaleTypes/BaleTypesDataStore";
+import * as bb from "bootbox";
 
 export interface BalerData {
   baleType: BaleType;
@@ -32,16 +33,18 @@ export class BalerCtrl {
     highWeight: undefined,
   };
 
-  gaugeSettings = {
-    ranges: [{ startValue: 0, endValue: 1000, style: { fill: "#4cb848", stroke: "#4cb848" }, startDistance: 0, endDistance: 0 },
-      { startValue: 900, endValue: 1200, style: { fill: "#fad00b", stroke: "#fad00b" }, startDistance: 0, endDistance: 0 },
-      { startValue: 1200, endValue: 1200 * 1.2, style: { fill: "#e53d37", stroke: "#e53d37" }, startDistance: 0, endDistance: 0 }],
+  gaugeSettings: any = {
+    ranges: [{ startValue: 0, endValue: 1000, endWidth: 10, startWidth: 1, style: { fill: "#4cb848", stroke: "#4cb848" }, startDistance: 0, endDistance: 0 },
+      { startValue: 900, endValue: 1200, endWidth: 15, startWidth: 10, style: { fill: "#fad00b", stroke: "#fad00b" }, startDistance: 0, endDistance: 0 },
+      { startValue: 1200, endValue: 1200 * 1.2, endWidth: 20, startWidth: 15, style: { fill: "#e53d37", stroke: "#e53d37" }, startDistance: 0, endDistance: 0 }],
     cap: { size: "5%", style: { fill: "#2e79bb", stroke: "#2e79bb" } },
     max: 1200 * 1.2,
+    height: 250,
+    width: 250,
     border: { style: { fill: "#8e9495", stroke: "#7b8384", "stroke-width": 1 } },
     ticksMinor: { interval: 50, size: "5%" },
     ticksMajor: { interval: 200, size: "10%" },
-    labels: { position: "outside", interval: 200 },
+    labels: { position: "inside", interval: 200 },
     pointer: { style: { fill: "#2e79bb" }, width: 5 },
     animationDuration: 1500,
     caption: { value: "Loading, please wait...", position: "bottom", offset: [0, 10], visible: true }
@@ -70,9 +73,6 @@ export class BalerCtrl {
     });
   }
 
-  public dougTest(): void {
-    this.$log.debug("top of dougTest() lowWeight: " + this.balerData.lowWeight + ". High: " + this.balerData.highWeight);
-  }
 
   public loadBaleTypeData(): q.Promise<any> {
     return this.baleTypesService.getMaterialList().then((retVal: string[]) => {
@@ -106,7 +106,7 @@ export class BalerCtrl {
         return this.loadCellDataService.getLoadCellWeight();
       }, () => {
         this.balerData.currentWeight = this.loadCellDataService.getLoadCellWeight();
-        this.gaugeSettings.caption.value = "Current Weight: " + this.balerData.currentWeight;
+        this.gaugeSettings.caption.value = "" + this.balerData.currentWeight + " lbs.";
         this.gaugeSettings.apply("caption", this.gaugeSettings.caption);
       });
     });
