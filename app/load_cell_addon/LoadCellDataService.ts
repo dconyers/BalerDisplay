@@ -16,12 +16,12 @@ export class LoadCellDataService {
 
     constructor(private $log: ng.ILogService, private $interval: ng.IIntervalService) {
         console.log("LoadCellDataService Constructor");
-        this.$interval(() => this.doStuff(), 4000);
+        this.$interval(() => this.doStuff(), 3000);
     }
 
     private doStuff(): void {
         this.$log.debug("LoadCellDataService::doStuff()" + this.fakeData);
-        this.fakeData += this.getRandomIntInclusive(-1, 1);
+        this.fakeData += 10; // this.getRandomIntInclusive(-1, 1);
     }
 
     getLoadCellWeight(): number  {

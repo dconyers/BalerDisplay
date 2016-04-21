@@ -1,4 +1,5 @@
-<div class="jumbotron">
+<div class="jumbotron balerstats"
+  ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.balerData.lowWeight && balerCtrl.balerData.currentWeight < balerCtrl.balerData.highWeight, 'balerstats-error' : balerCtrl.balerData.currentWeight > balerCtrl.balerData.highWeight}">
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-4" >
@@ -21,17 +22,34 @@
                   </div>
                 </span>
               </li>
-              <li class="list-group-item no-side-borders">
-                <span translate class="info-title">{{"LAST_BALE_TIME"}}
-                </span>
-                <span class="badge">
-                  {{balerCtrl.baleEventService.baleEvents[0].baleDate.toLocaleDateString("en-US")}} {{balerCtrl.baleEventService.baleEvents[0].baleDate.toLocaleTimeString("en-US")}}
-                </span>
-              </li>
             </ul>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <ul  class="list-group list-group-flush">
+    <li class="list-group-item no-side-borders">
+      <span translate class="info-title">{{"LAST_BALE_TIME"}}
+      </span>
+      <span class="badge">
+        {{balerCtrl.baleEventService.baleEvents[0].baleDate.toLocaleDateString("en-US")}} {{balerCtrl.baleEventService.baleEvents[0].baleDate.toLocaleTimeString("en-US")}}
+      </span>
+    </li>
+    <li class="list-group-item no-side-borders">
+      <span translate class="info-title">{{"LAST_BALE_WEIGHT"}}
+      </span>
+      <span class="badge">
+        {{balerCtrl.baleEventService.baleEvents[0].weight}}
+      </span>
+    </li>
+    <li class="list-group-item no-side-borders">
+      <span translate class="info-title">{{"LAST_BALE_MATERIAL"}}
+      </span>
+      <span class="badge">
+        {{balerCtrl.baleEventService.baleEvents[0].baleType.gui}}
+      </span>
+    </li>
+  </ul>
+
 </div>

@@ -23,7 +23,7 @@ app.on("ready", function() {
   // Create the browser window.
   mainWindow = new BrowserWindow(
     {
-     frame: true,
+     frame: false,
      resizable: false,
      width: 800,
      height: 480}
