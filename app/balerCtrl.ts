@@ -39,14 +39,14 @@ export class BalerCtrl {
       { startValue: 1200, endValue: 1200 * 1.2, endWidth: 20, startWidth: 15, style: { fill: "#e53d37", stroke: "#e53d37" }, startDistance: 0, endDistance: 0 }],
     cap: { size: "5%", style: { fill: "#2e79bb", stroke: "#2e79bb" } },
     max: 1200 * 1.2,
-    height: 240,
-    width: 240,
+    height: 275,
+    width: 275,
     border: { style: { fill: "#8e9495", stroke: "#7b8384", "stroke-width": 1 } },
     ticksMinor: { interval: 50, size: "5%" },
     ticksMajor: { interval: 200, size: "10%" },
     labels: { position: "inside", interval: 200 },
     pointer: { style: { fill: "#2e79bb" }, width: 5 },
-    animationDuration: 1500,
+    animationDuration: 0,
     caption: { value: "Loading, please wait...", position: "bottom", offset: [0, 10], visible: true }
   };
 
@@ -60,18 +60,7 @@ export class BalerCtrl {
     this.refreshData();
   }
 
-  public currentBaleTypeChangeRequest(newCurrent: BaleType): q.Promise<any> {
-    return q.fcall(() => {
-      if (this.balerData.baleType !== null) {
-        return this.baleTypesDataStoreService.updateRowPromise(this.balerData.baleType._id, { $set: { currentType: false } }, {});
-      }
-    }).then(() => {
-      return this.baleTypesDataStoreService.updateRowPromise(newCurrent._id, { $set: { currentType: true } }, {});
-    }).catch((exception: any) => {
-      this.$log.error("balerCtrl::currentBaleTypeChangeRequest Got exception" + exception);
-      return exception;
-    });
-  }
+
 
 
   public loadBaleTypeData(): q.Promise<any> {

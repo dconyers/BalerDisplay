@@ -1,55 +1,76 @@
 <div class="jumbotron balerstats"
-  ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.balerData.lowWeight && balerCtrl.balerData.currentWeight < balerCtrl.balerData.highWeight, 'balerstats-error' : balerCtrl.balerData.currentWeight > balerCtrl.balerData.highWeight}">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-4" >
-        <jqx-gauge ng-model="balerCtrl.balerData.currentWeight" jqx-settings="balerCtrl.gaugeSettings" ></jqx-gauge>
-      </div>
-      <div class="col-sm-8">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <ul  class="list-group list-group-flush">
-              <li class="list-group-item no-side-borders">
-                <span translate class="info-title">{{"CURRENT_BALE_TYPE"}}
-                </span>
-                <span class="clearfix">
-                  <div ng-controller="BaleTypeSelectorCtrl as baleTypeSelectorCtrl">
-                    <div class="small-image dougtest" float="right">
-                      <a href="#" class="thumbnail">
-                        <img class="center-block" ng-click="baleTypeSelectorCtrl.open()" ng-src="./BaleTypes/images/{{balerCtrl.balerData.baleType.imageName}}" />
-                      </a>
-                    </div>
-                  </div>
-                </span>
-              </li>
-            </ul>
+ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.balerData.lowWeight && balerCtrl.balerData.currentWeight < balerCtrl.balerData.highWeight, 'balerstats-error' : balerCtrl.balerData.currentWeight > balerCtrl.balerData.highWeight}">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-5 nopadding" style="text-align: center">
+      <jqx-gauge style="dislay: inline-block" ng-model="balerCtrl.balerData.currentWeight" jqx-settings="balerCtrl.gaugeSettings" ></jqx-gauge>
+    </div>
+    <div class="col-sm-7 nopadding">
+      <div class="panel panel-default" style="display:inline-block;width:100%">
+        <span translate class="info-title">{{"CURRENT_BALE_TYPE"}}
+        </span>
+        <span class="clearfix">
+          <div ng-controller="BaleTypeSelectorCtrl as baleTypeSelectorCtrl">
+            <div class="small-image dougtest" float="right">
+              <a href="#" class="thumbnail">
+                <img class="center-block" ng-click="baleTypeSelectorCtrl.open()" ng-src="./BaleTypes/images/{{balerCtrl.balerData.baleType.imageName}}" />
+              </a>
+            </div>
           </div>
+        </span>
+
+        <div class="panel-body">
+          <ul  class="list-group list-group-flush">
+            <li class="list-group-item no-side-borders">
+              <span translate class="info-title">{{"BalerStatsPanel.baleType"}}
+              </span>
+              <span class="badge">
+                {{balerCtrl.balerData.baleType.gui}}
+              </span>
+            </li>
+            <li class="list-group-item no-side-borders">
+              <span translate class="info-title">{{"BalerStatsPanel.lowWeight"}}
+              </span>
+              <span class="badge">
+                {{balerCtrl.balerData.baleType.min}}
+              </span>
+            </li>
+            <li class="list-group-item no-side-borders">
+              <span translate class="info-title">{{"BalerStatsPanel.highWeight"}}
+              </span>
+              <span class="badge">
+                {{balerCtrl.balerData.baleType.max}}
+              </span>
+            </li>
+
+          </ul>
         </div>
       </div>
     </div>
   </div>
-  <ul  class="list-group list-group-flush">
-    <li class="list-group-item no-side-borders">
-      <span translate class="info-title">{{"LAST_BALE_TIME"}}
-      </span>
-      <span class="badge">
-        {{balerCtrl.baleEventService.baleEvents[0].baleDate.toLocaleDateString("en-US")}} {{balerCtrl.baleEventService.baleEvents[0].baleDate.toLocaleTimeString("en-US")}}
-      </span>
-    </li>
-    <li class="list-group-item no-side-borders">
-      <span translate class="info-title">{{"LAST_BALE_WEIGHT"}}
-      </span>
-      <span class="badge">
-        {{balerCtrl.baleEventService.baleEvents[0].weight}}
-      </span>
-    </li>
-    <li class="list-group-item no-side-borders">
-      <span translate class="info-title">{{"LAST_BALE_MATERIAL"}}
-      </span>
-      <span class="badge">
-        {{balerCtrl.baleEventService.baleEvents[0].baleType.gui}}
-      </span>
-    </li>
-  </ul>
+</div>
+<ul  class="list-group list-group-flush">
+  <li class="list-group-item no-side-borders">
+    <span translate class="info-title">{{"LAST_BALE_TIME"}}
+    </span>
+    <span class="badge">
+      {{balerCtrl.baleEventService.baleEvents[0].baleDate.toLocaleDateString("en-US")}} {{balerCtrl.baleEventService.baleEvents[0].baleDate.toLocaleTimeString("en-US")}}
+    </span>
+  </li>
+  <li class="list-group-item no-side-borders">
+    <span translate class="info-title">{{"LAST_BALE_WEIGHT"}}
+    </span>
+    <span class="badge">
+      {{balerCtrl.baleEventService.baleEvents[0].weight}}
+    </span>
+  </li>
+  <li class="list-group-item no-side-borders">
+    <span translate class="info-title">{{"LAST_BALE_MATERIAL"}}
+    </span>
+    <span class="badge">
+      {{balerCtrl.baleEventService.baleEvents[0].baleType.gui}}
+    </span>
+  </li>
+</ul>
 
 </div>

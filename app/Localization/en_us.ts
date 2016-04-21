@@ -9,13 +9,13 @@ const resources: ITranslationTable = {
         Language: "Language",
     },
     BalerStatsPanel: {
-            baleType: "Bale Type",
+            baleType: "Bale Material",
             lowWeight: "Low Weight",
             currentWeight: "Current Weight",
             highWeight: "High Weight",
     },
     SETTINGS: "Settings",
-    CURRENT_BALE_TYPE: "Bale Type",
+    CURRENT_BALE_TYPE: "Bale Material",
     REPORT: "Report",
     TRANSER_REPORT: "Bale Event Log",
     LANGUAGE: "Language",
@@ -26,7 +26,7 @@ const resources: ITranslationTable = {
     OTHER_SETTINGS: "Other",
     BALER_STATS: "Avangard Bale Monitoring System",
     SETTINGS_MENU: "Settings Menu",
-    SELECT_BALE_TYPE: "Select Bale Type:"
+    SELECT_BALE_TYPE: "Select Bale Material:"
     CAMERA_TEST: "Camera Test",
     CAM_UNINIT: "Camera uninitialized.",
     CAM_SUCCESS: "Successfully accessed camera.",

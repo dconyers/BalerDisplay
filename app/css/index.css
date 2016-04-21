@@ -26,6 +26,14 @@
   background-color: #eee;
 }
 
+.nopadding {
+  padding: 0px 0px 0px 0px;
+}
+
+.jqx-widget {
+  display: inline-block
+}
+
 .bjn-main-content
 {
   height: 430px;
