@@ -60,6 +60,7 @@ export function WifiService() {
   };
   
   this.getSSIDs = function() {
+    console.log("getSSIDs called");
     let ssids = [];
     // turn output into an array of lines
     let lines = execSync("nmcli -m multiline dev wifi list").trim().split("\n");
@@ -79,7 +80,7 @@ export function WifiService() {
       var ssidStart = lines[i].indexOf("'") + 1;
       var ssidEnd = lines[i].substring(ssidStart).indexOf("'");
       var ssid = lines[i].substring(ssidStart).substring(0, ssidEnd);
-      ssids.push(new this.SSID(ssid, "", ""));
+      ssids.push(new SSID(ssid, "", ""));
     }
     return ssids;
   };
@@ -123,5 +124,9 @@ export function WifiService() {
   this.findConnectionFile = function(ssid: string) {
     let files = execSync("sudo grep -rnwl /etc/NetworkManager/system-connections/ -e 'ssid=" + ssid + "'").toString().trim().split('\n');
     return files;
+  };
+  
+  this.makeSSIDObj = (ssid: string, key: string, conName: string) => {
+    return new SSID(ssid, key, conName);
   };
 }

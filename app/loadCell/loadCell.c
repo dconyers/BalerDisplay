@@ -4,17 +4,13 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
 
-#include "SLAB_USB_SPI.h"
+//#include "SLAB_USB_SPI.h"
+#include "MY_SLAB_USB_SPI.h"
 
 #define DEFAULT_VID 0x10c4
 #define DEFAULT_PID 0x87a0
-
-/*
-  How should process behave?
-  - Never exit
-    - Main thread only does communication
-*/
 
 typedef enum {
   OK,
@@ -37,13 +33,13 @@ pthread_cond_t cvIdle;
 int  waitingForSampleEnd = 0;
 int  waitingToSample = 0;
 
-CP213x_DEVICE spiDevice;
 volatile double curWeight;
 pthread_mutex_t mutexCurWeight;
 volatile double calSlope;
 volatile double calIntercept;
 pthread_t samplingThread;
 const char* calFilePath = "loadCell/calibrationSettings";
+//CP213x_DEVICE phDevice;
 
 loadCellError_type setup();
 void termIOLoop();
@@ -225,7 +221,10 @@ loadCellError_type setup() {
   
   /* Open first device seen. Assuming only one USB->SPI interface is connected.
   */
-  retCode = CP213x_Open(0, &spiDevice, DEFAULT_VID, DEFAULT_PID);
+  retCode = CP213x_Open(0,
+//                        &phDevice,
+                        DEFAULT_VID,
+                        DEFAULT_PID);
   if(retCode) {
     fprintf(stderr, "Failed Open with code: %d\n", retCode);
     return OPEN_FAILED;
@@ -236,7 +235,7 @@ loadCellError_type setup() {
      93.75.
      Need anything below 5Mhz for ADC chips.
   */
-  retCode = CP213x_GetSpiControlBytes(spiDevice, controlBytes);
+  retCode = CP213x_GetSpiControlBytes(controlBytes);
   if(retCode) {
     fprintf(stderr, "Failed GetSpiControlBytes with code: %d\n", retCode);
     return CONFIG_FAILED;
@@ -247,8 +246,7 @@ loadCellError_type setup() {
   controlBytes[0] &= ~SPICTL_CPHA_MASK;
   controlBytes[0] |= SPICTL_CPHA_TRAILING_EDGE << SPICTL_CPHA_SHIFT;  
   
-  retCode = CP213x_SetSpiControlByte(spiDevice,
-                                     0,
+  retCode = CP213x_SetSpiControlByte(0,
                                      controlBytes[0]);
   if(retCode) {
     fprintf(stderr, "Failed SetSpiControlByte with code: %d\n", retCode);
@@ -257,7 +255,7 @@ loadCellError_type setup() {
   
   
   // Keep PDWN on.
-  retCode = CP213x_SetGpioModeAndLevel(spiDevice, 4, GPIO_MODE_OUTPUT_PP, 1);
+  retCode = CP213x_SetGpioModeAndLevel(4, GPIO_MODE_OUTPUT_PP, 1);
   if(retCode) {
     fprintf(stderr, "Failed SetGpioModeAndLevel with code: %d\n", retCode);
     return CONFIG_FAILED;
@@ -265,17 +263,17 @@ loadCellError_type setup() {
   
   // Need to keep
   retCode = 0;
-  retCode |= CP213x_SetChipSelect(spiDevice, 0, CSMODE_IDLE);
-  retCode |= CP213x_SetChipSelect(spiDevice, 1, CSMODE_IDLE);
-  retCode |= CP213x_SetChipSelect(spiDevice, 2, CSMODE_IDLE);
-  retCode |= CP213x_SetChipSelect(spiDevice, 3, CSMODE_IDLE);
-  retCode |= CP213x_SetChipSelect(spiDevice, 4, CSMODE_IDLE);    
-  retCode |= CP213x_SetChipSelect(spiDevice, 5, CSMODE_IDLE);
-  retCode |= CP213x_SetChipSelect(spiDevice, 6, CSMODE_IDLE);    
-  retCode |= CP213x_SetChipSelect(spiDevice, 7, CSMODE_IDLE);  
-  retCode |= CP213x_SetChipSelect(spiDevice, 8, CSMODE_IDLE);
-  retCode |= CP213x_SetChipSelect(spiDevice, 9, CSMODE_IDLE);  
-  retCode |= CP213x_SetChipSelect(spiDevice, 10, CSMODE_IDLE);
+  retCode |= CP213x_SetChipSelect(0, CSMODE_IDLE);
+  retCode |= CP213x_SetChipSelect(1, CSMODE_IDLE);
+  retCode |= CP213x_SetChipSelect(2, CSMODE_IDLE);
+  retCode |= CP213x_SetChipSelect(3, CSMODE_IDLE);
+  retCode |= CP213x_SetChipSelect(4, CSMODE_IDLE);    
+  retCode |= CP213x_SetChipSelect(5, CSMODE_IDLE);
+  retCode |= CP213x_SetChipSelect(6, CSMODE_IDLE);    
+  retCode |= CP213x_SetChipSelect(7, CSMODE_IDLE);  
+  retCode |= CP213x_SetChipSelect(8, CSMODE_IDLE);
+  retCode |= CP213x_SetChipSelect(9, CSMODE_IDLE);  
+  retCode |= CP213x_SetChipSelect(10, CSMODE_IDLE);
   if(retCode) {
     fprintf(stderr, "Failed CP213x_SetChipSelect\n");
     return CONFIG_FAILED;
@@ -326,7 +324,9 @@ loadCellError_type closeDevice() {
   }
   waitingForSampleEnd = 0;
   loadCellStatus = UNINITIALIZED;
-  CP213x_Close(spiDevice);
+  CP213x_Close(
+//  phDevice
+  );
   pthread_mutex_unlock(&mutexLoadCellStatus);
   return OK;
 }
@@ -400,7 +400,7 @@ void termIOLoop() {
 
 // Gets sample and converts to signed 32bit int
 loadCellError_type getSample(int64_t* sample) {
-  BYTE pReadBuf[3];
+  BYTE pReadBuf[4];
   DWORD pBytesActuallyRead;
   USB_SPI_STATUS retCode;
   struct timespec tim, tim2;
@@ -412,13 +412,13 @@ loadCellError_type getSample(int64_t* sample) {
   int i;
   for(i = 0; i < 4; i++) {
     //A
-    retCode = CP213x_SetGpioModeAndLevel(spiDevice, 0, GPIO_MODE_OUTPUT_PP, i & 1);
+    retCode = CP213x_SetGpioModeAndLevel(0, GPIO_MODE_OUTPUT_PP, i & 1);
     if(retCode) {
       fprintf(stderr, "Failed SetGpioModeAndLevel with code: %d\n", retCode);
       return SWITCH_FAILED;
     }
     //B
-    retCode = CP213x_SetGpioModeAndLevel(spiDevice, 1, GPIO_MODE_OUTPUT_PP, (i & 2) >> 1);
+    retCode = CP213x_SetGpioModeAndLevel(1, GPIO_MODE_OUTPUT_PP, (i & 2) >> 1);
     if(retCode) {
       fprintf(stderr, "Failed SetGpioModeAndLevel with code: %d\n", retCode);
       return SWITCH_FAILED;
@@ -427,19 +427,19 @@ loadCellError_type getSample(int64_t* sample) {
     // allow time to switch cell before sampling
     nanosleep(&tim, &tim2);
     
-    retCode = CP213x_TransferReadSync(spiDevice,
-                                    pReadBuf,
-                                    4, // 4 bytes
-                                    1, // release SPI bus
-                                    1000, // timeout after a second
-                                    &pBytesActuallyRead);
+    retCode = CP213x_TransferReadSync(//phDevice,
+                                      pReadBuf,
+                                      4, // 4 bytes
+                                      1, // release SPI bus
+                                      1000, // timeout after a second
+                                      &pBytesActuallyRead);
     if(retCode) {
       fprintf(stderr, "Failed TransferReadSync with code: %d\n", retCode);
      return READ_FAILED;
     }
     if(pBytesActuallyRead != 4) {
-      fprintf(stderr, "Read wrong number of bytes from spi: %d\n", retCode);
-     return READ_FAILED;
+      fprintf(stderr, "Read wrong number of bytes from spi: %lu\n", pBytesActuallyRead);
+      return READ_FAILED;
     }
     
     *sample += ((int32_t)pReadBuf[0] << 24) | 
@@ -636,6 +636,7 @@ void printCalibration() {
 
 int main(void) {
   setlinebuf(stdout);
+  CP213x_Init();
   loadCal();
   pthread_mutex_init(&mutexCurWeight, NULL);
   pthread_mutex_init(&mutexLoadCellStatus, NULL);

@@ -1,4 +1,8 @@
-export function NetworkSettingsCtrl($scope, Sim800Srvc) {
+export function NetworkSettingsCtrl($scope, Sim800Srvc, WifiService) {
+
+  this.selectedSSID = WifiService.makeSSIDObj("TEST",
+                                              "TEST",
+                                              "TEST");
   
   this.APNGetSet = function(apn) {
     if(arguments.length) {
@@ -16,5 +20,12 @@ export function NetworkSettingsCtrl($scope, Sim800Srvc) {
     else {
       return Sim800Srvc.getDialNum();
     }
+  };
+  
+  this.loadCurrentSSID = () => {
+    console.log("load current caled");
+    this.selectedSSID = WifiService.makeSSIDObj(WifiService.currentSSID.ssid,
+                                                WifiService.currentSSID.key,
+                                                WifiService.currentSSID.conName);
   };
 }
