@@ -2,30 +2,31 @@
 ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.balerData.lowWeight && balerCtrl.balerData.currentWeight < balerCtrl.balerData.highWeight, 'balerstats-error' : balerCtrl.balerData.currentWeight > balerCtrl.balerData.highWeight}">
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-5 nopadding" style="text-align: center">
+    <div class="col-sm-4 nopadding" style="text-align: center">
       <jqx-gauge style="dislay: inline-block" ng-model="balerCtrl.balerData.currentWeight" jqx-settings="balerCtrl.gaugeSettings" ></jqx-gauge>
     </div>
-    <div class="col-sm-7 nopadding">
-      <div class="panel panel-default" style="display:inline-block;width:100%">
-        <span translate class="info-title">{{"CURRENT_BALE_TYPE"}}
-        </span>
-        <span class="clearfix">
-          <div ng-controller="BaleTypeSelectorCtrl as baleTypeSelectorCtrl">
-            <div class="small-image dougtest" float="right">
-              <a href="#" class="thumbnail">
-                <img class="center-block" ng-click="baleTypeSelectorCtrl.open()" ng-src="./BaleTypes/images/{{balerCtrl.balerData.baleType.imageName}}" />
-              </a>
+    <div class="col-sm-8 nopadding">
+      <div class="panel panel-default">
+        <div id="MaterialSelectionWrapper" >
+            <div ng-controller="BaleTypeSelectorCtrl as baleTypeSelectorCtrl">
+              <div class="small-image bjn-big-image" float="right">
+                <a href="#" class="thumbnail">
+                  <img class="center-block" ng-click="baleTypeSelectorCtrl.open()" ng-src="./BaleTypes/images/{{balerCtrl.balerData.baleType.imageName}}" />
+                </a>
+              </div>
             </div>
-          </div>
-        </span>
-
+          </span>
+        </div>
         <div class="panel-body">
           <ul  class="list-group list-group-flush">
             <li class="list-group-item no-side-borders">
               <span translate class="info-title">{{"BalerStatsPanel.baleType"}}
               </span>
-              <span class="badge">
-                {{balerCtrl.balerData.baleType.gui}}
+              <span class="badge" ng-controller="BaleTypeSelectorCtrl as baleTypeSelectorCtrl">
+                <!-- {{balerCtrl.balerData.baleType.gui}} -->
+                <a href="#" ng-click="baleTypeSelectorCtrl.open()">
+                  {{balerCtrl.balerData.baleType.gui}}
+                </a>
               </span>
             </li>
             <li class="list-group-item no-side-borders">
@@ -42,10 +43,10 @@ ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.
                 {{balerCtrl.balerData.baleType.max}}
               </span>
             </li>
-
           </ul>
         </div>
       </div>
+      <img src="./images/avangard-logo.svg" height="100px" width="auto"></img>
     </div>
   </div>
 </div>

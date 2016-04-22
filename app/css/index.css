@@ -1,14 +1,56 @@
+.bjn-big-image
+{
+  margin: 0px;
+  display: block;
+  width: 139px;
+  height: 139px;
+}
+
+.bjn-big-image a
+{
+  padding: 0px;
+  overflow: hidden;
+}
+
+.bjn-big-image a img {
+    max-width: 139px;
+    max-height: 139px;
+    min-width: auto;
+    min-height: 139px;
+}
+
+
 @-webkit-keyframes border-pulsate-error {
     0%   { border-color: rgba(255, 0, 0, 1); }
     50% { border-color: rgba(255, 0, 0, 0); }
     100%   { border-color: rgba(255, 0, 0, 1); }
 }
 
+#MaterialSelectionWrapper {
+  float:left;
+  padding: 5px 0px 5px 15px;
+  /*margin: 0px 5px 0px 5px;*/
+
+}
+
+.panel {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 0px;
+}
+
+.panel-body {
+  overflow: hidden;
+  padding: 5px 5px 5px 5px;
+  /*padding: 0px  0px 0px 0px;*/
+  /*margin: 5px 5px 5px 5px;*/
+}
+
 .balerstats-error
 {
   -webkit-animation: border-pulsate-error 2s ease-out;
   -webkit-animation-iteration-count: infinite;
-  border: 20px solid #eee;
+  border: 20px solid #ddd;
 }
 
 
@@ -22,8 +64,8 @@
 {
   -webkit-animation: border-pulsate-warning 3s ease-out;
   -webkit-animation-iteration-count: infinite;
-  border: 20px solid #eee;
-  background-color: #eee;
+  border: 20px solid #ddd;
+  background-color: #ddd;
 }
 
 .nopadding {
@@ -41,10 +83,10 @@
 .balerstats
 {
   height: 100%;
-  padding: 10px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
   margin: 0px;
-  border: 20px solid #eee;
-  background-color: #eee;
+  border: 20px solid #ddd;
+  background-color: #ddd;
 }
 
 .jqx-gauge-caption
