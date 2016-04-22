@@ -1,0 +1,9 @@
+<div class="modalWithMargin">
+  <p class="text-center">{{cameraTestCtrl.statusMsg | translate}}</p>
+  <webcam class="center-block"
+    channel="cameraTestModalCtrl.myChannel"
+    on-stream="cameraTestModalCtrl.onStream(stream)"
+    on-streaming="cameraTestModalCtrl.onSuccess()"
+    on-error="cameraTestModalCtrl.onError(err)">
+  </webcam>
+</div>
