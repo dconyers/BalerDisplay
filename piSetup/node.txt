@@ -1,0 +1,3 @@
+Some npm packages look for node at /usr/bin/node, but the ubuntu package
+installs to /usr/bin/nodejs
+	sudo ln -s /usr/bin/nodejs /usr/bin/node

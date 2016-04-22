@@ -1,4 +1,3 @@
 all:
-#	gcc -Wl,-rpath=loadCell -g -O1 loadCell.c libslab_usb_spi.so.1.0 -lpthread -o loadCell
-	gcc -O3 -march=native -mtune=native loadCell.c MY_SLAB_USB_SPI.c -lpthread -lusb-1.0 -o loadCell
+	gcc -mcpu=cortex-a53 -march=armv8-a+crc -mtune=cortex-a53 -mfpu=neon-vfpv4 -O3 loadCell.c MY_SLAB_USB_SPI.c -lpthread -lusb-1.0 -o loadCell
 

@@ -6,6 +6,8 @@
 #include <sys/time.h>
 #include <sys/select.h>
 #include <stdlib.h>
+#include <sys/eventfd.h>
+#include <unistd.h>
 #include "MY_SLAB_USB_SPI.h"
 
 #define USB_TIMEOUT 1000
