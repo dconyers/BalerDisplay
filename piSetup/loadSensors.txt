@@ -2,4 +2,4 @@ Install libusb headers
 - sudo apt-get install libusb-1.0-0-dev
 
 Setup udev rules
-- sudo cp configFiles/SiliconLabs.rules /etc/udev/rules.d/lsls
+- sudo cp configFiles/SiliconLabs.rules /etc/udev/rules.d/

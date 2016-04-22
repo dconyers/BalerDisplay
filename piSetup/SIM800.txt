@@ -2,14 +2,17 @@ Disable linux's usage of serial port.
 - sudo systemctl stop serial-getty@ttyAMA0.service # Stops service
 - sudo systemctl disable serial-getty@ttyAMA0.service # Disables service
 
+Need to allow user bjn to call pon and poff:
+	sudo cp configFiles/pppd /etc/sudoers.d/
+
 Setup pppd:
-- cp configFiles/sim800 to /etc/ppp/peers/
+- sudo cp configFiles/sim800 to /etc/ppp/peers/
 - Note: script is currently setup to use Cricket network, application will
   need to turn off pppd and edit config file to change APN.
-- cp configFiles/1add-default-route /etc/ppp/ip-up.d/
+- sudo cp configFiles/1add-default-route /etc/ppp/ip-up.d/
   
 Setup chatscript that pppd will use to issue AT commands:
-- cp configFiles/gprs to /etc/chatscripts/
+- sudo cp configFiles/gprs to /etc/chatscripts/
 - sudo chgrp dip /etc/chatscripts/gprs
 - sudo chmod 664 /etc/chatscripts/gprs
 - sudo chmod 770 /etc/chatscripts
