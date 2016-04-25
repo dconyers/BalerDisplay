@@ -1,5 +1,5 @@
-const spawn = require('child_process').spawn;
-const exec = require('child_process').exec;
+const spawn = require("child_process").spawn;
+const exec = require("child_process").exec;
 
 enum LoadCellState {
   UNINITIALIZED,
@@ -23,7 +23,7 @@ enum ErrorState {
   WRONG_STATE
 }
 
-process.on('exit', function() {
+process.on("exit", function() {
   exec("pkill loadCell");
 });
 
@@ -47,46 +47,55 @@ export class LoadCellDataService {
     ];
 
     constructor(private $log: ng.ILogService, private $interval: ng.IIntervalService) {
-        this.launchChildAndListen();
+        try {
+          this.launchChildAndListen();
+        } catch (exception) {
+          $log.error("Failed to launchChildAndListen in LoadCellDataService constructor: " + exception);
+        }
         this.$interval(() => this.getWeight(), 4000);
     }
-    
+
     private launchChildAndListen() {
       let obj = this;
-      if(this.child) {
+      if (this.child) {
         this.child.kill();
         this.child = null;
       }
-      this.child = spawn("loadCell/loadCell");
+      try {
+        this.child = spawn("loadCell/loadCell");
+      } catch (exception) {
+        this.$log.error("Received error trying to spawn loadCell/loadCell: " + exception);
+        return;
+      }
       this.child.stderr.on("data", obj.stderrCallback);
-      process.on('exit', () => {
+      process.on("exit", () => {
         this.child.kill();
       });
       this.child.stdout.on("data", obj.dataCallback);
-      this.child.on('exit', obj.processTerminated);
+      this.child.on("exit", obj.processTerminated);
       this.openDevice();
     }
-    
+
     private openDevice() {
       this.loadCellState = LoadCellState.WAITING_FOR_OPEN;
       this.child.stdin.write("OPEN_AND_CONFIG_DEVICE\n");
     }
 
     private getWeight(): void {
-        if(this.loadCellState === LoadCellState.OPEN) {
+        if (this.loadCellState === LoadCellState.OPEN) {
           this.loadCellState = LoadCellState.WAITING_FOR_WEIGHT;
           this.child.stdin.write("GET_WEIGHT\n");
         }
-        else if(this.loadCellState === LoadCellState.ERROR) {
+        else if (this.loadCellState === LoadCellState.ERROR) {
           // There is some type of error. Try to open device
           this.openDevice();
         }
     }
-    
+
     stderrCallback(data) {
       console.log(data.toString());
     }
-    
+
     /* Call this function once there is "zero" wieght on the baler. The callback
        is executed once sampling the "zero" weight is done. Then calibrateWeight
        should be called when the known weight is on the baler.
@@ -96,14 +105,14 @@ export class LoadCellDataService {
       this.loadCellState = LoadCellState.WAITING_FOR_ZERO_PROMPT;
       this.child.stdin.write("CALIBRATE\n");
     }
-    
+
     // Only call this function after calling calibrate. See above.
     calibrateWeight(weight: number, callbackWeightDone) {
       this.callbackWeightDone = callbackWeightDone;
       this.loadCellState = LoadCellState.WAITING_FOR_CAL_FINISH;
       this.child.stdin.write(weight + "\n");
     }
-    
+
     setCalibration(slope: number, intercept: number) {
       this.child.stdin.write("SET_CALIBRATION\n" + slope + "\n" + intercept + "\n");
       this.calSlope = slope;
@@ -113,41 +122,41 @@ export class LoadCellDataService {
     getLoadCellWeight(): number  {
       return this.weight;
     }
-    
+
     processTerminated(exitCode) {
       // Process terminated for some reason. Try to restart.
       console.log("loadCell process terminated with code: " + exitCode);
       this.loadCellState = LoadCellState.UNINITIALIZED;
       this.launchChildAndListen();
     }
-    
+
     dataCallback = (data) => {
-      let lines = data.toString().trim().split('\n');
-      for(var i = 0; i < lines.length; i++) {
-        if(lines[i] === "NO_DEVICE_FOUND") {
+      let lines = data.toString().trim().split("\n");
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i] === "NO_DEVICE_FOUND") {
           this.loadCellState = LoadCellState.ERROR;
           this.errorState = ErrorState.NO_DEVICE_FOUND;
           console.log("NO_DEVICE_FOUND");
         }
-        else if(lines[i] === "CONFIG_FAILED") {
+        else if (lines[i] === "CONFIG_FAILED") {
           this.loadCellState = LoadCellState.ERROR;
           this.errorState = ErrorState.CONFIG_FAILED;
           console.log("CONFIG_FAILED");
         }
-        else if(lines[i] === "SWITCH_FAILED") {
+        else if (lines[i] === "SWITCH_FAILED") {
           this.loadCellState = LoadCellState.ERROR;
           this.errorState = ErrorState.SWITCH_FAILED;
           console.log("SWITCH_FAILED");
         }
-        else if(lines[i] === "WRONG_STATE") {
+        else if (lines[i] === "WRONG_STATE") {
           this.loadCellState = LoadCellState.ERROR;
           this.errorState = ErrorState.WRONG_STATE;
           console.log("WRONG_STATE");
         }
-      
-        switch(this.loadCellState) {
+
+        switch (this.loadCellState) {
           case LoadCellState.WAITING_FOR_OPEN:
-            if(lines[i] === 'OK') {
+            if (lines[i] === "OK") {
               this.loadCellState = LoadCellState.WAITING_FOR_CAL_SLOPE;
               this.child.stdin.write("GET_CALIBRATION\n");
             }
@@ -157,19 +166,19 @@ export class LoadCellDataService {
             this.weight = parseFloat(lines[i]);
             break;
           case LoadCellState.WAITING_FOR_ZERO_PROMPT:
-            if(lines[i] === 'EMPTY_AND_PRESS_ENTER') {
+            if (lines[i] === "EMPTY_AND_PRESS_ENTER") {
               this.loadCellState = LoadCellState.WAITING_FOR_WEIGHT_PROMPT;
-              this.child.stdin.write("\n");;
+              this.child.stdin.write("\n");
             }
             break;
           case LoadCellState.WAITING_FOR_WEIGHT_PROMPT:
-            if(lines[i] === 'ENTER_CAL_WEIGHT') {
+            if (lines[i] === "ENTER_CAL_WEIGHT") {
               this.loadCellState = LoadCellState.WAITING_FOR_WEIGHT_INPUT;
               this.callbackZeroDone();
             }
             break;
           case LoadCellState.WAITING_FOR_CAL_FINISH:
-            if(lines[i] === 'CALIBRATION_COMPLETE') {
+            if (lines[i] === "CALIBRATION_COMPLETE") {
               this.loadCellState = LoadCellState.WAITING_FOR_CAL_SLOPE;
             }
             this.callbackWeightDone();
@@ -185,7 +194,7 @@ export class LoadCellDataService {
         }
       }
     };
-    
+
     isInit() {
       return this.loadCellState !== LoadCellState.UNINITIALIZED &&
              this.loadCellState !== LoadCellState.WAITING_FOR_OPEN &&
