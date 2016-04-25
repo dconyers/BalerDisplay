@@ -12,6 +12,6 @@ export class LoadCellMonitorService {
     }
 
     private doStuff(): void {
-        this.$log.debug("doing Stuff");
+        this.$log.debug("LoadCellMonitorService running...");
     }
 }

@@ -1,5 +1,7 @@
 import {BalerCtrl} from "./balerCtrl";
 import {BaleTypesCtrl} from "./BaleTypes/baleTypesCtrl";
+import {BaleTypeSelectorCtrl} from "./BaleTypes/BaleTypeSelectorCtrl";
+import {BaleTypeSelectorInstanceCtrl} from "./BaleTypes/BaleTypeSelectorCtrl";
 import {BaleEventReportCtrl} from "./BaleEvent/BaleEventReportCtrl";
 import {BaleTypesDataStore} from "./BaleTypes/BaleTypesDataStore";
 import {BaleTypesService} from "./BaleTypes/BaleTypesService";
@@ -9,7 +11,7 @@ import {CameraTestCtrl} from "./CameraTest/CameraTestCtrl";
 import {MenuCtrl} from "./MenuCtrl";
 import {PictureModalCtrl} from "./CameraTest/PictureModalCtrl";
 import {PictureSrvc} from "./services/PictureSrvc";
-import {NetworkSettingsCtrl} from "./NetworkSettings/NetworkSettingsCtrl"
+import {NetworkSettingsCtrl} from "./NetworkSettings/NetworkSettingsCtrl";
 import {LoadCellMonitorService} from "./services/LoadCellMonitorService";
 import {LoadCellDataService} from "./loadCell/LoadCellDataService";
 import {BaleEventService} from "./BaleEvent/BaleEventService";
@@ -26,7 +28,8 @@ angular.module("balerApp", [
                              "xeditable",
                              "webcam",
                              "appRoutes",
-                             "appConfig"
+                             "appConfig",
+                             "jqwidgets"
                            ]
 )
     .service("BaleTypesDataStoreService", BaleTypesDataStore)
@@ -39,6 +42,8 @@ angular.module("balerApp", [
     .controller("BaleEventReportCtrl", BaleEventReportCtrl)
     .controller("LocalizationCtrl", LocalizationCtrl)
     .controller("BaleTypesCtrl", BaleTypesCtrl)
+    .controller("BaleTypeSelectorCtrl", BaleTypeSelectorCtrl)
+    .controller("BaleTypeSelectorInstanceCtrl", BaleTypeSelectorInstanceCtrl)
     .controller("SettingsMenuCtrl", SettingsMenuCtrl)
     .controller("CameraTestCtrl", CameraTestCtrl)
     .controller("PictureModalCtrl", PictureModalCtrl)
