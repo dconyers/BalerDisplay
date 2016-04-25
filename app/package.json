@@ -7,7 +7,7 @@
       "type" : "git"
     , "url" : "git+ssh://git@github.com:dconyers/BalerDisplay.git"
   },
-  "readme": "../README.md"
+  "readme": "../README.md",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
