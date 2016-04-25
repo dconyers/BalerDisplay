@@ -2,6 +2,12 @@
   "name": "BalerDisplay",
   "version": "0.0.1",
   "description": "Baler Display",
+  "repository" :
+    { "private": "true",
+      "type" : "git"
+    , "url" : "git+ssh://git@github.com:dconyers/BalerDisplay.git"
+  },
+  "readme": "../README.md"
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
