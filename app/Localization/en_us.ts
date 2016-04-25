@@ -26,7 +26,7 @@ const resources: ITranslationTable = {
     OTHER_SETTINGS: "Other",
     BALER_STATS: "Avangard Bale Monitoring System",
     SETTINGS_MENU: "Settings Menu",
-    SELECT_BALE_TYPE: "Select Bale Material:"
+    SELECT_BALE_TYPE: "Select Bale Material:",
     CAMERA_TEST: "Camera Test",
     CAM_UNINIT: "Camera uninitialized.",
     CAM_SUCCESS: "Successfully accessed camera.",
