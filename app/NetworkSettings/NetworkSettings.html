@@ -13,8 +13,8 @@
     <legend>WIFI</legend>
     <label>SSID
       <a href="" editable-select="networkSettingsCtrl.selectedSSID"
-                  onshow="networkSettingsCtrl.loadCurrentSSID()"
-                  e-ng-options="item as item.ssid for item in networkSettingsCtrl.WifiService.getSSIDs()"
+                  e-ng-options="item as item.ssid for item in networkSettingsCtrl.SSIDList"
+                  onshow="networkSettingsCtrl.loadCurrentSSIDList()"
                   class="center-block">
         {{ networkSettingsCtrl.selectedSSID.ssid }}
       </a>

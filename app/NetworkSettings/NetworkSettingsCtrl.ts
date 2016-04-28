@@ -1,5 +1,6 @@
 export function NetworkSettingsCtrl($scope, Sim800Srvc, WifiService) {
 
+  this.SSIDList = [];
   this.selectedSSID = WifiService.makeSSIDObj("TEST",
                                               "TEST",
                                               "TEST");
@@ -28,4 +29,10 @@ export function NetworkSettingsCtrl($scope, Sim800Srvc, WifiService) {
                                                 WifiService.currentSSID.key,
                                                 WifiService.currentSSID.conName);
   };
+  
+  this.loadCurrentSSIDList = () => {
+    this.SSIDList = WifiService.getSSIDs();
+  };
+  
+  this.loadCurrentSSID();
 }

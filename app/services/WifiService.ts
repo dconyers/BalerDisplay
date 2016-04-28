@@ -60,13 +60,13 @@ export function WifiService() {
   };
   
   this.getSSIDs = function() {
-    console.log("getSSIDs called");
     let ssids = [];
     // turn output into an array of lines
-    let lines = execSync("nmcli -m multiline dev wifi list").trim().split("\n");
+    let lines = execSync("nmcli -m multiline dev wifi list").toString().trim().split("\n");
     for(var i = 0; i < Math.floor(lines.length / 8); i += 8) {
       // Only list ssids that support WPA for now
-      var security = lines[i + 6].trim().split(/\s+/).shift();
+      var security = lines[i + 6].trim().split(/\s+/);
+      security.shift();
       var supportsWPA = false;
       for(var j = 0; j < security.length; j++) {
         if(~security[j].indexOf("WPA")) {
@@ -86,7 +86,6 @@ export function WifiService() {
   };
   
   this.checkStatus = () => {
-    console.log("check status called");
     let obj = this;
     let child = exec("nmcli -m multiline c s", obj.parseStatus);
   };
@@ -100,7 +99,7 @@ export function WifiService() {
       console.log(stderr);
       return;
     }
-    // turn output into an array of lines, and shift.
+    // turn output into an array of lines
     let lines = stdout.trim().split("\n");
     // Each device takes 6 lines, and the device name is on the 3rd
     for(var i = 0; i < Math.floor(lines.length / 6); i += 6) {
