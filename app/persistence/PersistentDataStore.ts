@@ -38,17 +38,20 @@ export abstract class PersistentDataStore<T> extends NeDBDataStore {
         }
     };
 
-    deleteRow(id: any) {
-        console.log("deleteRow called");
+    deleteRowWithIDPromise(id: any) {
         let myDelete: (query: any) => q.Promise<number> = q.nbind<number>(this.remove, this);
         return myDelete({"_id": id});
+    }
+
+    deleteRowsPromise(query: any, options: NeDB.RemoveOptions) {
+        let myDelete: (query: any, options: NeDB.RemoveOptions) => q.Promise<number> = q.nbind<number>(this.remove, this);
+        return myDelete(query, options);
     }
 
     insertRowPromise(newRow: T): q.Promise<void> {
         let insertPromise: (newRow: T) => q.Promise<void> = q.nbind<void>(this.insert, this);
         return insertPromise(newRow);
     }
-
 
     updateRowPromise(id: any, updated: any, options: NeDB.UpdateOptions): q.Promise<number> {
         let updatePromise: (query: any, updated: any, options?: NeDB.UpdateOptions) => q.Promise<number> = q.nbind<number>(this.update, this);

@@ -7,7 +7,7 @@ import events = require("events");
 
 
 export class LoadCellMonitorService extends events.EventEmitter {
-    public static MIN_BALE_WEIGHT: number;
+    public static MIN_BALE_WEIGHT: number = 200;
 
     static $inject: string[] = [
         "$log",
@@ -35,23 +35,19 @@ export class LoadCellMonitorService extends events.EventEmitter {
       sample.weight = this.loadCellDataService.getLoadCellWeight();
       this.baleWeightRecordDataStore.insertRowPromise(sample).then(() => {
       }).done();
-      this.baleWeightRecordDataStore.persistence.compactDatafile();
-      // Determine if "Bale Event" occurred
       this.checkBalerStatus();
-      // Purge old data
     }
 
     private checkBalerStatus(): void {
       this.baleWeightRecordDataStore.initializeDataStore().then((baleWeights: Array<BaleWeightRecord>) => {
-        this.$log.debug("returned: " + baleWeights.length + " records");
-        this.$log.debug(baleWeights);
         let currentWeight: number = baleWeights[baleWeights.length - 1].weight;
-        let maxWeight: number = Math.max.apply(null, baleWeights);
+        let maxWeight: number = Math.max.apply(Math, baleWeights.map((baleWeight: BaleWeightRecord) => { return baleWeight.weight; }));
         let maxDelta: number = maxWeight - currentWeight;
+        this.$log.debug("maxDelta = " + maxDelta + " maxWeight: " + maxWeight);
         if (maxDelta > LoadCellMonitorService.MIN_BALE_WEIGHT) {
           this.$log.debug("Baler Emptied Scenario Identified!");
-          this.emit("BalerEmptied", maxWeight, currentWeight);
-          // TODO: Throw new Bale Event
+          this.emit("BalerEmptiedEvent", maxWeight, currentWeight);
+          this.baleWeightRecordDataStore.deleteRowsPromise({}, {multi: true}).done();
         }
       });
     }

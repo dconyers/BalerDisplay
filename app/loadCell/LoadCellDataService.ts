@@ -29,7 +29,7 @@ process.on("exit", function() {
 
 export class LoadCellDataService {
 
-    weight: number = 789;
+    weight: number = 500;
     loadCellState: LoadCellState = LoadCellState.UNINITIALIZED;
     errorState: ErrorState = ErrorState.NONE;
     calSlope: number;
@@ -53,6 +53,7 @@ export class LoadCellDataService {
           $log.error("Failed to launchChildAndListen in LoadCellDataService constructor: " + exception);
         }
         this.$interval(() => this.getWeight(), 4000);
+        this.$interval(() => this.simulateData(), 200);
     }
 
     private launchChildAndListen() {
@@ -200,4 +201,17 @@ export class LoadCellDataService {
              this.loadCellState !== LoadCellState.WAITING_FOR_OPEN &&
              this.loadCellState !== LoadCellState.ERROR;
     }
+
+
+    private getRandomIntInclusive(min: number, max: number): number {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    private simulateData(): void {
+        this.weight +=  this.getRandomIntInclusive(-1, 4);
+        if (this.weight > 900) {
+          this.weight = 12;
+        }
+    }
+
 };

@@ -43,14 +43,14 @@ export class BaleTypesDataStore extends Persistence.PersistentDataStore<BaleType
             })
             .then(() => {
                 this.initialized = true;
-                return this.loadDataPromise()
-                    .then((retVal: Array<BaleType>) => {
-                            return retVal.sort((a: BaleType, b: BaleType) => {
-                                if (a.gui === undefined)
-                                    return 1;
-                                return a.gui.localeCompare(b.gui);
-                            });
-                    });
+                return this.loadDataPromise();
+            })
+            .then((retVal: Array<BaleType>) => {
+                return retVal.sort((a: BaleType, b: BaleType) => {
+                if (a.gui === undefined)
+                  return 1;
+                  return a.gui.localeCompare(b.gui);
+                });
             });
     }
 

@@ -16,6 +16,7 @@ import {NetworkSettingsCtrl} from "./NetworkSettings/NetworkSettingsCtrl";
 import {LoadCellMonitorService} from "./services/LoadCellMonitorService";
 import {LoadCellDataService} from "./loadCell/LoadCellDataService";
 import {BalerEmptiedEventService} from "./BalerEmptiedEvent/BalerEmptiedEventService";
+import {BalerEmptiedEventDataStore} from "./BalerEmptiedEvent/BalerEmptiedEventDataStore";
 import {MachineSettingsCtrl} from "./MachineSettings/MachineSettingsCtrl";
 import {SetCalModalCtrl} from "./MachineSettings/SetCalModalCtrl";
 import {CalibrationModalCtrl} from "./MachineSettings/CalibrationModalCtrl";
@@ -38,6 +39,7 @@ angular.module("balerApp", [
     .service("PictureSrvc", PictureSrvc)
     .service("LoadCellDataService", LoadCellDataService)
     .service("BalerEmptiedEventService", BalerEmptiedEventService)
+    .service("BalerEmptiedEventDataStoreService", BalerEmptiedEventDataStore)
     .service("BaleWeightRecordDataStoreService", BaleWeightRecordDataStore)
     .service("LoadCellMonitorService", LoadCellMonitorService)
     .controller("BalerCtrl", BalerCtrl)
@@ -58,6 +60,15 @@ angular.module("balerApp", [
     .run(["BaleWeightRecordDataStoreService", "$log", (baleWeightRecordDataStore, $log) => {
       baleWeightRecordDataStore.initializeDataStore().then(() => {
         $log.debug("BaleWeightRecordDataStore.initDataStore success:");
+      })
+      .catch((exception) => {
+        $log.error("Got exception: " + exception);
+      })
+      .done();
+    }])
+    .run(["BalerEmptiedEventDataStoreService", "$log", (balerEmptiedEventDataStore, $log) => {
+      balerEmptiedEventDataStore.initializeDataStore().then(() => {
+        $log.debug("BalerEmptiedEventDataStore.initDataStore success:");
       })
       .catch((exception) => {
         $log.error("Got exception: " + exception);

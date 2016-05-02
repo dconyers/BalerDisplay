@@ -4,14 +4,6 @@ import {BalerEmptiedEventService} from "./BalerEmptiedEventService";
 
 export class BalerEmptiedEventReportCtrl {
 
-    // export interface BalerEmptiedEvent {
-    //     _id?: string;
-    //     baleType: BaleType;
-    //     weight: number;
-    //     baleDate: Date;
-    // };
-
-
     static $inject: string[] = [
         "$scope",
         "$log",

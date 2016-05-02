@@ -44,7 +44,7 @@ export function BaleTypesCtrl($scope, $log: ng.ILogService, $filter, $http, $q, 
     // remove user
     this.removeBaleType = function(id: any): q.Promise<any> {
         $log.debug("got delete request for id: " + id);
-        return BaleTypesDataStoreService.deleteRow(id)
+        return BaleTypesDataStoreService.deleteRowWithIDPromise(id)
         .then((deleteCount: number): any => {
             $log.debug("deleted row count: " + deleteCount);
             if (deleteCount !== 1) {

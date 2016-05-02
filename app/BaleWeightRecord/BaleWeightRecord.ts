@@ -1,6 +1,6 @@
 
 export interface BaleWeightRecord {
     _id?: string;
-    createdAt: Date;
+    createdAt?: Date;
     weight: number;
 };

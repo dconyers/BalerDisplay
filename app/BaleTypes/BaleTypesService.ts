@@ -21,7 +21,6 @@ export class BaleTypesService {
                 this.$log.error("Really Got exception: "  + exception);
                 return exception;
         }).finally(() => {
-                this.$log.debug("finally clause for getCurrentBT");
                 return undefined;
         });
     }
