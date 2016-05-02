@@ -13,9 +13,10 @@ export abstract class PersistentDataStore<T> extends NeDBDataStore {
         return PersistentDataStore.options;
     };
 
-    static options: NeDB.DataStoreOptions = {
+    static options: any = {
         inMemoryOnly : false,
         autoload : false,
+        timestampData: true,
     };
 
     onload = (error: Error) => {
@@ -57,6 +58,16 @@ export abstract class PersistentDataStore<T> extends NeDBDataStore {
     loadDatabasePromise(): q.Promise<void> {
         let myLoadDatabase: () => q.Promise<void> = q.nbind<void>(this.loadDatabase, this);
         return myLoadDatabase();
+    }
+
+    ensureIndexPromise(options: NeDB.EnsureIndexOptions): q.Promise<void> {
+      let myEnsureIndex: (options: NeDB.EnsureIndexOptions) => q.Promise<void> = q.nbind<void>(this.ensureIndex, this);
+      return myEnsureIndex(options);
+    }
+
+    removeIndexPromise(fieldName: string): q.Promise<void> {
+      let myRemoveIndex: (fieldName: string) => q.Promise<void> = q.nbind<void>(this.removeIndex, this);
+      return myRemoveIndex(fieldName);
     }
 
     // insert<T>(newDoc:T, cb?:(err:Error, document:T)=>void):void;

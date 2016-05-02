@@ -11,7 +11,7 @@ export class BaleTypesService {
 
     constructor(private $log: ng.ILogService,
                 private baleTypesDataStoreService: BaleTypesDataStore) {
-        $log.debug("Top of BaleTypsService constructor");
+        $log.debug("Top of BaleTypesService constructor");
     }
 
     public getCurrentBaleType(): q.Promise<BaleType> {

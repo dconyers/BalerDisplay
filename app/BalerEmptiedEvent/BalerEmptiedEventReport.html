@@ -6,34 +6,34 @@
       <td style="width:30%">Weight</td>
       <td style="width:25%">Transmitted?</td>
   </tr>
-  <tr ng-repeat="baleEvent in baleEventReportCtrl.baleEventService.baleEvents">
+  <tr ng-repeat="BalerEmptiedEvent in BalerEmptiedEventReportCtrl.BalerEmptiedEventService.BalerEmptiedEvents">
       <td>
           <span>
-            {{ baleEvent.baleDate.toLocaleDateString("en-US") || 'empty' }}
+            {{ BalerEmptiedEvent.baleDate.toLocaleDateString("en-US") || 'empty' }}
           </span>
       </td>
 
       <td>
           <span>
-            {{ baleEvent.baleDate.toLocaleTimeString("en-US") || 'empty' }}
+            {{ BalerEmptiedEvent.baleDate.toLocaleTimeString("en-US") || 'empty' }}
           </span>
       </td>
 
       <td>
         <span>
-          {{ baleEvent.baleType.gui || 'empty' }}
+          {{ BalerEmptiedEvent.baleType.gui || 'empty' }}
         </span>
     </td>
 
     <td>
         <span>
-          {{ baleEvent.weight || 'empty' }}
+          {{ BalerEmptiedEvent.weight || 'empty' }}
         </span>
     </td>
 
     <td>
         <span>
-          {{ baleEvent.transmitted }}
+          {{ BalerEmptiedEvent.transmitted }}
         </span>
     </td>
 

@@ -1,13 +1,13 @@
 import * as q from "q";
-import {BaleEvent} from "./BaleEvent";
+import {BalerEmptiedEvent} from "./BalerEmptiedEvent";
 
-export class BaleEventService {
+export class BalerEmptiedEventService {
 
     static $inject: string[] = [
         "$log",
     ];
 
-    baleEvents: Array<BaleEvent> = [
+    BalerEmptiedEvents: Array<BalerEmptiedEvent> = [
         { _id: undefined, baleType: {_id: undefined, material: "PAP4", type: "OCC", gui: "Cardboard", min: 1200, max: 1300, currentType: false}, weight: 740, baleDate : new Date(2016, 3,  4, 15, 12, 32), transmitted: false},
         { _id: undefined, baleType: {_id: undefined, material: "PAP2", type: "OCC", gui: "Cardboard", min: 1200, max: 1300, currentType: false}, weight: 720, baleDate : new Date(2016, 3,  3, 14, 26, 32), transmitted: false},
         { _id: undefined, baleType: {_id: undefined, material: "PAP3", type: "OCC", gui: "Cardboard", min: 1200, max: 1300, currentType: false}, weight: 730, baleDate : new Date(2016, 3,  3, 11, 46, 11), transmitted: false},
@@ -16,7 +16,7 @@ export class BaleEventService {
     ];
 
     constructor(private $log: ng.ILogService) {
-        $log.debug("Top of BaleTypsService constructor");
+        $log.debug("Top of BalerEmptiedEventService constructor");
     }
 
 }

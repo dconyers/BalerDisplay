@@ -1,7 +1,7 @@
-import {BaleType} from "./BaleType";
+import {BaleType} from "../BaleTypes/BaleType";
 
 
-export interface BaleEvent {
+export interface BalerEmptiedEvent {
     _id?: string;
     baleType: BaleType;
     weight: number;

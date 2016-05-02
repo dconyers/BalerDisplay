@@ -2,8 +2,9 @@ import {BalerCtrl} from "./balerCtrl";
 import {BaleTypesCtrl} from "./BaleTypes/baleTypesCtrl";
 import {BaleTypeSelectorCtrl} from "./BaleTypes/BaleTypeSelectorCtrl";
 import {BaleTypeSelectorInstanceCtrl} from "./BaleTypes/BaleTypeSelectorCtrl";
-import {BaleEventReportCtrl} from "./BaleEvent/BaleEventReportCtrl";
+import {BalerEmptiedEventReportCtrl} from "./BalerEmptiedEvent/BalerEmptiedEventReportCtrl";
 import {BaleTypesDataStore} from "./BaleTypes/BaleTypesDataStore";
+import {BaleWeightRecordDataStore} from "./BaleWeightRecord/BaleWeightRecordDataStore";
 import {BaleTypesService} from "./BaleTypes/BaleTypesService";
 import {LocalizationCtrl} from "./Localization/LocalizationCtrl";
 import {SettingsMenuCtrl} from "./SettingsMenu/SettingsMenuCtrl";
@@ -14,7 +15,7 @@ import {PictureSrvc} from "./services/PictureSrvc";
 import {NetworkSettingsCtrl} from "./NetworkSettings/NetworkSettingsCtrl";
 import {LoadCellMonitorService} from "./services/LoadCellMonitorService";
 import {LoadCellDataService} from "./loadCell/LoadCellDataService";
-import {BaleEventService} from "./BaleEvent/BaleEventService";
+import {BalerEmptiedEventService} from "./BalerEmptiedEvent/BalerEmptiedEventService";
 import {MachineSettingsCtrl} from "./MachineSettings/MachineSettingsCtrl";
 import {SetCalModalCtrl} from "./MachineSettings/SetCalModalCtrl";
 import {CalibrationModalCtrl} from "./MachineSettings/CalibrationModalCtrl";
@@ -35,11 +36,12 @@ angular.module("balerApp", [
     .service("BaleTypesDataStoreService", BaleTypesDataStore)
     .service("BaleTypesService", BaleTypesService)
     .service("PictureSrvc", PictureSrvc)
-    .service("LoadCellMonitorService", LoadCellMonitorService)
     .service("LoadCellDataService", LoadCellDataService)
-    .service("BaleEventService", BaleEventService)
+    .service("BalerEmptiedEventService", BalerEmptiedEventService)
+    .service("BaleWeightRecordDataStoreService", BaleWeightRecordDataStore)
+    .service("LoadCellMonitorService", LoadCellMonitorService)
     .controller("BalerCtrl", BalerCtrl)
-    .controller("BaleEventReportCtrl", BaleEventReportCtrl)
+    .controller("BalerEmptiedEventReportCtrl", BalerEmptiedEventReportCtrl)
     .controller("LocalizationCtrl", LocalizationCtrl)
     .controller("BaleTypesCtrl", BaleTypesCtrl)
     .controller("BaleTypeSelectorCtrl", BaleTypeSelectorCtrl)
@@ -53,6 +55,16 @@ angular.module("balerApp", [
     .controller("SetCalModalCtrl", SetCalModalCtrl)
     .controller("CalibrationModalCtrl", CalibrationModalCtrl)
     .controller("CameraTestModalCtrl", CameraTestModalCtrl)
-    .run((LoadCellMonitorService) => {
-    })
+    .run(["BaleWeightRecordDataStoreService", "$log", (baleWeightRecordDataStore, $log) => {
+      baleWeightRecordDataStore.initializeDataStore().then(() => {
+        $log.debug("BaleWeightRecordDataStore.initDataStore success:");
+      })
+      .catch((exception) => {
+        $log.error("Got exception: " + exception);
+      })
+      .done();
+    }])
+    .run(["LoadCellMonitorService", "$log", (loadCellMonitorService, $log) => {
+      loadCellMonitorService.startMonitor();
+    }])
 ;
