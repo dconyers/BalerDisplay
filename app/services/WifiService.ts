@@ -43,22 +43,22 @@ export function WifiService() {
     ssid: string;
     key: string;
     conName: string;
-    
+
     constructor(ssid: string, key: string, conName: string) {
       this.ssid = ssid;
       this.key = key;
       this.conName = conName;
     };
   };
-  
+
   this.currentSSID = null;
-  
+
   this.start = function() {
     let obj = this;
     this.checkStatus();
     this.interval = setInterval(obj.checkStatus, 10000);
   };
-  
+
   this.getSSIDs = function() {
     console.log("getSSIDs called");
     let ssids = [];
@@ -84,13 +84,13 @@ export function WifiService() {
     }
     return ssids;
   };
-  
+
   this.checkStatus = () => {
-    console.log("check status called");
+    // console.log("check status called");
     let obj = this;
     let child = exec("nmcli -m multiline c s", obj.parseStatus);
   };
-  
+
   this.parseStatus = (err, stdout, stderr) => {
     if(err) {
       console.log(err);
@@ -113,19 +113,19 @@ export function WifiService() {
     }
     this.currentSSID = null;
   };
-  
+
   this.ssidFromName = function(conName: string) {
     let lines = execSync("sudo sed -n -e 's/psk=\\(.*\\)/\\1/p' -e 's/ssid=\\(.*\\)/\\1/p' '/etc/NetworkManager/system-connections/" + conName + "'").toString().trim().split('\n');
     var psk = lines[0];
     var ssid = lines[1];
     return new SSID(psk, ssid, conName);
   };
-  
+
   this.findConnectionFile = function(ssid: string) {
     let files = execSync("sudo grep -rnwl /etc/NetworkManager/system-connections/ -e 'ssid=" + ssid + "'").toString().trim().split('\n');
     return files;
   };
-  
+
   this.makeSSIDObj = (ssid: string, key: string, conName: string) => {
     return new SSID(ssid, key, conName);
   };

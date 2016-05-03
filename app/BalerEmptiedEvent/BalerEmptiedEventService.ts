@@ -4,6 +4,7 @@ import {BalerEmptiedEventDataStore} from "./BalerEmptiedEventDataStore";
 import {LoadCellMonitorService} from "../services/LoadCellMonitorService";
 import {BaleTypesService} from "../BaleTypes/BaleTypesService";
 import {BaleType} from "../BaleTypes/BaleType";
+import {PictureSrvc} from "../services/PictureSrvc";
 
 export class BalerEmptiedEventService {
 
@@ -11,7 +12,8 @@ export class BalerEmptiedEventService {
         "$log",
         "LoadCellMonitorService",
         "BalerEmptiedEventDataStoreService",
-        "BaleTypesService"
+        "BaleTypesService",
+        "PictureSrvc"
     ];
 
     BalerEmptiedEvents: Array<BalerEmptiedEvent> = [
@@ -23,11 +25,13 @@ export class BalerEmptiedEventService {
     ];
 
     constructor(private $log: ng.ILogService,
-                        loadCellMonitorService: LoadCellMonitorService,
-                        balerEmptiedEventDataStoreService: BalerEmptiedEventDataStore,
-                        baleTypesService: BaleTypesService) {
+                private loadCellMonitorService: LoadCellMonitorService,
+                private balerEmptiedEventDataStoreService: BalerEmptiedEventDataStore,
+                private baleTypesService: BaleTypesService,
+                private pictureService: PictureSrvc) {
         loadCellMonitorService.on("BalerEmptiedEvent", (maxWeight, currentWeight) => {
           this.$log.debug("got BalerEmptied event max: " + maxWeight + " current: " + currentWeight);
+          this.takePicture();
           baleTypesService.getCurrentBaleType()
           .then((currentBaleType: BaleType) => {
             let balerEmptiedEvent: BalerEmptiedEvent = {
@@ -46,6 +50,33 @@ export class BalerEmptiedEventService {
           })
           .done();
         });
+    }
+
+    takePicture(): void {
+      this.pictureService.width = 1920;
+      this.pictureService.height = 1080;
+
+      this.$log.debug("about to call takePicturePromise()");
+      this.pictureService.takePicturePromise("./images/test.jpg")
+      .then((returnCode: number) => {
+        this.$log.debug("Got return code of: " + returnCode + " from takePicturePomise");
+      }).catch((exception) => {
+        this.$log.error("Received exception taking picture");
+      }).done();
+
+
+      this.pictureService.takePicture("./images/test.jpg",
+        (pathname, err) => {
+          if (err) {
+            this.$log.error(err);
+          }
+          else {
+            // record pathname to database ...
+            PictureSrvc.deletePicture(pathname);
+          }
+        }
+      );
+
     }
 
 }

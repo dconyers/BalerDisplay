@@ -16,7 +16,7 @@ export function CameraTestCtrl($scope, $uibModal, PictureSrvc) {
   $scope.$on("$destroy", function() {
     $scope.cameraTestCtrl.stopWebcam();
   });
-  
+
   this.onError = function (err) {
     this.statusMsg = err;
   };

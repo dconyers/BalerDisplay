@@ -43,9 +43,8 @@ export class LoadCellMonitorService extends events.EventEmitter {
         let currentWeight: number = baleWeights[baleWeights.length - 1].weight;
         let maxWeight: number = Math.max.apply(Math, baleWeights.map((baleWeight: BaleWeightRecord) => { return baleWeight.weight; }));
         let maxDelta: number = maxWeight - currentWeight;
-        this.$log.debug("maxDelta = " + maxDelta + " maxWeight: " + maxWeight);
         if (maxDelta > LoadCellMonitorService.MIN_BALE_WEIGHT) {
-          this.$log.debug("Baler Emptied Scenario Identified!");
+          this.$log.debug("Identified Baler Emptying Event, Emitting Event.");
           this.emit("BalerEmptiedEvent", maxWeight, currentWeight);
           this.baleWeightRecordDataStore.deleteRowsPromise({}, {multi: true}).done();
         }
