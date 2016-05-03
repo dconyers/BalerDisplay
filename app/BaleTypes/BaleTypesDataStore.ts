@@ -29,7 +29,6 @@ export class BaleTypesDataStore extends Persistence.PersistentDataStore<BaleType
                         });
                 });
         }
-        this.$log.debug("BaleTypesDataStore::initializeDataStore - initializing.");
         return this.loadDatabasePromise()
             .then((): q.Promise<number> => {
                 return this.countAllRows();

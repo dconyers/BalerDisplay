@@ -6,7 +6,7 @@
       <td style="width:30%">Weight</td>
       <td style="width:25%">Transmitted?</td>
   </tr>
-  <tr ng-repeat="BalerEmptiedEvent in BalerEmptiedEventReportCtrl.BalerEmptiedEventService.BalerEmptiedEvents">
+  <tr ng-repeat="BalerEmptiedEvent in BalerEmptiedEventReportCtrl.balerEmptiedEvents">
       <td>
           <span>
             {{ BalerEmptiedEvent.baleDate.toLocaleDateString("en-US") || 'empty' }}

@@ -28,6 +28,7 @@ export class BalerEmptiedEventDataStore extends Persistence.PersistentDataStore<
      * @return {q.Promise<any>} [description]
      */
     initializeDataStore(): q.Promise<any> {
+      this.$log.debug("top of BalerEmptiedEventDataStore::initializeDataStore()");
         if (this.initialized) {
             return this.loadDataPromise()
                 .then((retVal: Array<BalerEmptiedEvent>) => {

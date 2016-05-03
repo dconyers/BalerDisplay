@@ -16,14 +16,6 @@ export class BalerEmptiedEventService {
         "PictureSrvc"
     ];
 
-    BalerEmptiedEvents: Array<BalerEmptiedEvent> = [
-        { _id: undefined, baleType: {_id: undefined, material: "PAP4", type: "OCC", gui: "Cardboard", min: 1200, max: 1300, currentType: false}, weight: 740, baleDate : new Date(2016, 3,  4, 15, 12, 32), transmitted: false},
-        { _id: undefined, baleType: {_id: undefined, material: "PAP2", type: "OCC", gui: "Cardboard", min: 1200, max: 1300, currentType: false}, weight: 720, baleDate : new Date(2016, 3,  3, 14, 26, 32), transmitted: false},
-        { _id: undefined, baleType: {_id: undefined, material: "PAP3", type: "OCC", gui: "Cardboard", min: 1200, max: 1300, currentType: false}, weight: 730, baleDate : new Date(2016, 3,  3, 11, 46, 11), transmitted: false},
-        { _id: undefined, baleType: {_id: undefined, material: "PAP1", type: "OCC", gui: "Cardboard", min: 1200, max: 1300, currentType: false}, weight: 701, baleDate : new Date(2016, 30, 2, 18, 33, 46), transmitted: false},
-        { _id: undefined, baleType: {_id: undefined, material: "PAP0", type: "OCC", gui: "Cardboard", min: 1200, max: 1300, currentType: false}, weight: 700, baleDate : new Date(2016, 3,  1, 11, 24, 40), transmitted: false},
-    ];
-
     constructor(private $log: ng.ILogService,
                 private loadCellMonitorService: LoadCellMonitorService,
                 private balerEmptiedEventDataStoreService: BalerEmptiedEventDataStore,
@@ -64,8 +56,11 @@ export class BalerEmptiedEventService {
         this.$log.error("Received exception taking picture");
       }).done();
 
+      const tmp = require("tmp");
+      let tmpName = tmp.tmpNameSync({template: "./photos/capture-XXXXXX"});
+      this.$log.debug("Temp Name is: " + tmpName);
 
-      this.pictureService.takePicture("./images/test.jpg",
+      this.pictureService.takePicture(tmpName,
         (pathname, err) => {
           if (err) {
             this.$log.error(err);
