@@ -9,13 +9,34 @@
       ng-model-options="{ getterSetter: true }" ng-virtual-keyboard>
   </fieldset>
 </form>
-  <fieldset class="form-group">
+  <fieldset class="form-group wifi-settings">
     <legend>WIFI</legend>
-    <label>SSID
-      <a href="" editable-select="networkSettingsCtrl.selectedSSID"
-                  e-ng-options="item as item.ssid for item in networkSettingsCtrl.SSIDList"
-                  onshow="networkSettingsCtrl.loadCurrentSSIDList()"
-                  class="center-block">
-        {{ networkSettingsCtrl.selectedSSID.ssid }}
-      </a>
+    <div class="col-sm-5">
+      <label>SSID</label>
+        <select class="form-control"
+                ng-model="networkSettingsCtrl.selectedSSID"
+                ng-options="item as item.ssid for item in networkSettingsCtrl.SSIDList track by item.ssid"
+                ng-change="networkSettingsCtrl.checkForConnectionFile()">
+        </select>
+      <div ng-show="networkSettingsCtrl.selectedSSID.ssid == 'New'" class="center-block">
+        <input class="form-control" type="text" ng-model="newSSID" ng-virtual-keyboard />
+        <button class="btn btn-primary" ng-click="networkSettingsCtrl.addSSID(newSSID)" translate>ADD</button>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <label translate>SECURITY</label>
+        <select class="form-control"
+                ng-model="networkSettingsCtrl.selectedSSID.security">
+          <option value="NONE" translate>NONE</option>
+          <option value="WPA">WPA</option>
+          <option value="WEP">WEP</option>
+        </select>
+    </div>
+    <div class="col-sm-3">
+      <label ng-hide="networkSettingsCtrl.selectedSSID.security == 'NONE'" translate>PASSPHRASE</label>
+      <input ng-hide="networkSettingsCtrl.selectedSSID.security == 'NONE'" class="form-control" type="password" ng-model="networkSettingsCtrl.selectedSSID.key" ng-virtual-keyboard />
+    </div>
+     <div class="col-sm-2">
+        <button class="btn btn-primary" ng-click="networkSettingsCtrl.saveWifiSettings()" translate>SAVE</button>
+    </div>
   </fieldset>

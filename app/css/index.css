@@ -351,3 +351,11 @@ a.list-group-item, button.list-group-item {
 .status-icons {
   margin-right: 30px !important;
 }
+
+.wifi-settings input, .wifi-settings label {
+  display: block;
+}
+
+.wifi-settings button {
+  margin-top: 25px;
+}

@@ -51,8 +51,11 @@ This document is designed to provide full instructions to allow a developer to g
 * Connection can be turned on and off with:
   * `sudo pon sim800`
   * `sudo poff sim800`
+  
+## Wifi configuration
+* bjn user needs to be able to do multiple things in the /etc/NetworkManager/system-connections directory as root user. For now, just allowing bjn user to execute all sudo commands without password. WARNING: THIS IS VERY INSECURE. ESSENTIALLY, USER bjn HAS COMPLETE ROOT ACCESS. Should probably create a shell script that can do everything, and only allow bjn to execute this script without a password.
+  * `sudo cp configFiles/wifi /etc/sudoers.d/`
 
-## Setup
 In order to setup your development environment, run the following:
 * Obtain the necessary Node dependencies - `npm install`
 * Obtain the necessary Typescript Definitions - `npm run typings install`

@@ -2,6 +2,9 @@ const execSync = require('child_process').execSync;
 const exec = require('child_process').exec;
 
 /*
+TODO: WEP Connection
+
+
 An alternative may be to launch onboard and network manager with custom sizing.
 http://askubuntu.com/questions/613973/how-can-i-start-up-an-application-with-a-pre-defined-window-size-and-position
 
@@ -43,44 +46,72 @@ export function WifiService() {
     ssid: string;
     key: string;
     conName: string;
+    security: string;
     
-    constructor(ssid: string, key: string, conName: string) {
+    constructor(ssid: string, key: string, conName: string, security: string) {
       this.ssid = ssid;
       this.key = key;
       this.conName = conName;
+      this.security = security;
     };
   };
   
   this.currentSSID = null;
+  this.macAddr = null;
   
   this.start = function() {
     let obj = this;
     this.checkStatus();
+    this.loadMacAddr();
     this.interval = setInterval(obj.checkStatus, 10000);
+  };
+  
+  this.loadMacAddr = () => {
+    let line = execSync("ifconfig wlan0 | grep HWaddr").toString();
+    let macStart = line.indexOf("HWaddr") + 7;
+    let macEnd = line.substring(macStart).indexOf(" ") + macStart;
+    this.macAddr = line.substring(macStart, macEnd).toUpperCase();
   };
   
   this.getSSIDs = function() {
     let ssids = [];
     // turn output into an array of lines
     let lines = execSync("nmcli -m multiline dev wifi list").toString().trim().split("\n");
-    for(var i = 0; i < Math.floor(lines.length / 8); i += 8) {
-      // Only list ssids that support WPA for now
-      var security = lines[i + 6].trim().split(/\s+/);
-      security.shift();
-      var supportsWPA = false;
-      for(var j = 0; j < security.length; j++) {
-        if(~security[j].indexOf("WPA")) {
-          supportsWPA = true;
-          break;
+    if(lines.length >= 8) {
+      for(var i = 0; i < lines.length; i += 8) {
+        // Only list ssids that support WPA for now
+        var security = lines[i + 6].trim().split(/\s+/);
+        var securityName = "";
+        security.shift();
+        var supportedSecurity = false;
+        for(var j = 0; j < security.length; j++) {
+          if(security[j] == "WPA" || security[j] == "WPA2") {
+            if(!(security.length > j + 1 && security[j + 1] == "Enterprise")) {
+              // We don't support enterprise wifi security
+              supportedSecurity = true;
+              securityName = "WPA";
+              break;
+            }
+          }
+          else if(security[j] == "WEP") {
+            securityName = "WEP";
+            supportedSecurity = true;
+            break;
+          }
         }
+        if(security.length < 1) {
+          // No security
+          supportedSecurity = true;
+          securityName = "NONE";
+        }
+        if(!supportedSecurity) {
+          continue;
+        }
+        var ssidStart = lines[i].indexOf("'") + 1;
+        var ssidEnd = lines[i].substring(ssidStart).indexOf("'");
+        var ssid = lines[i].substring(ssidStart).substring(0, ssidEnd);
+        ssids.push(new SSID(ssid, "", "", securityName));
       }
-      if(!supportsWPA) {
-        continue;
-      }
-      var ssidStart = lines[i].indexOf("'") + 1;
-      var ssidEnd = lines[i].substring(ssidStart).indexOf("'");
-      var ssid = lines[i].substring(ssidStart).substring(0, ssidEnd);
-      ssids.push(new SSID(ssid, "", ""));
     }
     return ssids;
   };
@@ -102,30 +133,121 @@ export function WifiService() {
     // turn output into an array of lines
     let lines = stdout.trim().split("\n");
     // Each device takes 6 lines, and the device name is on the 3rd
-    for(var i = 0; i < Math.floor(lines.length / 6); i += 6) {
-      var dev = lines[i + 2].split(/\s+/)[1];
-      if(~dev.indexOf("wlan")) {
-        var ssidStart = lines[i].substring(5).search(/\S/) + 5;
-        this.currentSSID = this.ssidFromName(lines[i].substring(ssidStart));
-        return;
+    if(lines.length >= 6) {
+      for(var i = 0; i < lines.length; i += 6) {
+        var dev = lines[i + 2].split(/\s+/)[1];
+        if(~dev.indexOf("wlan")) {
+          var ssidStart = lines[i].substring(5).search(/\S/) + 5;
+          this.currentSSID = this.ssidFromName(lines[i].substring(ssidStart));
+          return;
+        }
       }
     }
     this.currentSSID = null;
   };
   
   this.ssidFromName = function(conName: string) {
-    let lines = execSync("sudo sed -n -e 's/psk=\\(.*\\)/\\1/p' -e 's/ssid=\\(.*\\)/\\1/p' '/etc/NetworkManager/system-connections/" + conName + "'").toString().trim().split('\n');
-    var psk = lines[0];
-    var ssid = lines[1];
-    return new SSID(psk, ssid, conName);
+    let lines = execSync("sudo sed -n -e 's/ssid=\\(.*\\)/\\1/p' -e 's/psk=\\(.*\\)/\\1/p' -e 's/key-mgmt=\\(.*\\)/\\1/p' '/etc/NetworkManager/system-connections/" + conName + "'").toString().trim().split('\n');
+    var ssid = lines[0];
+    var psk = "";
+    var security = "NONE";
+    if(lines.length > 1) {
+      psk = lines[2];
+      security = lines[1];
+      switch(security) {
+        case "wpa-psk":
+          security = "WPA";
+          break;
+        case "none":
+          security = "WEP";
+          psk = execSync("sudo sed -n -e 's/wep-key0=\\(.*\\)/\\1/p' '/etc/NetworkManager/system-connections/" + conName + "'").toString().trim();
+          break;
+      }
+    }
+    return new SSID(ssid, psk, conName, security);
   };
   
   this.findConnectionFile = function(ssid: string) {
-    let files = execSync("sudo grep -rnwl /etc/NetworkManager/system-connections/ -e 'ssid=" + ssid + "'").toString().trim().split('\n');
+    let files = execSync("sudo grep -rnwl /etc/NetworkManager/system-connections/ -e 'ssid=" + ssid + "' || true").toString().trim().split('\n');
     return files;
   };
   
-  this.makeSSIDObj = (ssid: string, key: string, conName: string) => {
-    return new SSID(ssid, key, conName);
+  this.makeSSIDObj = (ssid: string, key: string, conName: string, security: string) => {
+    return new SSID(ssid, key, conName, security);
+  };
+  
+  this.saveSSID = (ssid: SSID) => {
+    if(ssid.conName === "") {
+      var files = this.findConnectionFile(ssid.ssid);
+      if(files.length > 1 && file[0] !== "") {
+        // file with ssid already exists
+        ssid.conName = files[0].split("/").pop();
+      }
+      else {
+        ssid.conName = ssid.ssid;
+      }
+    }
+    // generate uuid, takes a while
+    exec("uuidgen", (err, stdout, stderr) => {
+      if(err) {
+        console.log("uuidgen failed: " + err);
+        return;
+      }
+      if(stderr) {
+        console.log("uuidgen error: " + stderr);
+      }
+      if(stdout) {
+        let uuid = stdout.toString().trim();
+        this.buildConnectionString(uuid, ssid);
+      }
+    });
+  };
+  
+  this.buildConnectionString = (uuid: string, ssid) => {
+    let conString =
+    
+`[connection]
+id=${ssid.conName}
+uuid=${uuid}
+type=802-11-wireless
+
+[802-11-wireless]
+ssid=${ssid.ssid}
+mode=infrastructure
+mac-address=${this.macAddr}
+`;
+
+    if(ssid.security === "WPA" || ssid.security === "WEP") {
+      conString += "security=802-11-wireless-security\n\n[802-11-wireless-security]\n";
+    }
+    if(ssid.security === "WPA") {
+      conString +=
+      
+`key-mgmt=wpa-psk
+auth-alg=open
+psk=${ssid.key}
+`;
+    }
+    else if(ssid.security === "WEP") {
+            conString +=
+      
+`key-mgmt=none
+wep-key0=${ssid.key}
+`;
+    }
+    conString += "\n[ipv4]\nmethod=auto\n\n[ipv6]\nmethod=auto";
+    execSync("sudo sh -c 'umask 077; echo \"" + conString + "\" > \"/etc/NetworkManager/system-connections/" + ssid.conName + "\"'");
+    // Need to give nmcli a little time to load the new file
+    setTimeout(() => {
+      exec("nmcli c up id \'" + ssid.conName + "\'", (err, stdout, stderr) => {
+        if(err) {
+          console.log("nmcli c up id failed with: " + err);
+        }
+        if(stderr) {
+          console.log("nmcli outputed error: " + stderr);
+        }
+      });
+    },
+    2000);
   };
 }

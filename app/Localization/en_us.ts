@@ -47,5 +47,10 @@ const resources: ITranslationTable = {
     LAST_BALE_TIME: "Last Bale Time",
     LAST_BALE_WEIGHT: "Last Bale Weight",
     LAST_BALE_MATERIAL: "Last Bale Material",
+    ADD: "Add",
+    SECURITY: "Security",
+    NONE: "None",
+    PASSPHRASE: "Passphrase",
+    SAVE: "Save"
 };
 export = resources;
