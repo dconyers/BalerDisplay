@@ -67,16 +67,27 @@ export function WifiService() {
   };
   
   this.loadMacAddr = () => {
-    let line = execSync("ifconfig wlan0 | grep HWaddr").toString();
-    let macStart = line.indexOf("HWaddr") + 7;
-    let macEnd = line.substring(macStart).indexOf(" ") + macStart;
-    this.macAddr = line.substring(macStart, macEnd).toUpperCase();
+    try {
+      let line = execSync("ifconfig wlan0 | grep HWaddr").toString();
+      let macStart = line.indexOf("HWaddr") + 7;
+      let macEnd = line.substring(macStart).indexOf(" ") + macStart;
+      this.macAddr = line.substring(macStart, macEnd).toUpperCase();
+    }
+    catch(err) {
+      console.log("ifconfig wlan0 failed with: " + err.message);
+    }
   };
   
   this.getSSIDs = function() {
     let ssids = [];
     // turn output into an array of lines
-    let lines = execSync("nmcli -m multiline dev wifi list").toString().trim().split("\n");
+    let lines = [];
+    try {
+      lines = execSync("nmcli -m multiline dev wifi list").toString().trim().split("\n");
+    }
+    catch(err) {
+      console.log("nmcli -m multiline dev wifi list failed with: " + err.message);
+    }
     if(lines.length >= 8) {
       for(var i = 0; i < lines.length; i += 8) {
         // Only list ssids that support WPA for now
@@ -147,8 +158,15 @@ export function WifiService() {
   };
   
   this.ssidFromName = function(conName: string) {
-    let lines = execSync("sudo sed -n -e 's/ssid=\\(.*\\)/\\1/p' -e 's/psk=\\(.*\\)/\\1/p' -e 's/key-mgmt=\\(.*\\)/\\1/p' '/etc/NetworkManager/system-connections/" + conName + "'").toString().trim().split('\n');
-    var ssid = lines[0];
+    let lines = [];
+    let ssid = "";
+    try {
+      lines = execSync("sudo sed -n -e 's/ssid=\\(.*\\)/\\1/p' -e 's/psk=\\(.*\\)/\\1/p' -e 's/key-mgmt=\\(.*\\)/\\1/p' '/etc/NetworkManager/system-connections/" + conName + "'").toString().trim().split('\n');
+      ssid = lines[0];
+    }
+    catch(err) {
+      console.log("sed ... /etc/NetworkManager/system-connections/" + conName + " with: " + err.message);
+    }
     var psk = "";
     var security = "NONE";
     if(lines.length > 1) {
@@ -160,7 +178,12 @@ export function WifiService() {
           break;
         case "none":
           security = "WEP";
-          psk = execSync("sudo sed -n -e 's/wep-key0=\\(.*\\)/\\1/p' '/etc/NetworkManager/system-connections/" + conName + "'").toString().trim();
+          try {
+            psk = execSync("sudo sed -n -e 's/wep-key0=\\(.*\\)/\\1/p' '/etc/NetworkManager/system-connections/" + conName + "'").toString().trim();
+          }
+          catch(err) {
+             console.log("sed ... /etc/NetworkManager/system-connections/" + conName + " with: " + err.message);
+          }
           break;
       }
     }
@@ -168,7 +191,13 @@ export function WifiService() {
   };
   
   this.findConnectionFile = function(ssid: string) {
-    let files = execSync("sudo grep -rnwl /etc/NetworkManager/system-connections/ -e 'ssid=" + ssid + "' || true").toString().trim().split('\n');
+    let files = [];
+    try {
+      files = execSync("sudo grep -rnwl /etc/NetworkManager/system-connections/ -e 'ssid=" + ssid + "' || true").toString().trim().split('\n');
+    }
+    catch(err) {
+      console.log("sudo grep -rnwl /etc/NetworkManager/system-connections/ failed with: " + err.message);
+    }
     return files;
   };
   
@@ -236,7 +265,12 @@ wep-key0=${ssid.key}
 `;
     }
     conString += "\n[ipv4]\nmethod=auto\n\n[ipv6]\nmethod=auto";
-    execSync("sudo sh -c 'umask 077; echo \"" + conString + "\" > \"/etc/NetworkManager/system-connections/" + ssid.conName + "\"'");
+    try {
+      execSync("sudo sh -c 'umask 077; echo \"" + conString + "\" > \"/etc/NetworkManager/system-connections/" + ssid.conName + "\"'");
+    }
+    catch(err) {
+      console.log("sudo sh -c 'umask 077; echo ... > \"/etc/NetworkManager/system-connections/" + ssid.conName + "\"' failed with: " + err.message);
+    }
     // Need to give nmcli a little time to load the new file
     setTimeout(() => {
       exec("nmcli c up id \'" + ssid.conName + "\'", (err, stdout, stderr) => {
