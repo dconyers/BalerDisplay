@@ -48,17 +48,14 @@ export class BalerEmptiedEventService {
       this.pictureService.width = 1920;
       this.pictureService.height = 1080;
 
-      this.$log.debug("about to call takePicturePromise()");
-      this.pictureService.takePicturePromise("./images/test.jpg")
+      const tmp = require("tmp");
+      let tmpName = tmp.tmpNameSync({template: "./photos/capture-XXXXXX.jpg"});
+      this.pictureService.takePicturePromise(tmpName)
       .then((returnCode: number) => {
-        this.$log.debug("Got return code of: " + returnCode + " from takePicturePomise");
       }).catch((exception) => {
-        this.$log.error("Received exception taking picture");
+        this.$log.error("Received exception taking picture: " + exception);
       }).done();
 
-      const tmp = require("tmp");
-      let tmpName = tmp.tmpNameSync({template: "./photos/capture-XXXXXX"});
-      this.$log.debug("Temp Name is: " + tmpName);
     }
 
 }

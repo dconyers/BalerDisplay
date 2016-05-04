@@ -63,7 +63,6 @@ export class PictureSrvc {
     this.width = 680;
     this.height = 480;
     this.skipFrames = 5;
-    this.$log.debug("PictureSrvc::constructor");
   }
 
   /** @return 1 if busy, return 0 otherwise.
@@ -81,10 +80,11 @@ export class PictureSrvc {
       this.state = PictureState.Busy;
       this.curCallback = callback;
       this.curPathname = pathname;
-      child = exec("fswebcam -r " + this.width + "x" + this.height + " -S 10 "
+      let cmd = "fswebcam -r " + this.width + "x" + this.height + " -S 10 "
                    /* fswebcam outputs everything to stderr, with actual errors
                    colored red. */
-                   + pathname + " 2>&1 | " + filterRedAwk,
+                   + pathname + " 2>&1 | " + filterRedAwk;
+      child = exec(cmd,
                  ((err, stdout, stderr) => {
                    obj.childProcessCallback(err, stdout, stderr);
                  }));
@@ -96,14 +96,14 @@ export class PictureSrvc {
   }
 
   public takePicturePromise(pathname: string): q.Promise<number> {
-      let takePicturePromise: (pathname: string) => q.Promise<number> = q.nbind<number>(this.takePicture, this);
-      return takePicturePromise(pathname);
+      let myTakePicturePromise: (pathname: string) => q.Promise<number> = q.nbind<number>(this.takePicture, this);
+      return myTakePicturePromise(pathname);
   }
 
 
   childProcessCallback(err, stdout, stderr) {
     this.state = PictureState.Ready;
-    this.curCallback(this.curPathname, err, stdout, stderr);
+    this.curCallback(err, stdout, stderr);
   }
 
   static deletePicture(pathname: string) {
