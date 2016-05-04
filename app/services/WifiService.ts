@@ -179,7 +179,7 @@ export function WifiService() {
   this.saveSSID = (ssid: SSID) => {
     if(ssid.conName === "") {
       var files = this.findConnectionFile(ssid.ssid);
-      if(files.length > 1 && file[0] !== "") {
+      if(files.length > 1 && files[0] !== "") {
         // file with ssid already exists
         ssid.conName = files[0].split("/").pop();
       }

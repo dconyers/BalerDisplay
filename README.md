@@ -63,6 +63,16 @@ In order to setup your development environment, run the following:
 * Transcompile the Typescript to Javascript - `npm run tsc`
 * Run the application - `npm start`
 
+## Enable kiosk mode.
+* Edit main.ts
+`mainWindow = new BrowserWindow(
+  {
+    frame: false,
+    fullscreen: true,
+    kiosk: true
+  }
+);`
+
 ## TODO
 This is a prototype. There are lots of things that need to be done to make this a production package:
 * Add Comments / Function Headers
