@@ -11,7 +11,11 @@ ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.
             <div ng-controller="BaleTypeSelectorCtrl as baleTypeSelectorCtrl">
               <div class="small-image bjn-big-image" float="right">
                 <a href="#" class="thumbnail">
-                  <img class="center-block" ng-click="baleTypeSelectorCtrl.open()" ng-src="./BaleTypes/images/{{balerCtrl.balerData.baleType.imageName}}" />
+                  <img class="center-block"
+                       ng-click="baleTypeSelectorCtrl.open()"
+                       ng-src="./BaleTypes/images/{{balerCtrl.balerData.baleType ? balerCtrl.balerData.baleType.imageName : 'Question_mark_1.svg'}}"
+                       height="225"
+                       width="225" />
                 </a>
               </div>
             </div>
