@@ -59,19 +59,6 @@ export class BalerEmptiedEventService {
       const tmp = require("tmp");
       let tmpName = tmp.tmpNameSync({template: "./photos/capture-XXXXXX"});
       this.$log.debug("Temp Name is: " + tmpName);
-
-      this.pictureService.takePicture(tmpName,
-        (pathname, err) => {
-          if (err) {
-            this.$log.error(err);
-          }
-          else {
-            // record pathname to database ...
-            PictureSrvc.deletePicture(pathname);
-          }
-        }
-      );
-
     }
 
 }
