@@ -29,28 +29,25 @@ export class BaleTypesDataStore extends Persistence.PersistentDataStore<BaleType
                         });
                 });
         }
-        this.$log.debug("BaleTypesDataStore::initializeDataStore - initializing.");
         return this.loadDatabasePromise()
             .then((): q.Promise<number> => {
-                console.log("Database loaded, about to count rows");
                 return this.countAllRows();
             })
             .then((return_val: number) => {
-                console.log("got back row count of: " + return_val);
                 if (return_val === 0) {
                     return this.insertInitializationData();
                 }
             })
             .then(() => {
                 this.initialized = true;
-                return this.loadDataPromise()
-                    .then((retVal: Array<BaleType>) => {
-                            return retVal.sort((a: BaleType, b: BaleType) => {
-                                if (a.gui === undefined)
-                                    return 1;
-                                return a.gui.localeCompare(b.gui);
-                            });
-                    });
+                return this.loadDataPromise();
+            })
+            .then((retVal: Array<BaleType>) => {
+                return retVal.sort((a: BaleType, b: BaleType) => {
+                if (a.gui === undefined)
+                  return 1;
+                  return a.gui.localeCompare(b.gui);
+                });
             });
     }
 

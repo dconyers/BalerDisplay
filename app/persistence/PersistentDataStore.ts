@@ -13,9 +13,10 @@ export abstract class PersistentDataStore<T> extends NeDBDataStore {
         return PersistentDataStore.options;
     };
 
-    static options: NeDB.DataStoreOptions = {
+    static options: any = {
         inMemoryOnly : false,
         autoload : false,
+        timestampData: true,
     };
 
     onload = (error: Error) => {
@@ -37,17 +38,20 @@ export abstract class PersistentDataStore<T> extends NeDBDataStore {
         }
     };
 
-    deleteRow(id: any) {
-        console.log("deleteRow called");
+    deleteRowWithIDPromise(id: any) {
         let myDelete: (query: any) => q.Promise<number> = q.nbind<number>(this.remove, this);
         return myDelete({"_id": id});
+    }
+
+    deleteRowsPromise(query: any, options: NeDB.RemoveOptions) {
+        let myDelete: (query: any, options: NeDB.RemoveOptions) => q.Promise<number> = q.nbind<number>(this.remove, this);
+        return myDelete(query, options);
     }
 
     insertRowPromise(newRow: T): q.Promise<void> {
         let insertPromise: (newRow: T) => q.Promise<void> = q.nbind<void>(this.insert, this);
         return insertPromise(newRow);
     }
-
 
     updateRowPromise(id: any, updated: any, options: NeDB.UpdateOptions): q.Promise<number> {
         let updatePromise: (query: any, updated: any, options?: NeDB.UpdateOptions) => q.Promise<number> = q.nbind<number>(this.update, this);
@@ -57,6 +61,16 @@ export abstract class PersistentDataStore<T> extends NeDBDataStore {
     loadDatabasePromise(): q.Promise<void> {
         let myLoadDatabase: () => q.Promise<void> = q.nbind<void>(this.loadDatabase, this);
         return myLoadDatabase();
+    }
+
+    ensureIndexPromise(options: NeDB.EnsureIndexOptions): q.Promise<void> {
+      let myEnsureIndex: (options: NeDB.EnsureIndexOptions) => q.Promise<void> = q.nbind<void>(this.ensureIndex, this);
+      return myEnsureIndex(options);
+    }
+
+    removeIndexPromise(fieldName: string): q.Promise<void> {
+      let myRemoveIndex: (fieldName: string) => q.Promise<void> = q.nbind<void>(this.removeIndex, this);
+      return myRemoveIndex(fieldName);
     }
 
     // insert<T>(newDoc:T, cb?:(err:Error, document:T)=>void):void;

@@ -2,10 +2,10 @@
   "name": "BalerDisplay",
   "version": "0.0.1",
   "description": "Baler Display",
-  "repository" :
-    { "private": "true",
-      "type" : "git"
-    , "url" : "git+ssh://git@github.com:dconyers/BalerDisplay.git"
+  "repository": {
+    "private": "true",
+    "type": "git",
+    "url": "git+ssh://git@github.com:dconyers/BalerDisplay.git"
   },
   "readme": "../README.md",
   "main": "main.js",
@@ -43,9 +43,11 @@
     "bootstrap": "^3.3.6",
     "jquery": "^2.2.1",
     "jqwidgets-framework": "^4.1.1",
+    "log4js": "^0.6.35",
     "nan": "^2.2.0",
     "nedb": "^1.8.0",
     "q": "^1.4.1",
+    "tmp": "0.0.28",
     "webcam-directive": "~3.0.0"
   }
 }

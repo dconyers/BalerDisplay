@@ -1,6 +1,6 @@
 import {LoadCellDataService} from "./loadCell/LoadCellDataService";
 import {BaleTypesService} from "./BaleTypes/BaleTypesService";
-import {BaleEventService} from "./BaleEvent/BaleEventService";
+import {BalerEmptiedEventService} from "./BalerEmptiedEvent/BalerEmptiedEventService";
 import {BaleType} from "./BaleTypes/BaleType";
 import * as q from "q";
 import {BaleTypesDataStore} from "./BaleTypes/BaleTypesDataStore";
@@ -21,7 +21,7 @@ export class BalerCtrl {
     "LoadCellDataService",
     "BaleTypesService",
     "BaleTypesDataStoreService",
-    "BaleEventService"
+    "BalerEmptiedEventService"
   ];
 
   materialList: string[] = [];
@@ -56,7 +56,7 @@ export class BalerCtrl {
     private loadCellDataService: LoadCellDataService,
     private baleTypesService: BaleTypesService,
     private baleTypesDataStoreService: BaleTypesDataStore,
-    private baleEventService: BaleEventService) {
+    private BalerEmptiedEventService: BalerEmptiedEventService) {
     this.refreshData();
   }
 

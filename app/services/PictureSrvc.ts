@@ -1,5 +1,8 @@
+import * as q from "q";
+
+
 /* Service that provides way to take pictures with the webcam. Example usage:
- * 
+ *
  * // pictureSrvc should be injected
  * function someFunction(PictureSrvc) {
  *   // In this case, we want to change the default resolution.
@@ -19,7 +22,7 @@
  *   );
  */
 
-const exec = require('child_process').exec;
+const exec = require("child_process").exec;
 
 enum PictureState {
   Ready,
@@ -33,7 +36,7 @@ const filterRedAwk = "awk -v RS='\\033' '\
         gsub(/(^|;)0*[^03;][0-9]*($|;)/, \";\", color);\
         red = (color ~ /1;*$/)\
     }\
-    red'"
+    red'";
 
 export class PictureSrvc {
   width: number;
@@ -44,19 +47,24 @@ export class PictureSrvc {
   state: PictureState = PictureState.Ready;
   curCallback = null;
   curPathname: string = null;
-  
+
+  static $inject: string[] = [
+      "$log",
+  ];
+
+
   /** @param callback function that will be called when command to take picture
     * is complete. Callback should accept 2 strings.
     * - param1: requested pathname of picture to be taken
     * - param2: null if no errors occured. String describing errors if there
     *   are errors.
     */
-  constructor() {
+  constructor(private $log: ng.ILogService) {
     this.width = 680;
     this.height = 480;
     this.skipFrames = 5;
   }
-  
+
   /** @return 1 if busy, return 0 otherwise.
     *
     * @param callback function that will be called when command to take picture
@@ -65,34 +73,41 @@ export class PictureSrvc {
     * - param2: null if no errors occured. String describing errors if there
     *   are errors.
     */
-  takePicture(pathname: string, callback) {
+  takePicture(pathname: string, callback): number {
     let child;
     let obj = this;
-    if(this.state == PictureState.Ready) {
-      this.state = PictureState.Busy
+    if (this.state === PictureState.Ready) {
+      this.state = PictureState.Busy;
       this.curCallback = callback;
       this.curPathname = pathname;
-      child = exec('fswebcam -r ' + this.width + 'x' + this.height + ' -S 10 '
+      let cmd = "fswebcam -r " + this.width + "x" + this.height + " -S 10 "
                    /* fswebcam outputs everything to stderr, with actual errors
                    colored red. */
-                   + pathname + " 2>&1 | " + filterRedAwk,
-                 function(err, stdout, stderr) {
+                   + pathname + " 2>&1 | " + filterRedAwk;
+      child = exec(cmd,
+                 ((err, stdout, stderr) => {
                    obj.childProcessCallback(err, stdout, stderr);
-                 });
+                 }));
       return 0;
     }
     else {
       return 1;
     }
   }
-  
+
+  public takePicturePromise(pathname: string): q.Promise<number> {
+      let myTakePicturePromise: (pathname: string) => q.Promise<number> = q.nbind<number>(this.takePicture, this);
+      return myTakePicturePromise(pathname);
+  }
+
+
   childProcessCallback(err, stdout, stderr) {
     this.state = PictureState.Ready;
-    this.curCallback(this.curPathname, stdout ? stdout : err);
+    this.curCallback(err, stdout, stderr);
   }
-  
+
   static deletePicture(pathname: string) {
-    let child = exec('rm ' + pathname);
+    let child = exec("rm " + pathname);
   }
-  
+
 }
