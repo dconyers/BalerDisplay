@@ -23,28 +23,11 @@ export class BalerEmptiedEventService {
                 private pictureService: PictureSrvc) {
         loadCellMonitorService.on("BalerEmptiedEvent", (maxWeight, currentWeight) => {
           this.$log.debug("got BalerEmptied event max: " + maxWeight + " current: " + currentWeight);
-          this.takePicture();
-          baleTypesService.getCurrentBaleType()
-          .then((currentBaleType: BaleType) => {
-            let balerEmptiedEvent: BalerEmptiedEvent = {
-              baleType: currentBaleType,
-              weight: maxWeight,
-              baleDate : new Date(),
-              transmitted: false
-            };
-            balerEmptiedEventDataStoreService.insertRowPromise(balerEmptiedEvent);
-          })
-          .then(() => {
-            this.$log.debug("Successfully inserted new Row for balerEmptiedEvent");
-          })
-          .catch((exception) => {
-            this.$log.error("balerEmptiedEventDataStoreService.insertRowPromise failed: " + exception);
-          })
-          .done();
+          this.persist(maxWeight);
         });
     }
 
-    takePicture(): void {
+    persist(maxWeight: number): void {
       this.pictureService.width = 1920;
       this.pictureService.height = 1080;
 
@@ -52,9 +35,35 @@ export class BalerEmptiedEventService {
       let tmpName = tmp.tmpNameSync({template: "./photos/capture-XXXXXX.jpg"});
       this.pictureService.takePicturePromise(tmpName)
       .then((returnCode: number) => {
+        if(returnCode) {
+          // Service is busy.
+          // TODO: Not returnCode
+//          tmpName = "";
+        }
       }).catch((exception) => {
         this.$log.error("Received exception taking picture: " + exception);
-      }).done();
+        tmpName = "";
+      })
+      .then(() => {
+        return this.baleTypesService.getCurrentBaleType();
+      })
+      .then((currentBaleType: BaleType) => {
+        let balerEmptiedEvent: BalerEmptiedEvent = {
+          baleType: currentBaleType,
+          weight: maxWeight,
+          baleDate : new Date(),
+          transmitted: false,
+          photoPath: tmpName
+        };
+        this.balerEmptiedEventDataStoreService.insertRowPromise(balerEmptiedEvent);
+      })
+      .then(() => {
+        this.$log.debug("Successfully inserted new Row for balerEmptiedEvent");
+      })
+      .catch((exception) => {
+        this.$log.error("balerEmptiedEventDataStoreService.insertRowPromise failed: " + exception);
+      })
+      .done();
 
     }
 

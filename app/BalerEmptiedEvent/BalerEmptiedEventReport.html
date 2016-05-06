@@ -3,8 +3,9 @@
       <td style="width:15%">Bale Date</td>
       <td style="width:15%">Bale Time</td>
       <td style="width:15%">Material Type</td>
-      <td style="width:30%">Weight</td>
-      <td style="width:25%">Transmitted?</td>
+      <td style="width:15%">Weight</td>
+      <td style="width:15%">Transmitted?</td>
+      <td style="width:25%" translate>PHOTO</td>
   </tr>
   <tr ng-repeat="BalerEmptiedEvent in BalerEmptiedEventReportCtrl.balerEmptiedEvents">
       <td>
@@ -35,6 +36,15 @@
         <span>
           {{ BalerEmptiedEvent.transmitted }}
         </span>
+    </td>
+    
+    <td>
+        <img ng-show="BalerEmptiedEvent.photoPath"
+             ng-src="{{BalerEmptiedEvent.photoPath}}"
+             width="107px"
+             height="60px"
+             class="center-block">
+        </img>
     </td>
 
 
