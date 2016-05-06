@@ -39,7 +39,7 @@ export class BaleTypeSelectorCtrl {
     });
 
     modalInstance.result.then(function (selectedItem) {
-      this.selected = selectedItem;
+      // this.selected = selectedItem;
     }, () => {
       this.$log.info("Modal dismissed at: " + new Date());
     });
