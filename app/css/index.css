@@ -359,3 +359,7 @@ a.list-group-item, button.list-group-item {
 .wifi-settings button {
   margin-top: 25px;
 }
+
+.modal-body table {
+  width: 100%;
+}

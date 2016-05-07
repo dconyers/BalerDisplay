@@ -39,12 +39,14 @@
     </td>
     
     <td>
-        <img ng-show="BalerEmptiedEvent.photoPath"
-             ng-src="{{BalerEmptiedEvent.photoPath}}"
-             width="107px"
-             height="60px"
-             class="center-block">
-        </img>
+        <a ng-click="BalerEmptiedEventReportCtrl.openLightboxModal($index)">
+          <img ng-show="BalerEmptiedEvent.photoPath"
+               ng-src="{{BalerEmptiedEvent.photoPath}}"
+               width="107px"
+               height="60px"
+               class="center-block">
+          </img>
+        </a>
     </td>
 
 

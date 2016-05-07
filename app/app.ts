@@ -29,6 +29,8 @@ angular.module("balerApp", [
                              "ngRoute",
                              "xeditable",
                              "webcam",
+                             "ngTouch",
+                             "bootstrapLightbox",
                              "appRoutes",
                              "appConfig",
                              "jqwidgets"

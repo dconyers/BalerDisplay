@@ -1,0 +1,40 @@
+<div class="modal-body"
+    ng-swipe-left="Lightbox.nextImage()"
+    ng-swipe-right="Lightbox.prevImage()">
+
+  <!-- image -->
+  <div class="lightbox-image-container">
+    <img lightbox-src="{{Lightbox.imageUrl}}">
+  </div>
+
+  <!-- caption -->
+  <table>
+    <tr>
+      <th>Bale Date</th>
+      <th>Bale Time</th>
+      <th>Material Type</th>
+      <th>Weight</th>
+      <th>Transmitted?</th>
+    </tr>
+    <tr>
+      <td>{{Lightbox.image.baleDate.toLocaleDateString("en-US")}}</td>
+      <td>{{Lightbox.image.baleDate.toLocaleTimeString("en-US")}}</td>
+      <td>{{Lightbox.image.baleType.gui}}</td>
+      <td>{{Lightbox.image.weight}}</td>
+      <td>{{Lightbox.image.transmitted}}</td>
+    </tr>
+  </table>
+  
+  <div class="lightbox-nav">
+    <div class="btn-group" ng-if="Lightbox.images.length > 1">
+      <a class="btn btn-xs btn-primary" ng-click="Lightbox.prevImage()">
+        ‹ {{"PREVIOUS" | translate}}
+      </a>
+      <button class="btn btn-xs btn-primary" ng-click="$dismiss()" translate>CLOSE</button>
+      <a class="btn btn-xs btn-primary" ng-click="Lightbox.nextImage()">
+        {{"NEXT" | translate}} ›
+      </a>
+    </div>
+  </div>
+
+</div>
