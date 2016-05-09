@@ -8,11 +8,11 @@ ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.
     <div class="col-sm-8 nopadding">
       <div class="panel panel-default">
         <div id="MaterialSelectionWrapper" >
-            <div ng-controller="BaleTypeSelectorCtrl as baleTypeSelectorCtrl">
+            <div ng-controller="BaleTypesCtrl as baleTypesCtrl">
               <div class="small-image bjn-big-image" float="right">
                 <a href="#" class="thumbnail">
                   <img class="center-block"
-                       ng-click="baleTypeSelectorCtrl.open()"
+                       ng-click="baleTypesCtrl.changeCurrentBaleType()"
                        ng-src="./BaleTypes/images/{{balerCtrl.balerData.baleType ? balerCtrl.balerData.baleType.imageName : 'Question_mark_1.svg'}}"
                        height="225"
                        width="225" />
@@ -26,9 +26,9 @@ ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.
             <li class="list-group-item no-side-borders">
               <span translate class="info-title">{{"BalerStatsPanel.baleType"}}
               </span>
-              <span class="badge" ng-controller="BaleTypeSelectorCtrl as baleTypeSelectorCtrl">
+              <span class="badge" ng-controller="BaleTypesCtrl as baleTypesCtrl">
                 <!-- {{balerCtrl.balerData.baleType.gui}} -->
-                <a href="#" ng-click="baleTypeSelectorCtrl.open()">
+                <a href="#" ng-click="baleTypesCtrl.changeCurrentBaleType()">
                   {{balerCtrl.balerData.baleType.gui}}
                 </a>
               </span>
@@ -54,26 +54,26 @@ ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.
     </div>
   </div>
 </div>
-<ul  class="list-group list-group-flush">
+<ul  class="list-group list-group-flush" ng-controller="BalerEmptiedEventReportCtrl as balerEmptiedEventReportCtrl">
   <li class="list-group-item no-side-borders">
     <span translate class="info-title">{{"LAST_BALE_TIME"}}
     </span>
     <span class="badge">
-      {{balerCtrl.BalerEmptiedEventService.BalerEmptiedEvents[0].baleDate.toLocaleDateString("en-US")}} {{balerCtrl.BalerEmptiedEventService.BalerEmptiedEvents[0].baleDate.toLocaleTimeString("en-US")}}
+      {{balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents[balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents.length - 1].baleDate.toLocaleDateString("en-US")}} {{balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents[balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents.length - 1].baleDate.toLocaleTimeString("en-US")}}
     </span>
   </li>
   <li class="list-group-item no-side-borders">
     <span translate class="info-title">{{"LAST_BALE_WEIGHT"}}
     </span>
     <span class="badge">
-      {{balerCtrl.BalerEmptiedEventService.BalerEmptiedEvents[0].weight}}
+      {{balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents[balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents.length - 1].weight}}
     </span>
   </li>
   <li class="list-group-item no-side-borders">
     <span translate class="info-title">{{"LAST_BALE_MATERIAL"}}
     </span>
     <span class="badge">
-      {{balerCtrl.BalerEmptiedEventService.BalerEmptiedEvents[0].baleType.gui}}
+      {{balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents[balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents.length - 1].baleType.gui}}
     </span>
   </li>
 </ul>

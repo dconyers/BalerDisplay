@@ -23,12 +23,12 @@ app.on("ready", function() {
   // Create the browser window.
   mainWindow = new BrowserWindow(
     {
-//     frame: false,
-     frame: true,
+     frame: false,
+//     frame: true,
      resizable: false,
      width: 800,
      height: 480,
-//     kiosk: true
+    //  kiosk: true
      }
   );
 

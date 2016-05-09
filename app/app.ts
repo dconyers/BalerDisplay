@@ -1,7 +1,7 @@
-import {BalerCtrl} from "./balerCtrl";
-import {BaleTypesCtrl} from "./BaleTypes/baleTypesCtrl";
-import {BaleTypeSelectorCtrl} from "./BaleTypes/BaleTypeSelectorCtrl";
-import {BaleTypeSelectorInstanceCtrl} from "./BaleTypes/BaleTypeSelectorCtrl";
+import {BalerCtrl} from "./BalerCtrl";
+import {BaleTypesCtrl} from "./BaleTypes/BaleTypesCtrl";
+import {BaleTypeSelectorService} from "./BaleTypes/BaleTypeSelectorService";
+import {BaleTypeSelectorDlgCtrl} from "./BaleTypes/BaleTypeSelectorDlgCtrl";
 import {BalerEmptiedEventReportCtrl} from "./BalerEmptiedEvent/BalerEmptiedEventReportCtrl";
 import {BaleTypesDataStore} from "./BaleTypes/BaleTypesDataStore";
 import {BaleWeightRecordDataStore} from "./BaleWeightRecord/BaleWeightRecordDataStore";
@@ -17,6 +17,7 @@ import {LoadCellMonitorService} from "./services/LoadCellMonitorService";
 import {LoadCellDataService} from "./loadCell/LoadCellDataService";
 import {BalerEmptiedEventService} from "./BalerEmptiedEvent/BalerEmptiedEventService";
 import {BalerEmptiedEventDataStore} from "./BalerEmptiedEvent/BalerEmptiedEventDataStore";
+import {BalerEmptiedConfirmationDlgCtrl} from "./BalerEmptiedEvent/BalerEmptiedConfirmationDlgCtrl";
 import {MachineSettingsCtrl} from "./MachineSettings/MachineSettingsCtrl";
 import {SetCalModalCtrl} from "./MachineSettings/SetCalModalCtrl";
 import {CalibrationModalCtrl} from "./MachineSettings/CalibrationModalCtrl";
@@ -48,12 +49,13 @@ angular.module("balerApp", [
     .service("BalerEmptiedEventDataStoreService", BalerEmptiedEventDataStore)
     .service("BaleWeightRecordDataStoreService", BaleWeightRecordDataStore)
     .service("LoadCellMonitorService", LoadCellMonitorService)
+    .service("BaleTypeSelectorService", BaleTypeSelectorService)
     .controller("BalerCtrl", BalerCtrl)
     .controller("BalerEmptiedEventReportCtrl", BalerEmptiedEventReportCtrl)
+    .controller("BalerEmptiedConfirmationDlgCtrl", BalerEmptiedConfirmationDlgCtrl)
     .controller("LocalizationCtrl", LocalizationCtrl)
     .controller("BaleTypesCtrl", BaleTypesCtrl)
-    .controller("BaleTypeSelectorCtrl", BaleTypeSelectorCtrl)
-    .controller("BaleTypeSelectorInstanceCtrl", BaleTypeSelectorInstanceCtrl)
+    .controller("BaleTypeSelectorDlgCtrl", BaleTypeSelectorDlgCtrl)
     .controller("SettingsMenuCtrl", SettingsMenuCtrl)
     .controller("CameraTestCtrl", CameraTestCtrl)
     .controller("PictureModalCtrl", PictureModalCtrl)

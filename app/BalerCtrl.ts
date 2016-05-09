@@ -4,7 +4,6 @@ import {BalerEmptiedEventService} from "./BalerEmptiedEvent/BalerEmptiedEventSer
 import {BaleType} from "./BaleTypes/BaleType";
 import * as q from "q";
 import {BaleTypesDataStore} from "./BaleTypes/BaleTypesDataStore";
-import * as bb from "bootbox";
 
 export interface BalerData {
   baleType: BaleType;
@@ -60,9 +59,6 @@ export class BalerCtrl {
     this.refreshData();
   }
 
-
-
-
   public loadBaleTypeData(): q.Promise<any> {
     return this.baleTypesService.getMaterialList().then((retVal: string[]) => {
       this.materialList = retVal;
@@ -70,6 +66,7 @@ export class BalerCtrl {
   }
 
   private refreshData() {
+    this.$log.debug("BalerCtrl::refreshData");
     this.baleTypesDataStoreService.initializeDataStore()
       .then(() => {
         return this.baleTypesService.getCurrentBaleType();
@@ -100,5 +97,4 @@ export class BalerCtrl {
       });
     });
   }
-
 };

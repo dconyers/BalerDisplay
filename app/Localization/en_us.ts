@@ -32,6 +32,8 @@ const resources: ITranslationTable = {
     CAM_SUCCESS: "Successfully accessed camera.",
     TAKE_PICTURE: "Take Picture",
     CLOSE: "Close",
+    CONFIRM: "Confirm",
+    BALER_EMPTIED_CONFIRMATION_TITLE: "Baler Emptied Confirmation",
     TAKING_PICTURE: "Taking Picture",
     PICTURE_TAKEN: "Picture Taken",
     NETWORK_SETTINGS: "Network Settings",

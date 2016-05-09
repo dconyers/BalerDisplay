@@ -16,7 +16,7 @@ export class BaleTypesDataStore extends Persistence.PersistentDataStore<BaleType
             $log.debug("top of BaleTypesDataStore constructor");
     };
 
-    initializeDataStore(): q.Promise<any> {
+    public initializeDataStore(): q.Promise<any> {
         this.$log.debug("Top of BaleTypesDataStore::initializeDataStore");
         if (this.initialized) {
             this.$log.debug("BaleTypesDataStore::initializeDataStore - already inited, skipping.");

@@ -8,8 +8,11 @@ import {PictureSrvc} from "../services/PictureSrvc";
 
 export class BalerEmptiedEventService {
 
+    balerEmptiedEvents: Array<BalerEmptiedEvent> = [];
+
     static $inject: string[] = [
         "$log",
+        "$uibModal",
         "LoadCellMonitorService",
         "BalerEmptiedEventDataStoreService",
         "BaleTypesService",
@@ -17,10 +20,19 @@ export class BalerEmptiedEventService {
     ];
 
     constructor(private $log: ng.ILogService,
+                private $uibModal,
                 private loadCellMonitorService: LoadCellMonitorService,
                 private balerEmptiedEventDataStoreService: BalerEmptiedEventDataStore,
                 private baleTypesService: BaleTypesService,
                 private pictureService: PictureSrvc) {
+
+      loadCellMonitorService.on("BalerEmptiedEvent", (maxWeight, currentWeight) => {
+        this.$log.debug("BalerEmptiedEventReportCtrl::notified of BalerEmptiedEvent");
+        this.loadBalerEmptiedEvents();
+      });
+      this.loadBalerEmptiedEvents();
+
+
         loadCellMonitorService.on("BalerEmptiedEvent", (maxWeight, currentWeight) => {
           this.$log.debug("got BalerEmptied event max: " + maxWeight + " current: " + currentWeight);
           this.takePicture();
@@ -32,10 +44,18 @@ export class BalerEmptiedEventService {
               baleDate : new Date(),
               transmitted: false
             };
-            balerEmptiedEventDataStoreService.insertRowPromise(balerEmptiedEvent);
+            this.$log.debug("before insert of...");
+            this.$log.debug(balerEmptiedEvent);
+            return balerEmptiedEventDataStoreService.insertRowPromise(balerEmptiedEvent);
           })
-          .then(() => {
-            this.$log.debug("Successfully inserted new Row for balerEmptiedEvent");
+          .then((balerEmptiedEvent: BalerEmptiedEvent) => {
+            this.$log.debug("After insert, BalerEmptiedEvent is: ");
+            this.$log.debug(balerEmptiedEvent);
+            return this.openConfirmation(balerEmptiedEvent).result;
+          })
+          .then((balerEmptiedEvent: BalerEmptiedEvent) => {
+            this.$log.debug("After dialog edit, BalerEmptiedEvent is: ");
+            this.$log.debug(balerEmptiedEvent);
           })
           .catch((exception) => {
             this.$log.error("balerEmptiedEventDataStoreService.insertRowPromise failed: " + exception);
@@ -57,5 +77,39 @@ export class BalerEmptiedEventService {
       }).done();
 
     }
+
+    private modal: ng.ui.bootstrap.IModalServiceInstance = null;
+
+    openConfirmation(myBalerEmptiedEvent: BalerEmptiedEvent): any {
+
+      if (this.modal !== null) {
+        this.modal.dismiss("Previous Instance Unconfirmed, dismissing");
+      }
+
+      this.modal = this.$uibModal.open({
+        animation: true,
+        templateUrl:  "./BalerEmptiedEvent/BalerEmptiedConfirmationDlg.html",
+        controller:   "BalerEmptiedConfirmationDlgCtrl",
+        controllerAs: "balerEmptiedConfirmationDlgCtrl",
+        resolve: {
+          balerEmptiedEvent: () => {
+            this.$log.debug("sending: " + myBalerEmptiedEvent);
+            return myBalerEmptiedEvent;
+          }
+        }
+      });
+      return this.modal;
+    }
+
+    public loadBalerEmptiedEvents(): Array<BalerEmptiedEvent> {
+      this.$log.debug("BalerEmptiedEventReportCtrl::loadBalerEmptiedEvents called");
+      this.balerEmptiedEventDataStoreService.initializeDataStore().then((baleEvents: Array<BalerEmptiedEvent>) => {
+        this.$log.debug("Successfully loaded " + baleEvents.length + " Bale Events in loadBalerEmptiedEvents");
+        this.$log.debug(baleEvents);
+        this.balerEmptiedEvents = baleEvents;
+      });
+      return this.balerEmptiedEvents;
+    }
+
 
 }

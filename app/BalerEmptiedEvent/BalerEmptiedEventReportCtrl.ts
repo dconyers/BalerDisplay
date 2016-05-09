@@ -2,6 +2,7 @@ import {BaleTypesDataStore} from "../BaleTypes/BaleTypesDataStore";
 import {BalerEmptiedEvent} from "./BalerEmptiedEvent";
 import {BalerEmptiedEventService} from "./BalerEmptiedEventService";
 import {BalerEmptiedEventDataStore} from "./BalerEmptiedEventDataStore";
+import {LoadCellMonitorService} from "../services/LoadCellMonitorService";
 
 
 export class BalerEmptiedEventReportCtrl {
@@ -11,25 +12,18 @@ export class BalerEmptiedEventReportCtrl {
         "$log",
         "BalerEmptiedEventService",
         "BalerEmptiedEventDataStoreService",
+        "LoadCellMonitorService",
     ];
 
-    balerEmptiedEvents: Array<BalerEmptiedEvent> = [];
 
     constructor(private $scope: ng.IScope,
                 private $log: ng.ILogService,
-                private BalerEmptiedEventService: BalerEmptiedEventService,
-                private balerEmptiedEventDataStoreService: BalerEmptiedEventDataStore) {
+                public  balerEmptiedEventService: BalerEmptiedEventService,
+                private balerEmptiedEventDataStoreService: BalerEmptiedEventDataStore,
+                private loadCellMonitorService: LoadCellMonitorService) {
         this.$log.debug("Top of BalerEmptiedEventReportCtrl constructor");
-        this.loadBalerEmptiedEvents();
     }
 
-    public loadBalerEmptiedEvents(): Array<BalerEmptiedEvent> {
-      this.balerEmptiedEventDataStoreService.initializeDataStore().then((baleEvents: Array<BalerEmptiedEvent>) => {
-        this.$log.debug("Successfully loaded " + baleEvents.length + " Bale Events in loadBalerEmptiedEvents")
-        this.balerEmptiedEvents = baleEvents;
-      });
-      return this.balerEmptiedEvents;
-    }
 
 
 

@@ -3,13 +3,13 @@
 </div>
 <div class="modal-body">
   <ul class="clearfix">
-    <li class="small-image pull-left dougtest" ng-repeat="baleType in baleTypeSelectorInstanceCtrl.baleTypes">
+    <li class="small-image pull-left dougtest" ng-repeat="baleType in baleTypeSelectorDlgCtrl.baleTypes">
         <a href="#" class="thumbnail">
-          <img class="center-block" ng-src="./BaleTypes/images/{{baleType.imageName}}" ng-click="baleTypeSelectorInstanceCtrl.baleSelected(baleType)"/>
+          <img class="center-block" ng-src="./BaleTypes/images/{{baleType.imageName}}" ng-click="baleTypeSelectorDlgCtrl.baleSelected(baleType)"/>
         </a>
     </li>
   </ul>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-warning" type="button" ng-click="baleTypeSelectorInstanceCtrl.cancel()">Close</button>
+  <button class="btn btn-warning" type="button" ng-click="baleTypeSelectorDlgCtrl.cancel()">Close</button>
 </div>

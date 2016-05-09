@@ -48,8 +48,8 @@ export abstract class PersistentDataStore<T> extends NeDBDataStore {
         return myDelete(query, options);
     }
 
-    insertRowPromise(newRow: T): q.Promise<void> {
-        let insertPromise: (newRow: T) => q.Promise<void> = q.nbind<void>(this.insert, this);
+    insertRowPromise(newRow: T): q.Promise<T> {
+        let insertPromise: (newRow: T) => q.Promise<T> = q.nbind<T>(this.insert, this);
         return insertPromise(newRow);
     }
 

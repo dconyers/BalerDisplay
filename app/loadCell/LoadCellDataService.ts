@@ -29,7 +29,7 @@ process.on("exit", function() {
 
 export class LoadCellDataService {
 
-    weight: number = 500;
+    weight: number = 850;
     loadCellState: LoadCellState = LoadCellState.UNINITIALIZED;
     errorState: ErrorState = ErrorState.NONE;
     calSlope: number;
