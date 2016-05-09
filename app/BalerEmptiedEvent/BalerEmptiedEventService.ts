@@ -35,27 +35,31 @@ export class BalerEmptiedEventService {
 
         loadCellMonitorService.on("BalerEmptiedEvent", (maxWeight, currentWeight) => {
           this.$log.debug("got BalerEmptied event max: " + maxWeight + " current: " + currentWeight);
-          this.takePicture();
+          let pic_fname: string = this.takePicture();
           baleTypesService.getCurrentBaleType()
           .then((currentBaleType: BaleType) => {
             let balerEmptiedEvent: BalerEmptiedEvent = {
               baleType: currentBaleType,
               weight: maxWeight,
               baleDate : new Date(),
-              transmitted: false
+              transmitted: false,
+              photoPath: pic_fname
             };
-            this.$log.debug("before insert of...");
+            this.$log.debug("original inserted: " + balerEmptiedEvent);
             this.$log.debug(balerEmptiedEvent);
             return balerEmptiedEventDataStoreService.insertRowPromise(balerEmptiedEvent);
           })
           .then((balerEmptiedEvent: BalerEmptiedEvent) => {
-            this.$log.debug("After insert, BalerEmptiedEvent is: ");
-            this.$log.debug(balerEmptiedEvent);
             return this.openConfirmation(balerEmptiedEvent).result;
           })
           .then((balerEmptiedEvent: BalerEmptiedEvent) => {
-            this.$log.debug("After dialog edit, BalerEmptiedEvent is: ");
+
+            this.$log.debug("about to update with");
             this.$log.debug(balerEmptiedEvent);
+            return balerEmptiedEventDataStoreService.updateRowPromise(balerEmptiedEvent._id, balerEmptiedEvent, {});
+          })
+          .then((updatedRowCount: number) => {
+            this.$log.debug("return from update:" + updatedRowCount);
           })
           .catch((exception) => {
             this.$log.error("balerEmptiedEventDataStoreService.insertRowPromise failed: " + exception);
@@ -64,7 +68,7 @@ export class BalerEmptiedEventService {
         });
     }
 
-    takePicture(): void {
+    takePicture(): string {
       this.pictureService.width = 1920;
       this.pictureService.height = 1080;
 
@@ -75,7 +79,7 @@ export class BalerEmptiedEventService {
       }).catch((exception) => {
         this.$log.error("Received exception taking picture: " + exception);
       }).done();
-
+      return tmpName;
     }
 
     private modal: ng.ui.bootstrap.IModalServiceInstance = null;
@@ -105,7 +109,6 @@ export class BalerEmptiedEventService {
       this.$log.debug("BalerEmptiedEventReportCtrl::loadBalerEmptiedEvents called");
       this.balerEmptiedEventDataStoreService.initializeDataStore().then((baleEvents: Array<BalerEmptiedEvent>) => {
         this.$log.debug("Successfully loaded " + baleEvents.length + " Bale Events in loadBalerEmptiedEvents");
-        this.$log.debug(baleEvents);
         this.balerEmptiedEvents = baleEvents;
       });
       return this.balerEmptiedEvents;

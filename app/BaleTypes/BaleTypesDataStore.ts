@@ -13,10 +13,11 @@ export class BaleTypesDataStore extends Persistence.PersistentDataStore<BaleType
 
     constructor(private $log: ng.ILogService) {
             super("BaleTypes");
+            this.initializeDataStore(true);
             $log.debug("top of BaleTypesDataStore constructor");
     };
 
-    public initializeDataStore(): q.Promise<any> {
+    public initializeDataStore(seedData?: boolean): q.Promise<any> {
         this.$log.debug("Top of BaleTypesDataStore::initializeDataStore");
         if (this.initialized) {
             this.$log.debug("BaleTypesDataStore::initializeDataStore - already inited, skipping.");
@@ -34,7 +35,7 @@ export class BaleTypesDataStore extends Persistence.PersistentDataStore<BaleType
                 return this.countAllRows();
             })
             .then((return_val: number) => {
-                if (return_val === 0) {
+                if (return_val === 0 && seedData) {
                     return this.insertInitializationData();
                 }
             })

@@ -8,4 +8,5 @@ export interface BalerEmptiedEvent {
     weight: number;
     baleDate: Date;
     transmitted: boolean;
+    photoPath: string;
 };

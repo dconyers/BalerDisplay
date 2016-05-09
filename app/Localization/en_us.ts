@@ -53,6 +53,8 @@ const resources: ITranslationTable = {
     SECURITY: "Security",
     NONE: "None",
     PASSPHRASE: "Passphrase",
-    SAVE: "Save"
+    SAVE: "Save",
+    PHOTO: "Photo",
+    PREVIOUS: "Previous"
 };
 export = resources;

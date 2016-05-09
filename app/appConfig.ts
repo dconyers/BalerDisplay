@@ -9,8 +9,24 @@ angular
     .service("WifiService", WifiService)
     .run(runs);
 
-function configs($translateProvider) {
+function configs($translateProvider, LightboxProvider) {
   LocalizationProvider($translateProvider);
+  LightboxProvider.templateUrl = './BalerEmptiedEvent/lightboxModal.html';
+  LightboxProvider.calculateModalDimensions = function (dimensions) {
+    return {
+      'width': 'auto',                             // default
+      'height': 'auto'                            // custom
+    };
+  };
+  LightboxProvider.calculateImageDimensionLimits = function (dimensions) {
+    return {
+      'maxWidth': 512,
+      'maxHeight': 384                           // custom
+    };
+  };
+  LightboxProvider.getImageUrl = function (image) {
+    return image.photoPath;
+  };
 }
 
 function runs($rootScope, editableOptions, Sim800Srvc, WifiService) {

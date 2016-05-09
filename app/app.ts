@@ -30,6 +30,8 @@ angular.module("balerApp", [
                              "ngRoute",
                              "xeditable",
                              "webcam",
+                             "ngTouch",
+                             "bootstrapLightbox",
                              "appRoutes",
                              "appConfig",
                              "jqwidgets"
@@ -65,6 +67,15 @@ angular.module("balerApp", [
     .controller("SetCalModalCtrl", SetCalModalCtrl)
     .controller("CalibrationModalCtrl", CalibrationModalCtrl)
     .controller("CameraTestModalCtrl", CameraTestModalCtrl)
+    .run(["BaleTypesDataStoreService", "$log", (baleTypesDataStoreService, $log) => {
+      baleTypesDataStoreService.initializeDataStore().then(() => {
+        $log.debug("BaleTypesDataStoreService.initDataStore success:");
+      })
+      .catch((exception) => {
+        $log.error("Got exception: " + exception);
+      })
+      .done();
+    }])
     .run(["BaleWeightRecordDataStoreService", "$log", (baleWeightRecordDataStore, $log) => {
       baleWeightRecordDataStore.initializeDataStore().then(() => {
         $log.debug("BaleWeightRecordDataStore.initDataStore success:");

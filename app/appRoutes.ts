@@ -38,7 +38,7 @@ function config ($routeProvider) {
       title: "TRANSER_REPORT",
       templateUrl: "BalerEmptiedEvent/BalerEmptiedEventReport.html",
       controller: "BalerEmptiedEventReportCtrl",
-      controllerAs: "BalerEmptiedEventReportCtrl"
+      controllerAs: "balerEmptiedEventReportCtrl"
     }).
     when("/MachineSettings", {
       title: "MACHINE_SETTINGS",
