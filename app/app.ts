@@ -22,6 +22,7 @@ import {MachineSettingsCtrl} from "./MachineSettings/MachineSettingsCtrl";
 import {SetCalModalCtrl} from "./MachineSettings/SetCalModalCtrl";
 import {CalibrationModalCtrl} from "./MachineSettings/CalibrationModalCtrl";
 import {CameraTestModalCtrl} from "./MachineSettings/CameraTestModalCtrl";
+import {GPIOService} from "./services/GPIOService";
 
 angular.module("balerApp", [
                              "ui.bootstrap",
@@ -52,6 +53,7 @@ angular.module("balerApp", [
     .service("BaleWeightRecordDataStoreService", BaleWeightRecordDataStore)
     .service("LoadCellMonitorService", LoadCellMonitorService)
     .service("BaleTypeSelectorService", BaleTypeSelectorService)
+    .service("GPIOService", GPIOService)
     .controller("BalerCtrl", BalerCtrl)
     .controller("BalerEmptiedEventReportCtrl", BalerEmptiedEventReportCtrl)
     .controller("BalerEmptiedConfirmationDlgCtrl", BalerEmptiedConfirmationDlgCtrl)

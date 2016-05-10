@@ -209,7 +209,7 @@ export class LoadCellDataService {
 
     private simulateData(): void {
         this.weight +=  this.getRandomIntInclusive(-1, 4);
-        if (this.weight > 900) {
+        if (this.weight > 2000) {
           this.weight = 12;
         }
     }
