@@ -4,6 +4,7 @@ import {BaleTypeSelectorService} from "./BaleTypes/BaleTypeSelectorService";
 import {BaleTypeSelectorDlgCtrl} from "./BaleTypes/BaleTypeSelectorDlgCtrl";
 import {BalerEmptiedEventReportCtrl} from "./BalerEmptiedEvent/BalerEmptiedEventReportCtrl";
 import {BaleTypesDataStore} from "./BaleTypes/BaleTypesDataStore";
+import {UsersDataStore} from "./Users/UserDataStore";
 import {BaleWeightRecordDataStore} from "./BaleWeightRecord/BaleWeightRecordDataStore";
 import {BaleTypesService} from "./BaleTypes/BaleTypesService";
 import {LocalizationCtrl} from "./Localization/LocalizationCtrl";
@@ -52,6 +53,7 @@ angular.module("balerApp", [
     .service("BaleWeightRecordDataStoreService", BaleWeightRecordDataStore)
     .service("LoadCellMonitorService", LoadCellMonitorService)
     .service("BaleTypeSelectorService", BaleTypeSelectorService)
+    .service("UsersDataStoreService", UsersDataStore)
     .controller("BalerCtrl", BalerCtrl)
     .controller("BalerEmptiedEventReportCtrl", BalerEmptiedEventReportCtrl)
     .controller("BalerEmptiedConfirmationDlgCtrl", BalerEmptiedConfirmationDlgCtrl)
@@ -78,7 +80,7 @@ angular.module("balerApp", [
     }])
     .run(["BaleWeightRecordDataStoreService", "$log", (baleWeightRecordDataStore, $log) => {
       baleWeightRecordDataStore.initializeDataStore().then(() => {
-        $log.debug("BaleWeightRecordDataStore.initDataStore success:");
+        $log.debug("BaleWeightRecordDataStore.initializeDataStore success:");
       })
       .catch((exception) => {
         $log.error("Got exception: " + exception);
@@ -87,7 +89,16 @@ angular.module("balerApp", [
     }])
     .run(["BalerEmptiedEventDataStoreService", "$log", (balerEmptiedEventDataStore, $log) => {
       balerEmptiedEventDataStore.initializeDataStore().then(() => {
-        $log.debug("BalerEmptiedEventDataStore.initDataStore success:");
+        $log.debug("BalerEmptiedEventDataStore.initializeDataStore success:");
+      })
+      .catch((exception) => {
+        $log.error("Got exception: " + exception);
+      })
+      .done();
+    }])
+    .run(["UsersDataStoreService", "$log", (usersDataStore, $log) => {
+      usersDataStore.initializeDataStore().then(() => {
+        $log.debug("UsersDataStoreService.initializeDataStore success:");
       })
       .catch((exception) => {
         $log.error("Got exception: " + exception);

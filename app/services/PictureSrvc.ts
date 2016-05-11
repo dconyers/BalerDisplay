@@ -95,11 +95,26 @@ export class PictureSrvc {
     }
   }
 
-  public takePicturePromise(pathname: string): q.Promise<number> {
-      let myTakePicturePromise: (pathname: string) => q.Promise<number> = q.nbind<number>(this.takePicture, this);
-      return myTakePicturePromise(pathname);
-  }
+  takePicturePromise(): q.Promise<any> {
+    this.width = 1920;
+    this.height = 1080;
 
+    const tmp = require("tmp");
+    let tmpName = tmp.tmpNameSync({template: "./photos/capture-XXXXXX.jpg"});
+    let myTakePicturePromise: (pathname: string) => q.Promise<number> = q.nbind<number>(this.takePicture, this);
+    return myTakePicturePromise(tmpName)
+    .then((returnCode: number) => {
+      if (!returnCode) {
+        return tmpName;
+      } else {
+        this.$log.debug("Received error code: " + returnCode + " from PictureService TakePicture request");
+        return null;
+      }
+    }).catch((exception) => {
+      this.$log.error("Received exception taking picture: " + exception);
+      return null;
+    });
+  }
 
   childProcessCallback(err, stdout, stderr) {
     this.state = PictureState.Ready;

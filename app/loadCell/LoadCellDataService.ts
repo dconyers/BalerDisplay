@@ -202,16 +202,14 @@ export class LoadCellDataService {
              this.loadCellState !== LoadCellState.ERROR;
     }
 
-
     private getRandomIntInclusive(min: number, max: number): number {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     private simulateData(): void {
         this.weight +=  this.getRandomIntInclusive(-1, 4);
-        if (this.weight > 900) {
-          this.weight = 12;
+        if (this.weight > 1200) {
+          this.weight = 800;
         }
     }
-
 };

@@ -59,21 +59,21 @@ ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.
     <span translate class="info-title">{{"LAST_BALE_TIME"}}
     </span>
     <span class="badge">
-      {{balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents[balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents.length - 1].baleDate.toLocaleDateString("en-US")}} {{balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents[balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents.length - 1].baleDate.toLocaleTimeString("en-US")}}
+      {{(balerEmptiedEventReportCtrl.balerEmptiedEventService.getNewestBalerEmptiedEvent().baleDate)  | date:'medium'}}
     </span>
   </li>
   <li class="list-group-item no-side-borders">
     <span translate class="info-title">{{"LAST_BALE_WEIGHT"}}
     </span>
     <span class="badge">
-      {{balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents[balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents.length - 1].weight}}
+      {{balerEmptiedEventReportCtrl.balerEmptiedEventService.getNewestBalerEmptiedEvent().weight}}
     </span>
   </li>
   <li class="list-group-item no-side-borders">
     <span translate class="info-title">{{"LAST_BALE_MATERIAL"}}
     </span>
     <span class="badge">
-      {{balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents[balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents.length - 1].baleType.gui}}
+      {{balerEmptiedEventReportCtrl.balerEmptiedEventService.getNewestBalerEmptiedEvent().baleType.gui}}
     </span>
   </li>
 </ul>

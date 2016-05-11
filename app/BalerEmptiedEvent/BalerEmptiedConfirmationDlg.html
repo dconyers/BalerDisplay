@@ -2,32 +2,50 @@
   <h3 class="modal-title" translate>BALER_EMPTIED_CONFIRMATION_TITLE</h3>
 </div>
 <div class="modal-body">
-  <ul  class="list-group list-group-flush">
-    <li class="list-group-item no-side-borders">
-      <span translate class="info-title">{{"BalerStatsPanel.baleType"}}
-      </span>
-      <span class="badge" >
-        <a href="#" ng-click="balerEmptiedConfirmationDlgCtrl.userChangeBaleTypeRequest()">
-          {{balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.baleType.gui}}
-        </a>
-      </span>
-    </li>
-    <li class="list-group-item no-side-borders">
-      <span translate class="info-title">{{"LAST_BALE_WEIGHT"}}
-      </span>
-      <span class="badge">
-        {{balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.weight}}
-      </span>
-    </li>
-    <li class="list-group-item no-side-borders">
-      <span translate class="info-title">{{"LAST_BALE_TIME"}}
-      </span>
-      <span class="badge">
-        {{balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.baleDate}}
-      </span>
-    </li>
-  </ul>
+  <div class="row">
+    <div class="col-sm-4 nopadding" style="text-align: center">
+      <div class="small-image bjn-big-image" float="right">
+        <a href="#" class="thumbnail">
+          <img class="center-block"
+          ng-src="{{balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.photoPath ? balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.photoPath : 'BaleTypes/images/Question_mark_1.svg'}}"
+          alt="Image not Found."
+          height="225"
+          width="225" />
+      </a>
+    </div>
+    <a href="#" ng-click="balerEmptiedConfirmationDlgCtrl.userChangeBalePictureRequest()" translate>
+        {{"UPDATE_IMAGE"}}
+    </a>
+  </div>
+  <div class="col-sm-8 nopadding" style="text-align: left">
+    <ul  class="list-group list-group-flush">
+      <li class="list-group-item no-side-borders">
+        <span translate class="info-title">{{"BalerStatsPanel.baleType"}}
+        </span>
+        <span class="badge" >
+          <a href="#" ng-click="balerEmptiedConfirmationDlgCtrl.userChangeBaleTypeRequest()">
+            {{balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.baleType.gui}}
+          </a>
+        </span>
+      </li>
+      <li class="list-group-item no-side-borders">
+        <span translate class="info-title">{{"LAST_BALE_WEIGHT"}}
+        </span>
+        <span class="badge">
+          {{balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.weight}}
+        </span>
+      </li>
+      <li class="list-group-item no-side-borders">
+        <span translate class="info-title">{{"LAST_BALE_TIME"}}
+        </span>
+        <span class="badge">
+          {{balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.baleDate | date:'medium'}}
+        </span>
+      </li>
+    </ul>
+  </div>
 
+</div>
 </div>
 <div class="modal-footer">
   <button class="btn btn-primary" type="button" ng-click="balerEmptiedConfirmationDlgCtrl.confirm()" translate>CONFIRM</button>

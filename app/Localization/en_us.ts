@@ -20,6 +20,7 @@ const resources: ITranslationTable = {
     TRANSER_REPORT: "Bale Event Log",
     LANGUAGE: "Language",
     LOGOUT: "Logout",
+    UPDATE_IMAGE: "Update Image",
     MATERIAL_SETTINGS: "Material Settings",
     WORKER_MANAGEMENT: "Worker Management",
     MACHINE_SETTINGS: "Machine Settings",

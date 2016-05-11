@@ -38,6 +38,4 @@ export class BaleTypeSelectorDlgCtrl {
     this.$log.debug("cancel pressed");
     this.$uibModalInstance.dismiss("cancel");
   };
-
-
 };

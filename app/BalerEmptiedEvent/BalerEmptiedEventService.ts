@@ -35,8 +35,12 @@ export class BalerEmptiedEventService {
 
         loadCellMonitorService.on("BalerEmptiedEvent", (maxWeight, currentWeight) => {
           this.$log.debug("got BalerEmptied event max: " + maxWeight + " current: " + currentWeight);
-          let pic_fname: string = this.takePicture();
-          baleTypesService.getCurrentBaleType()
+          let pic_fname: string;
+          this.pictureService.takePicturePromise()
+          .then((filename: string) => {
+            pic_fname = filename;
+            return baleTypesService.getCurrentBaleType();
+          })
           .then((currentBaleType: BaleType) => {
             let balerEmptiedEvent: BalerEmptiedEvent = {
               baleType: currentBaleType,
@@ -68,19 +72,7 @@ export class BalerEmptiedEventService {
         });
     }
 
-    takePicture(): string {
-      this.pictureService.width = 1920;
-      this.pictureService.height = 1080;
 
-      const tmp = require("tmp");
-      let tmpName = tmp.tmpNameSync({template: "./photos/capture-XXXXXX.jpg"});
-      this.pictureService.takePicturePromise(tmpName)
-      .then((returnCode: number) => {
-      }).catch((exception) => {
-        this.$log.error("Received exception taking picture: " + exception);
-      }).done();
-      return tmpName;
-    }
 
     private modal: ng.ui.bootstrap.IModalServiceInstance = null;
 
@@ -112,6 +104,14 @@ export class BalerEmptiedEventService {
         this.balerEmptiedEvents = baleEvents;
       });
       return this.balerEmptiedEvents;
+    }
+
+    public getNewestBalerEmptiedEvent(): BalerEmptiedEvent {
+      if (!this.balerEmptiedEvents) {
+        return null;
+      }
+      let theEvent: BalerEmptiedEvent = this.balerEmptiedEvents[this.balerEmptiedEvents.length - 1];
+      return theEvent;
     }
 
 

@@ -1,6 +1,8 @@
 import {BalerEmptiedEvent} from "./BalerEmptiedEvent";
 import {BaleType} from "../BaleTypes/BaleType";
 import {BaleTypeSelectorService} from "../BaleTypes/BaleTypeSelectorService";
+import {PictureSrvc} from "../services/PictureSrvc";
+
 import * as q from "q";
 
 export class BalerEmptiedConfirmationDlgCtrl {
@@ -10,6 +12,7 @@ export class BalerEmptiedConfirmationDlgCtrl {
     "$uibModalInstance",
     "$log",
     "BaleTypeSelectorService",
+    "PictureSrvc",
     "balerEmptiedEvent"
   ];
 
@@ -17,6 +20,7 @@ export class BalerEmptiedConfirmationDlgCtrl {
     private $uibModalInstance,
     private $log,
     private baleTypeSelectorService: BaleTypeSelectorService,
+    private pictureSrvc: PictureSrvc,
     private balerEmptiedEvent: BalerEmptiedEvent) {
       $log.debug("BalerEmptiedConfirmationDlgCtrl constructor: " + balerEmptiedEvent);
     }
@@ -31,13 +35,25 @@ export class BalerEmptiedConfirmationDlgCtrl {
     this.$uibModalInstance.close(this.balerEmptiedEvent);
   }
 
+  userChangeBalePictureRequest(): void {
+    this.$log.debug("User Requested updated to Bale Picture");
+    this.pictureSrvc.takePicturePromise()
+    .then((newFilename: string) => {
+      this.balerEmptiedEvent.photoPath = newFilename;
+    })
+    .catch((exception) => {
+      this.$log.debug("Received exception taking updated picture: " + exception);
+    });
+  }
+
   userChangeBaleTypeRequest(): void {
     this.$log.debug("Current baleType is: " + this.balerEmptiedEvent.baleType.gui);
     this.baleTypeSelectorService.open().result.then((selectedItem: BaleType) => {
       this.$log.debug("user selected new value: " + selectedItem);
       this.balerEmptiedEvent.baleType = selectedItem;
     })
-    .catch(() => {
+    .catch((exception) => {
+      this.$log.debug("Received exception changing bale type: " + exception);
     });
   }
 };
