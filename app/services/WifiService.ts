@@ -91,7 +91,7 @@ export function WifiService() {
     if(lines.length >= 8) {
       for(var i = 0; i < lines.length; i += 8) {
         // Only list ssids that support WPA for now
-        var security = lines[i + 6].trim().split(/\s+/);
+        var security = lines[i + 7].trim().split(/\s+/);
         var securityName = "";
         security.shift();
         var supportedSecurity = false;
@@ -118,6 +118,17 @@ export function WifiService() {
         if(!supportedSecurity) {
           continue;
         }
+/* list syntax on pi
+*:                                       
+SSID:                                   Choice-Staffing-2
+MODE:                                   Infra
+CHAN:                                   11
+RATE:                                   54 Mbit/s
+SIGNAL:                                 74
+BARS:                                   ▂▄▆_
+SECURITY:                               WPA1 WPA2
+
+*/
         var ssidStart = lines[i].indexOf("'") + 1;
         var ssidEnd = lines[i].substring(ssidStart).indexOf("'");
         var ssid = lines[i].substring(ssidStart).substring(0, ssidEnd);
@@ -143,10 +154,10 @@ export function WifiService() {
     }
     // turn output into an array of lines
     let lines = stdout.trim().split("\n");
-    // Each device takes 6 lines, and the device name is on the 3rd
-    if(lines.length >= 6) {
-      for(var i = 0; i < lines.length; i += 6) {
-        var dev = lines[i + 2].split(/\s+/)[1];
+    // Each device takes 6 lines, and the device name is on the 8th
+    if(lines.length >= 8) {
+      for(var i = 0; i < lines.length; i += 8) {
+        var dev = lines[i + 7].split(/\s+/)[1];
         if(~dev.indexOf("wlan")) {
           var ssidStart = lines[i].substring(5).search(/\S/) + 5;
           this.currentSSID = this.ssidFromName(lines[i].substring(ssidStart));
