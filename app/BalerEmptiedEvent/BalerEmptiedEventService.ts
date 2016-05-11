@@ -47,15 +47,16 @@ export class BalerEmptiedEventService {
           return balerEmptiedEventDataStoreService.insertRowPromise(balerEmptiedEvent);
         })
         .then((balerEmptiedEvent: BalerEmptiedEvent) => {
+          this.loadBalerEmptiedEvents();
           return this.openConfirmation(balerEmptiedEvent).result;
         })
         .then((balerEmptiedEvent: BalerEmptiedEvent) => {
-
           this.$log.debug("about to update with");
           this.$log.debug(balerEmptiedEvent);
           return balerEmptiedEventDataStoreService.updateRowPromise(balerEmptiedEvent._id, balerEmptiedEvent, {});
         })
         .then((updatedRowCount: number) => {
+          this.loadBalerEmptiedEvents();
           this.$log.debug("return from update:" + updatedRowCount);
         })
         .catch((exception) => {
@@ -64,10 +65,6 @@ export class BalerEmptiedEventService {
         .done();
     });
 
-    loadCellMonitorService.on("BalerEmptiedEvent", (maxWeight, currentWeight) => {
-      this.$log.debug("BalerEmptiedEventReportCtrl::notified of BalerEmptiedEvent");
-      this.loadBalerEmptiedEvents();
-    });
     this.loadBalerEmptiedEvents();
   }
 
