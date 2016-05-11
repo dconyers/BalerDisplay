@@ -73,7 +73,7 @@ export class PictureSrvc {
     * - param2: null if no errors occured. String describing errors if there
     *   are errors.
     */
-  takePicture(pathname: string, callback): number {
+  takePicture(pathname: string, callback): void {
     let child;
     let obj = this;
     if (this.state === PictureState.Ready) {
@@ -88,10 +88,9 @@ export class PictureSrvc {
                  ((err, stdout, stderr) => {
                    obj.childProcessCallback(err, stdout, stderr);
                  }));
-      return 0;
     }
     else {
-      return 1;
+      this.curCallback("PictureState not ready");
     }
   }
 
@@ -103,13 +102,8 @@ export class PictureSrvc {
     let tmpName = tmp.tmpNameSync({template: "./photos/capture-XXXXXX.jpg"});
     let myTakePicturePromise: (pathname: string) => q.Promise<number> = q.nbind<number>(this.takePicture, this);
     return myTakePicturePromise(tmpName)
-    .then((returnCode: number) => {
-      if (!returnCode) {
+    .then(() => {
         return tmpName;
-      } else {
-        this.$log.debug("Received error code: " + returnCode + " from PictureService TakePicture request");
-        return null;
-      }
     }).catch((exception) => {
       this.$log.error("Received exception taking picture: " + exception);
       return null;
