@@ -79,10 +79,23 @@ export abstract class PersistentDataStore<T> extends NeDBDataStore {
         return myInitDatabase(this.getInitData());
     }
 
-    loadDataPromise(): q.Promise<Array<T>> {
-        let find: (query: any) => q.Promise<Array<T>> = q.nbind<Array<T>>(this.find, this);
-        return find({});
+    loadDataPromise(sortParam?: any, limit?: number): q.Promise<Array<T>> {
+        let cursor: NeDB.Cursor<T> = this.find({});
+        if (sortParam !== null) {
+          cursor = cursor.sort(sortParam);
+        }
+        if (limit !== null && limit > 0) {
+          cursor = cursor.limit(limit);
+        }
+        let cursorExec: () => q.Promise<Array<T>> = q.nbind<Array<T>>(cursor.exec, cursor);
+        return cursorExec();
     }
+
+
+    // loadDataPromise(): q.Promise<Array<T>> {
+    //     let find: (query: any) => q.Promise<Array<T>> = q.nbind<Array<T>>(this.find, this);
+    //     return find({});
+    // }
 
     findOnePromise(query: any): q.Promise<T> {
         let findOnePromise: (query: any) => q.Promise<T> = q.nbind<T>(this.findOne, this);

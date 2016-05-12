@@ -44,12 +44,12 @@ At this point, it's recommend to go ahead and upgrade the system as well:
   * `sudo apt-get install libusb-1.0-0-dev`
   * Setup udev configuration: `sudo cp ~/BalerDisplay/piSetup/configFiles/SiliconLabs.rules /etc/udev/rules.d/`
   * Build the addon - `npm run build_addon`  
+    * You may need to install g++ if it's not already installed `sudo apt install build-essential`  
 
 ## Baler Display (Nodejs) Software
 In order to setup your development environment, run the following:  
 
 * Obtain the necessary Node dependencies - `npm install`  
-  * You may need to install g++ if it's not already installed `sudo apt install build-essential`  
 * Obtain the necessary Typescript Definitions - `npm run typings install`  
 * Transcompile the Typescript to Javascript - `npm run tsc`  
 * Run the application - `npm start`  

@@ -15,13 +15,6 @@ export class BalerEmptiedEventDataStore extends Persistence.PersistentDataStore<
             super("BalerEmptiedEvents");
     };
 
-
-    sort(a: BalerEmptiedEvent, b: BalerEmptiedEvent): number {
-      if ((a.createdAt === undefined) || (a.createdAt === null))
-        return 1;
-      return a.createdAt.valueOf() - b.createdAt.valueOf();
-    }
-
     /**
      * Method initializes the data store by loading the database, counting the number
      * of rows and seeding it with data if necessary
@@ -30,18 +23,12 @@ export class BalerEmptiedEventDataStore extends Persistence.PersistentDataStore<
     initializeDataStore(): q.Promise<any> {
       this.$log.debug("top of BalerEmptiedEventDataStore::initializeDataStore()");
         if (this.initialized) {
-            return this.loadDataPromise()
-                .then((retVal: Array<BalerEmptiedEvent>) => {
-                        return retVal.sort( (a, b): number => { return this.sort(a, b); });
-                });
+            return this.loadDataPromise({createdAt: -1}, 10);
         }
         return this.loadDatabasePromise()
             .then(() => {
                 this.initialized = true;
-                return this.loadDataPromise();
-            })
-            .then((retVal: Array<BalerEmptiedEvent>) => {
-                return retVal.sort( (a, b): number => { return this.sort(a, b); });
+                return this.loadDataPromise({createdAt: -1}, 10);
             });
     }
 

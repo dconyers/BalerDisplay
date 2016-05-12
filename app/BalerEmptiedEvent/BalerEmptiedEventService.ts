@@ -106,9 +106,7 @@ export class BalerEmptiedEventService {
     if (!this.balerEmptiedEvents) {
       return null;
     }
-    let theEvent: BalerEmptiedEvent = this.balerEmptiedEvents[this.balerEmptiedEvents.length - 1];
+    let theEvent: BalerEmptiedEvent = this.balerEmptiedEvents[0];
     return theEvent;
   }
-
-
 }
