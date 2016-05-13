@@ -5,6 +5,7 @@ import {LoadCellMonitorService} from "../services/LoadCellMonitorService";
 import {BaleTypesService} from "../BaleTypes/BaleTypesService";
 import {BaleType} from "../BaleTypes/BaleType";
 import {PictureSrvc} from "../services/PictureSrvc";
+import {QRService} from "../services/QRService";
 
 export class BalerEmptiedEventService {
 
