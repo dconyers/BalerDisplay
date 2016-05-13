@@ -133,7 +133,7 @@ export class GPIOPin {
     this.turnOn(onDur, this.blinkCallback);
   }
   
-  private blinkCallback(result: CmdResult) {
+  private blinkCallback = (result: CmdResult) => {
     if(result == CmdResult.SUCCESSFUL) {
       if(this.blinkIsOn) {
         // turn off
