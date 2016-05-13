@@ -1,45 +1,6 @@
 const execSync = require('child_process').execSync;
 const exec = require('child_process').exec;
-
-/*
-TODO: WEP Connection
-
-
-An alternative may be to launch onboard and network manager with custom sizing.
-http://askubuntu.com/questions/613973/how-can-i-start-up-an-application-with-a-pre-defined-window-size-and-position
-
-New version of nmcli do not have ability to add connections. Must do it by adding
-an ini file to /etc/NetworkManager/system-connections/.
-
-For now. Only going to support WPA-PSK with open authentication. Syntax:
-
-[connection]
-id=bjnbox // ssid
-uuid=7a747fd9-4d5c-4f24-99e0-1f6e6af63808 // use uuidgen to generate
-type=802-11-wireless // always use this
-
-[802-11-wireless-security]
-key-mgmt=wpa-psk // always
-auth-alg=open // always
-psk=87654321 // key
-
-[802-11-wireless]
-ssid=bjnbox // ssid
-mode=infrastructure // always
-mac-address=7C:D1:C3:F6:1C:71 // can get from ifconfig
-security=802-11-wireless-security // always
-
-[ipv4]
-method=auto
-// or
-method=manual
-dns=192.168.2.11;
-addresses1=192.168.2.200;24;192.168.2.1;
-
-[ipv6]
-method=auto
-
-*/
+const reSSID = /[^\s]+\s+([^s]+.*)\n/;
 
 export function WifiService() {
   class SSID {
@@ -124,14 +85,12 @@ SSID:                                   Choice-Staffing-2
 MODE:                                   Infra
 CHAN:                                   11
 RATE:                                   54 Mbit/s
-SIGNAL:                                 74
+SIGNAL:           s                      74
 BARS:                                   ▂▄▆_
 SECURITY:                               WPA1 WPA2
 
 */
-        var ssidStart = lines[i].indexOf("'") + 1;
-        var ssidEnd = lines[i].substring(ssidStart).indexOf("'");
-        var ssid = lines[i].substring(ssidStart).substring(0, ssidEnd);
+        var ssid = reSSID.exec(lines[i+1])[1];
         ssids.push(new SSID(ssid, "", "", securityName));
       }
     }
@@ -140,8 +99,24 @@ SECURITY:                               WPA1 WPA2
   
   this.checkStatus = () => {
     let obj = this;
-    let child = exec("nmcli -m multiline c s", obj.parseStatus);
+    let child = exec("nmcli -m multiline c s --active", obj.parseStatus);
   };
+/*
+example nmcli -m multiline c s output:
+NAME:                                   Wired connection 1
+UUID:                                   41530c48-8d52-41ac-87f6-103b439d7fd2
+TYPE:                                   802-3-ethernet
+DEVICE:                                 --
+NAME:                                   ATT4b4s7a3
+UUID:                                   a39554a2-b393-4643-951c-b5e3ed84a009
+TYPE:                                   802-11-wireless
+DEVICE:                                 wlan0
+NAME:                                   bjnbox
+UUID:                                   a8e9de96-45bd-4e48-ba43-173476e4f756
+TYPE:                                   802-11-wireless
+DEVICE:                                 --
+
+*/
   
   this.parseStatus = (err, stdout, stderr) => {
     if(err) {
@@ -154,10 +129,10 @@ SECURITY:                               WPA1 WPA2
     }
     // turn output into an array of lines
     let lines = stdout.trim().split("\n");
-    // Each device takes 6 lines, and the device name is on the 8th
-    if(lines.length >= 8) {
-      for(var i = 0; i < lines.length; i += 8) {
-        var dev = lines[i + 7].split(/\s+/)[1];
+    // Each device takes 4 lines, and the device name is on the 4th
+    if(lines.length >= 4) {
+      for(var i = 0; i < lines.length; i += 4) {
+        var dev = lines[i + 3].split(/\s+/)[1];
         if(~dev.indexOf("wlan")) {
           var ssidStart = lines[i].substring(5).search(/\S/) + 5;
           this.currentSSID = this.ssidFromName(lines[i].substring(ssidStart));
