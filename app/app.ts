@@ -23,6 +23,7 @@ import {SetCalModalCtrl} from "./MachineSettings/SetCalModalCtrl";
 import {CalibrationModalCtrl} from "./MachineSettings/CalibrationModalCtrl";
 import {CameraTestModalCtrl} from "./MachineSettings/CameraTestModalCtrl";
 import {GPIOService} from "./services/GPIOService";
+import {QRService} from "./services/QRService";
 import {WorkersDataStore} from "./WorkerSettings/WorkersDataStore";
 import {WorkerSelectorService} from "./WorkerSettings/WorkerSelectorService";
 import {WorkerSelectorDlgCtrl} from "./WorkerSettings/WorkerSelectorDlgCtrl";
@@ -62,6 +63,7 @@ angular.module("balerApp", [
     .service("WorkersDataStoreService", WorkersDataStore)
     .service("WorkerSelectorService", WorkersDataStore)
     .service("WorkersService", WorkersService)
+    .service("QRService", QRService)
     .controller("BalerCtrl", BalerCtrl)
     .controller("BalerEmptiedEventReportCtrl", BalerEmptiedEventReportCtrl)
     .controller("BalerEmptiedConfirmationDlgCtrl", BalerEmptiedConfirmationDlgCtrl)

@@ -13,9 +13,9 @@
    
 */
 
-const sim800PowerPin = 0;
-const yellowLEDPin = 28;
-const redLEDPin = 29;
+const sim800PowerPinNum = 0;
+const yellowLEDPinNum = 28;
+const redLEDPinNum = 29;
 
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
@@ -51,7 +51,7 @@ export class GPIOPin {
     this.isBlinking = false;
   }
   
-  setMode(mode: PinMode) {
+  setMode = (mode: PinMode) => {
     switch(mode) {
       case PinMode.OUT:
         try {
@@ -70,25 +70,28 @@ export class GPIOPin {
       
       @param callback optional callback to notify completion.
   */
-  turnOn(duration: number, callback) {
+  turnOn = (duration: number, callback) => {
     try {
+      if(!this.gpioNum) {
+        console.log("gpioNum undefined????");
+      }
       let child = execSync('gpio write ' + this.gpioNum + ' 1');
       this.isHigh = true;
+      if(duration) {
+        this.setNewTimeout(this.turnOff, duration, 0, callback);
+      }
+      else {
+        if(callback) {
+          callback(CmdResult.SUCCESSFUL);
+        }
+        this.currentCallback = null;
+      }
     }
     catch(err) {
       console.log('gpio write ' + this.gpioNum + ' 1 failed with: ' + err.message);
       if(callback) {
         callback(CmdResult.ERROR);
       }
-    }
-    if(duration) {
-      this.setNewTimeout(this.turnOff, duration, 0, callback);
-    }
-    else {
-      if(callback) {
-        callback(CmdResult.SUCCESSFUL);
-      }
-      this.currentCallback = null;
     }
   }
   
@@ -97,25 +100,28 @@ export class GPIOPin {
       
       @param callback optional callback to notify completion.
   */
-  turnOff(duration: number, callback) {
+  turnOff = (duration: number, callback) => {
     try {
+      if(!this.gpioNum) {
+        console.log("gpioNum undefined????");
+      }
       let child = execSync('gpio write ' + this.gpioNum + ' 0');
       this.isHigh = false;
+      if(duration) {
+        this.setNewTimeout(this.turnOn, duration, 0, callback);
+      }
+      else {
+        if(callback) {
+          callback(CmdResult.SUCCESSFUL);
+        }
+        this.currentCallback = null;
+      }
     }
     catch(err) {
       console.log('gpio write ' + this.gpioNum + ' 0 failed with: ' + err.message);
       if(callback) {
         callback(CmdResult.ERROR);
       }
-    }
-    if(duration) {
-      this.setNewTimeout(this.turnOn, duration, 0, callback);
-    }
-    else {
-      if(callback) {
-        callback(CmdResult.SUCCESSFUL);
-      }
-      this.currentCallback = null;
     }
   }
   
@@ -125,7 +131,7 @@ export class GPIOPin {
      @param offDur duration pin should be low.
      @paeam startHigh 
   */
-  blink(onDur: number, offDur: number) {
+  blink = (onDur: number, offDur: number) => {
     this.blinkOnDur = onDur;
     this.blinkOffDur = offDur;
     this.blinkIsOn = true;
@@ -133,7 +139,7 @@ export class GPIOPin {
     this.turnOn(onDur, this.blinkCallback);
   }
   
-  private blinkCallback(result: CmdResult) {
+  private blinkCallback = (result: CmdResult) => {
     if(result == CmdResult.SUCCESSFUL) {
       if(this.blinkIsOn) {
         // turn off
@@ -156,7 +162,7 @@ export class GPIOPin {
      @param secondDuration Duration of next action.
      @param callback Called to notify when command completes
   */
-  private setNewTimeout(fun, dur, secondDuration, callback) {
+  private setNewTimeout = (fun, dur, secondDuration, callback) => {
     if(this.currentTimeout) {
       clearTimeout(this.currentTimeout);
       this.currentTimeout = null;
@@ -176,16 +182,19 @@ export class GPIOService {
   redLEDPin: GPIOPin;
   
   constructor() {
-    this.sim800PowerPin = new GPIOPin(sim800PowerPin);
-    this.yellowLEDPin = new GPIOPin(yellowLEDPin);
-    this.redLEDPin = new GPIOPin(redLEDPin);
+    this.sim800PowerPin = new GPIOPin(sim800PowerPinNum);
+    this.yellowLEDPin = new GPIOPin(yellowLEDPinNum);
+    this.redLEDPin = new GPIOPin(redLEDPinNum);
+    this.sim800PowerPin.setMode(PinMode.OUT);
+    this.yellowLEDPin.setMode(PinMode.OUT);
+    this.redLEDPin.setMode(PinMode.OUT);
   }
   
-  turnOnSim800(callback) {
+  turnOnSim800 = (callback) => {
     this.sim800PowerPin.turnOn(2000, callback);
   }
   
-  toggleYellowLED() {
+  toggleYellowLED = () => {
     if(this.yellowLEDPin.isHigh) {
       this.yellowLEDPin.turnOff(0, null);
     }
@@ -194,7 +203,7 @@ export class GPIOService {
     }
   }
   
-  toggleRedLED() {
+  toggleRedLED = () => {
     if(this.redLEDPin.isHigh) {
       this.redLEDPin.turnOff(0, null);
     }
@@ -203,7 +212,7 @@ export class GPIOService {
     }
   }
   
-  showWarningState() {
+  showWarningState = () => {
     if(!this.yellowLEDPin.isBlinking) {
       this.yellowLEDPin.blink(1500, 1500);
     }
@@ -212,7 +221,7 @@ export class GPIOService {
     }
   }
   
-  showOverweightState() {
+  showOverweightState = () => {
     if(!this.redLEDPin.isBlinking) {
       this.redLEDPin.blink(1500, 1500);
     }
@@ -221,7 +230,7 @@ export class GPIOService {
     }
   }
   
-  showDefaultState() {
+  showDefaultState = () => {
     if(this.redLEDPin.isBlinking) {
       this.redLEDPin.turnOff(0, null);
     }

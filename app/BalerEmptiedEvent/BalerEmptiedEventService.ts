@@ -5,6 +5,7 @@ import {LoadCellMonitorService} from "../services/LoadCellMonitorService";
 import {BaleTypesService} from "../BaleTypes/BaleTypesService";
 import {BaleType} from "../BaleTypes/BaleType";
 import {PictureSrvc} from "../services/PictureSrvc";
+import {QRService} from "../services/QRService";
 
 export class BalerEmptiedEventService {
 
@@ -16,7 +17,8 @@ export class BalerEmptiedEventService {
     "LoadCellMonitorService",
     "BalerEmptiedEventDataStoreService",
     "BaleTypesService",
-    "PictureSrvc"
+    "PictureSrvc",
+    "QRService"
   ];
 
   constructor(private $log: ng.ILogService,
@@ -24,12 +26,13 @@ export class BalerEmptiedEventService {
     private loadCellMonitorService: LoadCellMonitorService,
     private balerEmptiedEventDataStoreService: BalerEmptiedEventDataStore,
     private baleTypesService: BaleTypesService,
-    private pictureService: PictureSrvc) {
+    private pictureService: PictureSrvc,
+    private qrService: QRService) {
 
     loadCellMonitorService.on("BalerEmptiedEvent", (maxWeight, currentWeight) => {
       this.$log.debug("got BalerEmptied event max: " + maxWeight + " current: " + currentWeight);
       let pic_fname: string;
-      this.pictureService.takePicturePromise()
+      let baleEmptyPromise = this.pictureService.takePicturePromise()
         .then((filename: string) => {
           pic_fname = filename;
           return baleTypesService.getCurrentBaleType();
@@ -46,7 +49,18 @@ export class BalerEmptiedEventService {
           this.$log.debug(balerEmptiedEvent);
           return balerEmptiedEventDataStoreService.insertRowPromise(balerEmptiedEvent);
         })
-        .then((balerEmptiedEvent: BalerEmptiedEvent) => {
+        .catch((exception) => {
+          this.$log.error("balerEmptiedEventDataStoreService.insertRowPromise failed: " + exception);
+        });
+
+      baleEmptyPromise
+        .then(this.qrService.createLabelImage)
+        .then(this.qrService.printLabelImage)
+        .catch((exception) => {
+          console.log(exception);
+      });
+
+      baleEmptyPromise.then((balerEmptiedEvent: BalerEmptiedEvent) => {
           this.loadBalerEmptiedEvents();
           return this.openConfirmation(balerEmptiedEvent).result;
         })
@@ -59,6 +73,7 @@ export class BalerEmptiedEventService {
           this.loadBalerEmptiedEvents();
           this.$log.debug("return from update:" + updatedRowCount);
         })
+        .then()
         .catch((exception) => {
           this.$log.error("balerEmptiedEventDataStoreService.insertRowPromise failed: " + exception);
         })
