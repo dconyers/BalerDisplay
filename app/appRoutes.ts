@@ -34,6 +34,12 @@ function config ($routeProvider) {
       controller: "NetworkSettingsCtrl",
       controllerAs: "networkSettingsCtrl"
     }).
+    when("/WorkerSettings", {
+      title: "WORKER_SETTINGS",
+      templateUrl: "WorkerSettings/WorkerSettings.html",
+      controller: "WorkerSettingsCtrl",
+      controllerAs: "workerSettingsCtrl"
+    }).
     when("/Report", {
       title: "TRANSER_REPORT",
       templateUrl: "BalerEmptiedEvent/BalerEmptiedEventReport.html",

@@ -274,6 +274,10 @@ body {
   margin-left: auto;
 }
 
+.xeditablebadge {
+    color: inherit;
+}
+
 .badge {
   background-color: black;
   font-size: 15px;

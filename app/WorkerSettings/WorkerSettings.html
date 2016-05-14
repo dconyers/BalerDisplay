@@ -1,0 +1,38 @@
+<table class="table table-bordered table-hover table-condensed">
+  <tr style="font-weight: bold">
+      <td style="width:40%">Username</td>
+      <td style="width:40%">PIN</td>
+      <td style="width:20%">Edit</td>
+  </tr>
+  <tr ng-repeat="worker in workerSettingsCtrl.workers">
+    <td>
+        <!-- editable username (text with validation) -->
+        <span editable-text="worker.username" e-name="username" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
+          {{ worker.username || 'empty' }}
+        </span>
+    </td>
+    <td>
+      <!-- editable pin (text with validation) -->
+      <span editable-text="worker.pin" e-name="pin" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard="{kt: 'Numeric'}">
+        {{ worker.pin || 'empty' }}
+      </span>
+    </td>
+    <td style="white-space: nowrap">
+      <!-- form -->
+      <form editable-form name="rowform" onbeforesave="workerSettingsCtrl.saveWorker($data, worker._id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="">
+        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+          save
+        </button>
+        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+          cancel
+        </button>
+      </form>
+      <div class="buttons" ng-show="!rowform.$visible">
+        <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+        <button class="btn btn-danger" ng-click="workerSettingsCtrl.removeWorker(worker._id)">del</button>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<button class="btn btn-default" ng-click="workerSettingsCtrl.addWorker()">Add row</button>

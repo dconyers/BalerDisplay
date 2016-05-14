@@ -20,8 +20,6 @@ export class BaleTypesService {
         }).catch((exception: any) => {
                 this.$log.error("Really Got exception: "  + exception);
                 return exception;
-        }).finally(() => {
-                return undefined;
         });
     }
 
