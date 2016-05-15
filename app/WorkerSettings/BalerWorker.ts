@@ -1,4 +1,4 @@
-export interface Worker {
+export interface BalerWorker {
     _id?: string;
     username: string;
     pin: number;

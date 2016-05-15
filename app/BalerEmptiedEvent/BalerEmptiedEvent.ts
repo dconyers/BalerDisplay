@@ -1,4 +1,5 @@
 import {BaleType} from "../BaleTypes/BaleType";
+import {BalerWorker} from "../WorkerSettings/BalerWorker";
 
 
 export interface BalerEmptiedEvent {
@@ -9,4 +10,5 @@ export interface BalerEmptiedEvent {
     baleDate: Date;
     transmitted: boolean;
     photoPath: string;
+    worker: BalerWorker;
 };

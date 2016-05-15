@@ -1,5 +1,5 @@
 import {WorkersDataStore} from "./WorkersDataStore";
-import {Worker} from "./Worker";
+import {BalerWorker} from "./BalerWorker";
 import * as q from "q";
 
 export class WorkersService {
@@ -14,8 +14,8 @@ export class WorkersService {
         $log.debug("Top of WorkersService constructor");
     }
 
-    public getCurrentWorker(): q.Promise<Worker> {
-        return this.workersDataStoreService.findOnePromise({current: true}).then((retVal: Worker) => {
+    public getCurrentWorker(): q.Promise<BalerWorker> {
+        return this.workersDataStoreService.findOnePromise({current: true}).then((retVal: BalerWorker) => {
             this.$log.debug("getCurrentWorker return: " + retVal);
             return retVal;
         }).catch((exception: any) => {

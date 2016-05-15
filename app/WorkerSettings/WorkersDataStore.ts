@@ -1,9 +1,9 @@
 import NeDBDataStore = require("nedb");
-import {Worker} from "./Worker";
+import {BalerWorker} from "./BalerWorker";
 import * as q from "q";
 import * as Persistence from "../persistence/PersistentDataStore";
 
-export class WorkersDataStore extends Persistence.PersistentDataStore<Worker> {
+export class WorkersDataStore extends Persistence.PersistentDataStore<BalerWorker> {
 
     static $inject: string[] = [
         "$log",
@@ -12,7 +12,7 @@ export class WorkersDataStore extends Persistence.PersistentDataStore<Worker> {
     private initialized: boolean = false;
 
     constructor(private $log: ng.ILogService) {
-        super("Workers");
+        super("BalerWorkers");
         this.initializeDataStore(true);
         $log.debug("top of WorkersDataStore constructor");
     };
@@ -22,8 +22,8 @@ export class WorkersDataStore extends Persistence.PersistentDataStore<Worker> {
         if (this.initialized) {
             this.$log.debug("WorkersDataStore::initializeDataStore - already inited, skipping.");
             return this.loadDataPromise()
-                .then((retVal: Array<Worker>) => {
-                    return retVal.sort((a: Worker, b: Worker) => {
+                .then((retVal: Array<BalerWorker>) => {
+                    return retVal.sort((a: BalerWorker, b: BalerWorker) => {
                         if (a.username === undefined)
                             return 1;
                         return a.username.localeCompare(b.username);
@@ -43,8 +43,8 @@ export class WorkersDataStore extends Persistence.PersistentDataStore<Worker> {
                 this.initialized = true;
                 return this.loadDataPromise();
             })
-            .then((retVal: Array<Worker>) => {
-                return retVal.sort((a: Worker, b: Worker) => {
+            .then((retVal: Array<BalerWorker>) => {
+                return retVal.sort((a: BalerWorker, b: BalerWorker) => {
                     if (a.username === undefined)
                         return 1;
                     return a.username.localeCompare(b.username);
@@ -52,7 +52,7 @@ export class WorkersDataStore extends Persistence.PersistentDataStore<Worker> {
             });
     }
 
-    getInitData(): Array<Worker> {
+    getInitData(): Array<BalerWorker> {
         return [
             { _id: undefined, username: "doug", pin: 1234, current: true },
             { _id: undefined, username: "ed", pin: 1234, current: false },

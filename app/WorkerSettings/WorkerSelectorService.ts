@@ -1,6 +1,6 @@
 import {WorkersDataStore} from "./WorkersDataStore";
 import {WorkersService} from "./WorkersService";
-import {Worker} from "./Worker";
+import {BalerWorker} from "./BalerWorker";
 import * as q from "q";
 
 export class WorkerSelectorService {

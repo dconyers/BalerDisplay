@@ -1,5 +1,5 @@
 import * as q from "q";
-import {Worker} from "./Worker";
+import {BalerWorker} from "./BalerWorker";
 import {WorkersDataStore} from "./WorkersDataStore";
 import {WorkersService} from "./WorkersService";
 import {WorkerSelectorService} from "./WorkerSelectorService";
@@ -17,8 +17,8 @@ export class WorkerSettingsCtrl {
         "WorkerSelectorService"
     ];
 
-    workers: Array<Worker> = [];
-    currentWorker: Worker = undefined;
+    workers: Array<BalerWorker> = [];
+    currentWorker: BalerWorker = undefined;
 
     constructor(private $scope,
                 private $log: ng.ILogService,
@@ -35,7 +35,7 @@ export class WorkerSettingsCtrl {
     reloadWorkers(): void {
         this.$log.debug("top of reloadWorkers");
         this.workersDataStore.initializeDataStore()
-            .then((return_val: Array<Worker>): void => {
+            .then((return_val: Array<BalerWorker>): void => {
                 return this.$q((resolve): void => {
                     this.workers = return_val;
                     this.$log.debug("workers updated");
@@ -47,7 +47,7 @@ export class WorkerSettingsCtrl {
             }).done();
 
         this.workersService.getCurrentWorker()
-            .then((worker: Worker) => {
+            .then((worker: BalerWorker) => {
                 this.$log.debug("getCurrentWorker promise returned: " + worker);
                 this.$log.debug(worker);
                 this.currentWorker = worker;
@@ -56,7 +56,7 @@ export class WorkerSettingsCtrl {
 
     }
 
-    saveWorker(data: Worker, id: any): q.Promise<any> {
+    saveWorker(data: BalerWorker, id: any): q.Promise<any> {
         this.$log.debug("got save request for id: " + id);
         angular.extend(data, {_id: id});
         this.$log.debug(data);
@@ -85,7 +85,7 @@ export class WorkerSettingsCtrl {
 
     // add Bale Type
     addWorker() {
-        let inserted: Worker = {
+        let inserted: BalerWorker = {
             _id: undefined,
             username: "",
             pin: 0,
@@ -102,7 +102,7 @@ export class WorkerSettingsCtrl {
     public currentWorkerChangeRequest(newCurrentID: string): q.Promise<any> {
         this.$log.debug("top of currentWorkerChangeRequest: " + newCurrentID);
         this.$log.debug(newCurrentID);
-      return this.workersService.getCurrentWorker().then((currentWorker: Worker) => {
+      return this.workersService.getCurrentWorker().then((currentWorker: BalerWorker) => {
           this.$log.debug("currentWorkerChangeRequest::got current bale type: " + currentWorker.username);
           this.workersDataStore.updateRowPromise(currentWorker._id, { $set: { current: false } }, {});
           this.$log.debug("currentWorkerChangeRequest::done uploading old row");

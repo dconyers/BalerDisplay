@@ -1,7 +1,7 @@
 import * as q from "q";
 import {WorkersDataStore} from "./WorkersDataStore";
 import {WorkersService} from "./WorkersService";
-import {Worker} from "./Worker";
+import {BalerWorker} from "./BalerWorker";
 
 
 // Please note that $uibModalInstance represents a modal window (instance) dependency.
@@ -23,11 +23,11 @@ export class WorkerSelectorDlgCtrl {
     private $log,
     private baleTypesDataStoreService: WorkersDataStore,
     private baleTypesService: WorkersService,
-    private baleTypes: Array<Worker> ) {
+    private baleTypes: Array<BalerWorker> ) {
       $log.debug("WorkerSelectorDlgCtrl constructor");
     }
 
-  baleSelected(selected: Worker) {
+  baleSelected(selected: BalerWorker) {
     this.$log.debug("baleSelected clicked with bale: " + selected.username);
     this.$log.debug(selected);
     // angular.copy used here to remove the $$hashKey value that breaks nedb

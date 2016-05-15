@@ -2,7 +2,8 @@ import {BalerEmptiedEvent} from "./BalerEmptiedEvent";
 import {BaleType} from "../BaleTypes/BaleType";
 import {BaleTypeSelectorService} from "../BaleTypes/BaleTypeSelectorService";
 import {PictureSrvc} from "../services/PictureSrvc";
-
+import {WorkersDataStore} from "../WorkerSettings/WorkersDataStore";
+import {BalerWorker} from "../WorkerSettings/BalerWorker";
 import * as q from "q";
 
 export class BalerEmptiedConfirmationDlgCtrl {
@@ -11,16 +12,22 @@ export class BalerEmptiedConfirmationDlgCtrl {
     "$scope",
     "$uibModalInstance",
     "$log",
+    "$q",
     "BaleTypeSelectorService",
     "PictureSrvc",
+    "WorkersDataStoreService",
     "balerEmptiedEvent"
   ];
+
+  workers: Array<Worker> = [];
 
   constructor(private $scope: ng.IScope,
     private $uibModalInstance,
     private $log,
+    private $q,
     private baleTypeSelectorService: BaleTypeSelectorService,
     private pictureSrvc: PictureSrvc,
+    private workersDataStore: WorkersDataStore,
     private balerEmptiedEvent: BalerEmptiedEvent) {
       $log.debug("BalerEmptiedConfirmationDlgCtrl constructor: " + balerEmptiedEvent);
     }
@@ -32,7 +39,7 @@ export class BalerEmptiedConfirmationDlgCtrl {
 
   confirm() {
     this.$log.debug("BalerEmptiedConfirmationDlgCtrl::confirm() pressed");
-    this.$uibModalInstance.close(this.balerEmptiedEvent);
+    this.$uibModalInstance.close(angular.copy(this.balerEmptiedEvent));
   }
 
   userChangeBalePictureRequest(): void {
@@ -46,6 +53,23 @@ export class BalerEmptiedConfirmationDlgCtrl {
     });
   }
 
+  reloadWorkers(): void {
+      this.$log.debug("top of reloadWorkers");
+      this.workersDataStore.initializeDataStore()
+          .then((return_val: Array<Worker>): void => {
+              return this.$q((resolve): void => {
+                  this.workers = return_val;
+                  this.$log.debug("workers updated");
+                  resolve();
+                  this.$scope.$apply();
+              });
+          }).catch(function(error) {
+              this.$log.error("Got error from find_synch: " + error);
+          }).done();
+  }
+
+
+
   userChangeBaleTypeRequest(): void {
     this.$log.debug("Current baleType is: " + this.balerEmptiedEvent.baleType.gui);
     this.baleTypeSelectorService.open().result.then((selectedItem: BaleType) => {
@@ -56,4 +80,13 @@ export class BalerEmptiedConfirmationDlgCtrl {
       this.$log.debug("Received exception changing bale type: " + exception);
     });
   }
+
+  public currentWorkerChangeRequest(requestedWorker: BalerWorker): q.Promise<any> {
+      this.$log.debug("top of currentWorkerChangeRequest: " + requestedWorker);
+      this.$log.debug(requestedWorker);
+      this.balerEmptiedEvent.worker = requestedWorker;
+
+      return null;
+  }
+
 };

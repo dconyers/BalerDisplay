@@ -29,6 +29,15 @@
         </span>
       </li>
       <li class="list-group-item no-side-borders">
+        <span translate class="info-title">{{"BalerStatsPanel.CURRENT_WORKER"}}
+        </span>
+        <span class="badge xeditablebadge" ng-controller="WorkerSettingsCtrl as workerSettingsCtrl">
+            <a href="#" editable-select="balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.worker" onbeforesave="balerEmptiedConfirmationDlgCtrl.currentWorkerChangeRequest($data)" onshow="balerEmptiedConfirmationDlgCtrl.reloadWorkers()" e-ng-options="worker as worker.username for worker in balerEmptiedConfirmationDlgCtrl.workers">
+              {{ balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.worker.username || 'not set' }}
+            </a>
+        </span>
+      </li>
+      <li class="list-group-item no-side-borders">
         <span translate class="info-title">{{"LAST_BALE_WEIGHT"}}
         </span>
         <span class="badge">

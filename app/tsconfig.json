@@ -20,8 +20,8 @@
         "typings/browser.d.ts"
     ],
     "formatCodeOptions": {
-      "indentSize": 4,
-      "tabSize": 4,
+      "indentSize": 2,
+      "tabSize": 2,
       "newLineCharacter": "\r\n",
       "convertTabsToSpaces": true,
       "insertSpaceAfterCommaDelimiter": true,

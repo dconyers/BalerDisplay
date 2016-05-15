@@ -6,6 +6,8 @@ import {BaleTypesService} from "../BaleTypes/BaleTypesService";
 import {BaleType} from "../BaleTypes/BaleType";
 import {PictureSrvc} from "../services/PictureSrvc";
 import {QRService} from "../services/QRService";
+import {WorkersService} from "../WorkerSettings/WorkersService";
+import {BalerWorker} from "../WorkerSettings/BalerWorker";
 
 export class BalerEmptiedEventService {
 
@@ -18,6 +20,7 @@ export class BalerEmptiedEventService {
     "BalerEmptiedEventDataStoreService",
     "BaleTypesService",
     "PictureSrvc",
+    "WorkersService",
     "QRService"
   ];
 
@@ -27,24 +30,36 @@ export class BalerEmptiedEventService {
     private balerEmptiedEventDataStoreService: BalerEmptiedEventDataStore,
     private baleTypesService: BaleTypesService,
     private pictureService: PictureSrvc,
+    private workersService: WorkersService,
     private qrService: QRService) {
 
     loadCellMonitorService.on("BalerEmptiedEvent", (maxWeight, currentWeight) => {
       this.$log.debug("got BalerEmptied event max: " + maxWeight + " current: " + currentWeight);
       let pic_fname: string;
-      let baleEmptyPromise = this.pictureService.takePicturePromise()
+      let currentBaleType: BaleType;
+      let baleEmptyPromise: q.Promise<any> = this.pictureService.takePicturePromise()
         .then((filename: string) => {
           pic_fname = filename;
           return baleTypesService.getCurrentBaleType();
         })
-        .then((currentBaleType: BaleType) => {
+        .then((currBaleType: BaleType) => {
+          this.$log.debug("currBaleTypegot back");
+          this.$log.debug(currBaleType);
+          currentBaleType = currBaleType;
+          return workersService.getCurrentWorker();
+        })
+        .then((currentWorker: BalerWorker) => {
+          this.$log.debug("got back currentWorker");
+          this.$log.debug(currentWorker);
           let balerEmptiedEvent: BalerEmptiedEvent = {
             baleType: currentBaleType,
             weight: maxWeight,
             baleDate: new Date(),
             transmitted: false,
-            photoPath: pic_fname
+            photoPath: pic_fname,
+            worker: currentWorker
           };
+
           this.$log.debug("original inserted: " + balerEmptiedEvent);
           this.$log.debug(balerEmptiedEvent);
           return balerEmptiedEventDataStoreService.insertRowPromise(balerEmptiedEvent);
@@ -58,12 +73,12 @@ export class BalerEmptiedEventService {
         .then(this.qrService.printLabelImage)
         .catch((exception) => {
           console.log(exception);
-      });
+        });
 
       baleEmptyPromise.then((balerEmptiedEvent: BalerEmptiedEvent) => {
-          this.loadBalerEmptiedEvents();
-          return this.openConfirmation(balerEmptiedEvent).result;
-        })
+        this.loadBalerEmptiedEvents();
+        return this.openConfirmation(balerEmptiedEvent).result;
+      })
         .then((balerEmptiedEvent: BalerEmptiedEvent) => {
           this.$log.debug("about to update with");
           this.$log.debug(balerEmptiedEvent);
@@ -82,8 +97,6 @@ export class BalerEmptiedEventService {
 
     this.loadBalerEmptiedEvents();
   }
-
-
 
   private modal: ng.ui.bootstrap.IModalServiceInstance = null;
 
