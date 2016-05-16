@@ -10,7 +10,8 @@
    10           15
    12           18
    
-   
+   Redo whole thing much simpler.
+   Only support blinking, cancelling blinking, and turning on/off.
 */
 
 const sim800PowerPinNum = 0;
@@ -32,25 +33,25 @@ export enum CmdResult {
 }
 
 export class GPIOPin {
-  mode: PinMode;
-  currentTimeout; /* keep current timeout, because may need to cancel. Used for
-  blinking right now */
-  currentCallback; // Callback to call when command completes, or gets cancelled.
-  isHigh: boolean;
+  gpioNum: number;
   isBlinking: boolean;
-  
+  currentCallback;
+  currentTimeout;
   blinkOnDur: number;
   blinkOffDur: number;
-  blinkIsOn: boolean;
-  
-  constructor(private gpioNum: number) {
-    this.mode = PinMode.UNKNOWN;
-    this.currentTimeout = null;
-    this.currentCallback = null;
-    this.isHigh = false;
+  mode: PinMode;
+
+  constructor(gpioNum: number) {
+    this.gpioNum = gpioNum;
     this.isBlinking = false;
+    this.currentCallback = null;
+    this.currentTimeout = null;
+    this.blinkOnDur = 0;
+    this.blinkOffDur = 0;
+    this.isBlinking = false;
+    this.mode = PinMode.UNKNOWN;
   }
-  
+
   setMode = (mode: PinMode) => {
     switch(mode) {
       case PinMode.OUT:
@@ -64,122 +65,118 @@ export class GPIOPin {
     }
     this.mode = mode;
   }
-  ca
-  /*  @param duration time in milliseconds to turn on. If duration is not
-      specified, turns pin on indefinitely.
-      
-      @param callback optional callback to notify completion.
-  */
+
   turnOn = (duration: number, callback) => {
-    try {
-      if(!this.gpioNum) {
-        console.log("gpioNum undefined????");
+      // If there is a current command running, clear current timeout, and call
+      // current callback with cancelled
+    if(this.currentTimeout) {
+      clearTimeout(this.currentTimeout);
+      this.currentTimeout = null;
+      if(this.currentCallback) {
+        this.currentCallback(CmdResult.CANCELLED);
       }
-      let child = execSync('gpio write ' + this.gpioNum + ' 1');
-      this.isHigh = true;
+    }
+    this.currentCallback = null;
+    if(callback) {
+      this.currentCallback = callback;
+    }
+    try {
+      console.log("turning on pin " + this.gpioNum);
+      execSync('gpio write ' + this.gpioNum + ' 1');
       if(duration) {
-        this.setNewTimeout(this.turnOff, duration, 0, callback);
+        // Set a timer to turn off pin
+        this.currentTimeout = setTimeout(() => {
+            console.log("turning off pin " + this.gpioNum);
+            execSync('gpio write ' + this.gpioNum + ' 0');
+            var curCallback = this.currentCallback
+            this.currentCallback = null;
+            this.currentTimeout = null;
+            curCallback(CmdResult.SUCCESSFUL);
+          },
+          duration
+        );
       }
       else {
-        if(callback) {
-          callback(CmdResult.SUCCESSFUL);
+        this.currentTimeout = null;
+        if(this.currentCallback) {
+          var curCallback = this.currentCallback;
+          this.currentCallback = null;
+          curCallback(CmdResult.SUCCESSFUL);
         }
-        cancelCurrentTask();
       }
     }
     catch(err) {
-      console.log('gpio write ' + this.gpioNum + ' 1 failed with: ' + err.message);
-      if(callback) {
-        callback(CmdResult.ERROR);
-      }
+      console.log("turning on GPIO pin " + this.gpioNum + " failed with: " + err.message); 
     }
   }
-  
-  /*  @param duration time in milliseconds to turn off. If duration is not
-      specified, turns pin off indefinitely.
-      
-      @param callback optional callback to notify completion.
-  */
+
   turnOff = (duration: number, callback) => {
-    try {
-      if(!this.gpioNum) {
-        console.log("gpioNum undefined????");
+      // If there is a current command running, clear current timeout, and call
+      // current callback with cancelled
+    if(this.currentTimeout) {
+      clearTimeout(this.currentTimeout);
+      this.currentTimeout = null;
+      if(this.currentCallback) {
+        this.currentCallback(CmdResult.CANCELLED);
       }
-      let child = execSync('gpio write ' + this.gpioNum + ' 0');
-      this.isHigh = false;
+    }
+    this.currentCallback = null;
+    if(callback) {
+      this.currentCallback = callback;
+    }
+    try{
+      console.log("turning off pin " + this.gpioNum);
+      execSync('gpio write ' + this.gpioNum + ' 0');
       if(duration) {
-        this.setNewTimeout(this.turnOn, duration, 0, callback);
+        // Set a timer to turn on pin
+        this.currentTimeout = setTimeout(() => {
+            console.log("turning on pin " + this.gpioNum);
+            execSync('gpio write ' + this.gpioNum + ' 1');
+            var curCallback = this.currentCallback
+            this.currentCallback = null;
+            this.currentTimeout = null;
+            curCallback(CmdResult.SUCCESSFUL);
+          },
+          duration
+        );
       }
       else {
-        if(callback) {
-          callback(CmdResult.SUCCESSFUL);
+        this.currentTimeout = null;
+        if(this.currentCallback) {
+          var curCallback = this.currentCallback;
+          this.currentCallback = null;
+          curCallback(CmdResult.SUCCESSFUL);
         }
-        cancelCurrentTask();
       }
     }
     catch(err) {
-      console.log('gpio write ' + this.gpioNum + ' 0 failed with: ' + err.message);
-      if(callback) {
-        callback(CmdResult.ERROR);
-      }
+      console.log("turning off GPIO pin " + this.gpioNum + " failed with: " + err.message); 
     }
   }
-  
-  /* Continuously blinks until another command is received.
-      
-     @param onDur duration pin should be high.
-     @param offDur duration pin should be low.
-     @paeam startHigh
-  */
-  blink = (onDur: number, offDur: number) => {
-    this.blinkOnDur = onDur;
-    this.blinkOffDur = offDur;
-    this.blinkIsOn = true;
-    this.isBlinking = true;
-    this.turnOn(onDur, this.blinkCallback);
-  }
-  
-  private blinkCallback = (result: CmdResult) => {
+
+  blinkCallback = (result: CmdResult) => {
     if(result == CmdResult.SUCCESSFUL) {
-      if(this.blinkIsOn) {
-        // turn off
-        this.blinkIsOn = false;
-        this.turnOff(this.blinkOffDur, this.blinkCallback);
-      }
-      else {
-        // turn on
-        this.blinkIsOn = true;
-        this.turnOn(this.blinkOnDur, this.blinkCallback);
-      }
+      // blinking hasn't been cancelled.
+      this.currentCallback = this.blinkCallback;
+      this.currentTimeout = setTimeout(
+        () => {
+          this.currentTimeout = null;
+          this.turnOn(this.blinkOnDur, this.blinkCallback);
+        },
+        this.blinkOffDur
+      );
     }
     else {
       this.isBlinking = false;
     }
   }
-  
-  /* @param fun The function to be called after timeout
-     @param dur MS before timeout
-     @param secondDuration Duration of next action.
-     @param callback Called to notify when command completes
-  */
-  private setNewTimeout = (fun, dur, secondDuration, callback) => {
-    this.cancelCurrentTask();
-    this.currentCallback = callback;
-    this.currentTimeout = setTimeout(fun, dur, secondDuration, callback);
+
+  blink = (onDur: number, offDur: number) => {
+    this.blinkOnDur = onDur;
+    this.blinkOffDur = offDur;
+    this.isBlinking = true;
+    this.turnOn(onDur, this.blinkCallback);
   }
-  
-  private cancelCurrentTask() {
-    if(this.currentTimeout) {
-      // There is a timeout currently running. Got a new command, so cancel
-      // this operation.
-      clearTimeout(this.currentTimeout);
-      this.currentTimeout = null;
-      if(this.currentCallback) {
-        this.currentCallback(CmdResult.CANCELLED);
-        this.currentCallback = null;
-      }
-    }
-  } // end method cancelCurrentTask
 } // end class GPIOPin
 
 export class GPIOService {
@@ -198,24 +195,6 @@ export class GPIOService {
   
   turnOnSim800 = (callback) => {
     this.sim800PowerPin.turnOn(2000, callback);
-  }
-  
-  toggleYellowLED = () => {
-    if(this.yellowLEDPin.isHigh) {
-      this.yellowLEDPin.turnOff(0, null);
-    }
-    else {
-      this.yellowLEDPin.turnOn(0, null);
-    }
-  }
-  
-  toggleRedLED = () => {
-    if(this.redLEDPin.isHigh) {
-      this.redLEDPin.turnOff(0, null);
-    }
-    else {
-      this.redLEDPin.turnOn(0, null);
-    }
   }
   
   showWarningState = () => {
