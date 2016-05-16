@@ -64,7 +64,7 @@ export class GPIOPin {
     }
     this.mode = mode;
   }
-  
+  ca
   /*  @param duration time in milliseconds to turn on. If duration is not
       specified, turns pin on indefinitely.
       
@@ -84,7 +84,7 @@ export class GPIOPin {
         if(callback) {
           callback(CmdResult.SUCCESSFUL);
         }
-        this.currentCallback = null;
+        cancelCurrentTask();
       }
     }
     catch(err) {
@@ -114,7 +114,7 @@ export class GPIOPin {
         if(callback) {
           callback(CmdResult.SUCCESSFUL);
         }
-        this.currentCallback = null;
+        cancelCurrentTask();
       }
     }
     catch(err) {
@@ -129,7 +129,7 @@ export class GPIOPin {
       
      @param onDur duration pin should be high.
      @param offDur duration pin should be low.
-     @paeam startHigh 
+     @paeam startHigh
   */
   blink = (onDur: number, offDur: number) => {
     this.blinkOnDur = onDur;
@@ -163,7 +163,15 @@ export class GPIOPin {
      @param callback Called to notify when command completes
   */
   private setNewTimeout = (fun, dur, secondDuration, callback) => {
+    this.cancelCurrentTask();
+    this.currentCallback = callback;
+    this.currentTimeout = setTimeout(fun, dur, secondDuration, callback);
+  }
+  
+  private cancelCurrentTask() {
     if(this.currentTimeout) {
+      // There is a timeout currently running. Got a new command, so cancel
+      // this operation.
       clearTimeout(this.currentTimeout);
       this.currentTimeout = null;
       if(this.currentCallback) {
@@ -171,10 +179,8 @@ export class GPIOPin {
         this.currentCallback = null;
       }
     }
-    this.currentCallback = callback;
-    this.currentTimeout = setTimeout(fun, dur, secondDuration, callback);
-  }
-}
+  } // end method cancelCurrentTask
+} // end class GPIOPin
 
 export class GPIOService {
   sim800PowerPin: GPIOPin;
