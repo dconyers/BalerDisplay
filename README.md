@@ -131,6 +131,10 @@ Run the following:
   }
 );`
 
+## Printer configuration
+* `sudo cp configFiles/printers.conf /etc/cups/
+* `sudo cp configFiles/Zebra_Technologies_ZTC_GK420t.ppd /etc/cups/ppd/
+
 ## TODO
 This is a prototype. There are lots of things that need to be done to make this a production package:
 * Add Comments / Function Headers
