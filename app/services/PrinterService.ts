@@ -114,7 +114,9 @@ export class PrinterService {
           if(!(err || stderr)) {
             let lines = stdout.toString().trim().split('\n');
             resolve({status: lines[1].trim(), serial: lines[0].trim()});
+          }
       });
+    });
   }
   
   /* Called periodically. Checks printer status to make sure printer is
