@@ -69,8 +69,12 @@ export class BalerEmptiedEventService {
         });
 
       baleEmptyPromise
-        .then(this.qrService.createLabelImage)
-        .then(this.qrService.printLabelImage)
+        .then((balerEmptiedEvent: BalerEmptiedEvent) => {
+          this.qrService.createLabelImage(balerEmptiedEvent).then((path: string) => {
+            console.log("createLabelImage done");
+            this.qrService.printLabelImage(path);
+          });
+        })
         .catch((exception) => {
           console.log(exception);
         });

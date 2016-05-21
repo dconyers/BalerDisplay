@@ -1,4 +1,5 @@
 import {BalerEmptiedEvent} from "../BalerEmptiedEvent/BalerEmptiedEvent";
+import {PrinterService} from "../services/PrinterService.ts";
 
 const qr = require('qr-image');
 const fs = require('fs');
@@ -6,7 +7,10 @@ const im = require('imagemagick');
 const tmp = require("tmp");
 
 export class QRService {
-  constructor() {
+  printerService: PrinterService;
+
+  constructor(PrinterService) {
+    this.printerService = PrinterService;
   }
 
   /* @return Promise that resolves to the path of the QR code
@@ -22,7 +26,7 @@ export class QRService {
       fs.writeFile(tmpName, pngData, function(err) {
         if(err) {
           fs.unlink(tmpName);
-          Promise.reject(err);
+          reject(err);
         }
         else {
           // writing QR Code image successful, now add label.
@@ -30,10 +34,10 @@ export class QRService {
             function(err) {
               if(err) {
                 fs.unlink(tmpName);
-                Promise.reject(err);
+                reject(err);
               }
               else {
-                Promise.resolve(tmpName);
+                resolve(tmpName);
               }
           });
         }
@@ -43,7 +47,14 @@ export class QRService {
   }
 
   printLabelImage(path: string) {
+    console.log("printLabelImage called");
     // print label image, then delete file
-    fs.unlink(path);
+    this.printerService.printImage(path).then(() => {
+      fs.unlink(path);
+    })
+    .catch((reason) => {
+      console.log("printImage failed with: " + reason);
+      fs.unlink(path);
+    });
   }
 }
