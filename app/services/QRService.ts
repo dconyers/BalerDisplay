@@ -5,6 +5,7 @@ const qr = require('qr-image');
 const fs = require('fs');
 const im = require('imagemagick');
 const tmp = require("tmp");
+const exec = require('child_process').exec;
 
 export class QRService {
   printerService: PrinterService;
@@ -19,7 +20,7 @@ export class QRService {
     let data = "Baletype: " + baleEvent.baleType.material +
       "\nweight: " + baleEvent.weight +
       "\nbaleDate: " + baleEvent.baleDate.toLocaleTimeString("en-US");
-    let pngData = qr.imageSync(data,
+    let pngData = qr.imageSync("google.com",
       { type: 'png', ec_level: 'H' });
     let tmpName = tmp.tmpNameSync({template: "./tmp/qr-XXXXXX.png"});
     let writePromise = new Promise(function(resolve, reject) {
@@ -30,15 +31,34 @@ export class QRService {
         }
         else {
           // writing QR Code image successful, now add label.
-          im.convert([tmpName, "label:" + data, '+swap', '-gravity', 'Center', '-append', tmpName],
-            function(err) {
-              if(err) {
-                fs.unlink(tmpName);
-                reject(err);
-              }
-              else {
-                resolve(tmpName);
-              }
+          exec("convert " +
+               tmpName +
+               " label:'" + data + "'" +
+               " -gravity Center" +
+               " +swap" +
+               " -append" +
+               " -gravity North" +
+               " -geometry +0+350" +
+               " -scale 350x400" +
+               " ./tmp/template.png" +
+               " +swap" +
+               " -composite" +
+               " \\( +clone -crop 350x400+0+325 -rotate -90 -scale 200x -geometry +0+15 \\)" +
+               " -composite" +
+               " -rotate 90 " +
+               tmpName,
+               (err, stdout, stderr) => {
+                 if(err) {
+                   fs.unlink(tmpName);
+                   reject(err);
+                 }
+                 if(stderr) {
+                   fs.unlink(tmpName);
+                   reject(stderr);
+                 }
+                 if(!(err || stderr)) {
+                   resolve(tmpName);
+                 }
           });
         }
       });
