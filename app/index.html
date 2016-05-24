@@ -60,17 +60,17 @@
 
   <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="#SettingsMenu" ng-click="menuCtrl.closeMenu()" translate>SETTINGS</a></li>
-        <li><a href="#Report" ng-click="menuCtrl.closeMenu()" translate>REPORT</a></li>
-        <li class="dropdown">
+      <ul class="nav navbar-nav list-group">
+        <li class="list-group-item"><a href="#SettingsMenu" ng-click="menuCtrl.closeMenu()" translate>SETTINGS</a></li>
+        <li class="list-group-item"><a href="#Report" ng-click="menuCtrl.closeMenu()" translate>REPORT</a></li>
+        <li class="dropdown list-group-item">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" translate>LANGUAGE<span class="caret"></span></a>
-          <ul class="dropdown-menu" ng-controller="LocalizationCtrl as localizationCtrl">
-             <li ng-click="localizationCtrl.selectLanguage('en_us'); menuCtrl.closeMenu()"><a href="#" translate>BalerDisplay.English</a></li>
-             <li ng-click="localizationCtrl.selectLanguage('es_us'); menuCtrl.closeMenu()"><a href="#" translate>BalerDisplay.Spanish</a></li>
+          <ul class="dropdown-menu list-group" ng-controller="LocalizationCtrl as localizationCtrl">
+             <li class="list-group-item" ng-click="localizationCtrl.selectLanguage('en_us'); menuCtrl.closeMenu()"><a href="#" translate>BalerDisplay.English</a></li>
+             <li class="list-group-item" ng-click="localizationCtrl.selectLanguage('es_us'); menuCtrl.closeMenu()"><a href="#" translate>BalerDisplay.Spanish</a></li>
           </ul>
         </li>
-        <li><a href="#" ng-click="menuCtrl.closeMenu()" translate>LOGOUT</a></li>
+        <li class="list-group-item"><a href="#" ng-click="menuCtrl.closeMenu()" translate>LOGOUT</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

@@ -3,7 +3,6 @@ import {PrinterService} from "../services/PrinterService.ts";
 
 const qr = require('qr-image');
 const fs = require('fs');
-const im = require('imagemagick');
 const tmp = require("tmp");
 const exec = require('child_process').exec;
 
