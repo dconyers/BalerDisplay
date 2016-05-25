@@ -88,6 +88,9 @@ Run the following:
   * `sudo systemctl stop serial-getty@ttyAMA0.service` # Stops service
   * `sudo systemctl disable serial-getty@ttyAMA0.service` # Disables service
 
+* Need to fix core_freq to allow for reliable UART communication
+  * `sudo cp configFiles/config.txt /boot`
+
 * Need to allow user bjn to call pon and poff:
 	`sudo cp configFiles/pppd /etc/sudoers.d/`
 
