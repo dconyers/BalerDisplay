@@ -1,6 +1,6 @@
 import serial, sys
 
-ser = serial.Serial('/dev/ttyAMA0', 115200, timeout=0.002)
+ser = serial.Serial('/dev/ttyS0', 115200, timeout=0.002, writeTimeout=0.002)
 for i in range(10):
   ser.write("AT\n")
   while True:
