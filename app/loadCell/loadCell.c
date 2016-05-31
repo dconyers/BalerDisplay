@@ -19,7 +19,8 @@ typedef enum {
   CONFIG_FAILED,
   READ_FAILED,
   SWITCH_FAILED,
-  WRONG_STATE
+  WRONG_STATE,
+  LED_TOGGLE_FAILED
 } loadCellError_type;
 
 volatile enum loadCellStatusEnum {
@@ -51,6 +52,74 @@ void printCalibration();
 void loadCal();
 void saveCal();
 void setCalibration();
+loadCellError_type turnRedOn();
+loadCellError_type turnRedOff();
+loadCellError_type turnYellowOn();
+loadCellError_type turnYellowOff();
+
+loadCellError_type turnRedOn() {
+  pthread_mutex_lock(&mutexLoadCellStatus);
+  if(loadCellStatus == UNINITIALIZED) {
+    fprintf(stderr, "Load cell not initialized\n");
+    pthread_mutex_unlock(&mutexLoadCellStatus);
+    return WRONG_STATE;
+  };
+  pthread_mutex_unlock(&mutexLoadCellStatus);
+  USB_SPI_STATUS retCode = CP213x_SetGpioModeAndLevel(9, GPIO_MODE_OUTPUT_PP, 1);
+  if(retCode) {
+    fprintf(stderr, "Failed LED SetGpioModeAndLevel with code: %d\n", retCode);
+    return LED_TOGGLE_FAILED;
+  }
+  return OK;
+}
+
+loadCellError_type turnRedOff() {
+  pthread_mutex_lock(&mutexLoadCellStatus);
+  if(loadCellStatus == UNINITIALIZED) {
+    fprintf(stderr, "Load cell not initialized\n");
+    pthread_mutex_unlock(&mutexLoadCellStatus);
+    return WRONG_STATE;
+  };
+  pthread_mutex_unlock(&mutexLoadCellStatus);
+  USB_SPI_STATUS retCode = CP213x_SetGpioModeAndLevel(9, GPIO_MODE_OUTPUT_PP, 0);
+  if(retCode) {
+    fprintf(stderr, "Failed LED SetGpioModeAndLevel with code: %d\n", retCode);
+    return LED_TOGGLE_FAILED;
+  }
+  return OK;
+}
+
+loadCellError_type turnYellowOn() {
+  pthread_mutex_lock(&mutexLoadCellStatus);
+  if(loadCellStatus == UNINITIALIZED) {
+    fprintf(stderr, "Load cell not initialized\n");
+    pthread_mutex_unlock(&mutexLoadCellStatus);
+    return WRONG_STATE;
+  };
+  pthread_mutex_unlock(&mutexLoadCellStatus);
+  USB_SPI_STATUS retCode = CP213x_SetGpioModeAndLevel(10, GPIO_MODE_OUTPUT_PP, 1);
+  if(retCode) {
+    fprintf(stderr, "Failed LED SetGpioModeAndLevel with code: %d\n", retCode);
+    return LED_TOGGLE_FAILED;
+  }
+  return OK;
+}
+
+loadCellError_type turnYellowOff() {
+  pthread_mutex_lock(&mutexLoadCellStatus);
+  if(loadCellStatus == UNINITIALIZED) {
+    fprintf(stderr, "Load cell not initialized\n");
+    pthread_mutex_unlock(&mutexLoadCellStatus);
+    return WRONG_STATE;
+  };
+  pthread_mutex_unlock(&mutexLoadCellStatus);
+  USB_SPI_STATUS retCode = CP213x_SetGpioModeAndLevel(10, GPIO_MODE_OUTPUT_PP, 0);
+  if(retCode) {
+    fprintf(stderr, "Failed LED SetGpioModeAndLevel with code: %d\n", retCode);
+    return LED_TOGGLE_FAILED;
+  }
+  return OK;
+}
 
 /*
  *  This Quickselect routine is based on the algorithm described in
@@ -176,7 +245,7 @@ void* sampleForever(void* args) {
     }
     pthread_mutex_unlock(&mutexLoadCellStatus);
     nanosleep(&tim, &tim2); // This thread was starving out the calibration routine on my deveopment system.
-    
+
     if(retCode != OK) {
       /* There was some error getting samples. Assume device was disconnected
          or there is something else wrong with it.
@@ -382,6 +451,22 @@ void termIOLoop() {
     }
     else if(strcmp(buf,"CLOSE_DEVICE\n") == 0) {
       rsp = closeDevice();
+      printRsp(rsp);
+    }
+    else if(strcmp(buf,"TURN_RED_ON\n") == 0) {
+      rsp = turnRedOn();
+      printRsp(rsp);
+    }
+    else if(strcmp(buf,"TURN_RED_OFF\n") == 0) {
+      rsp = turnRedOff();
+      printRsp(rsp);
+    }
+    else if(strcmp(buf,"TURN_YELLOW_ON\n") == 0) {
+      rsp = turnYellowOn();
+      printRsp(rsp);
+    }
+    else if(strcmp(buf,"TURN_YELLOW_OFF\n") == 0) {
+      rsp = turnYellowOn();
       printRsp(rsp);
     }
     else if(strcmp(buf,"EXIT\n") == 0) {

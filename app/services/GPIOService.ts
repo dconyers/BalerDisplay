@@ -14,16 +14,19 @@
    Only support blinking, cancelling blinking, and turning on/off.
 */
 
+import {LoadCellDataService} from "../loadCell/LoadCellDataService";
+
 const sim800PowerPinNum = 0;
-const yellowLEDPinNum = 28;
-const redLEDPinNum = 29;
+const yellowLEDPinNum = 10;
+const redLEDPinNum = 9;
 
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
 
 export enum PinMode {
   UNKNOWN,
-  OUT
+  OUT,
+  EXTERNAL // Pin on loadcell board
 }
 
 export enum CmdResult {
@@ -40,8 +43,9 @@ export class GPIOPin {
   blinkOnDur: number;
   blinkOffDur: number;
   mode: PinMode;
-
-  constructor(gpioNum: number) {
+  
+  constructor(gpioNum: number,
+              private loadCellDataService: LoadCellDataService) {
     this.gpioNum = gpioNum;
     this.isBlinking = false;
     this.currentCallback = null;
@@ -81,13 +85,31 @@ export class GPIOPin {
       this.currentCallback = callback;
     }
     try {
-      console.log("turning on pin " + this.gpioNum);
-      execSync('gpio write ' + this.gpioNum + ' 1');
+      if(this.mode === PinMode.EXTERNAL) {
+        if(this.gpioNum === 9) {
+          this.loadCellDataService.turnRedOn();
+        }
+        else if(this.gpioNum === 10) {
+          this.loadCellDataService.turnYellowOn();
+        }
+      }
+      else {
+        execSync('gpio write ' + this.gpioNum + ' 1');
+      }
       if(duration) {
         // Set a timer to turn off pin
         this.currentTimeout = setTimeout(() => {
-            console.log("turning off pin " + this.gpioNum);
-            execSync('gpio write ' + this.gpioNum + ' 0');
+            if(this.mode === PinMode.EXTERNAL) {
+              if(this.gpioNum === 9) {
+                this.loadCellDataService.turnRedOn();
+              }
+              else if(this.gpioNum === 10) {
+                this.loadCellDataService.turnYellowOn();
+              }
+            }
+            else {
+              execSync('gpio write ' + this.gpioNum + ' 0');
+            }
             var curCallback = this.currentCallback
             this.currentCallback = null;
             this.currentTimeout = null;
@@ -125,13 +147,31 @@ export class GPIOPin {
       this.currentCallback = callback;
     }
     try{
-      console.log("turning off pin " + this.gpioNum);
-      execSync('gpio write ' + this.gpioNum + ' 0');
+      if(this.mode === PinMode.EXTERNAL) {
+        if(this.gpioNum === 9) {
+          this.loadCellDataService.turnRedOff();
+        }
+        else if(this.gpioNum === 10) {
+          this.loadCellDataService.turnYellowOff();
+        }
+      }
+      else {
+        execSync('gpio write ' + this.gpioNum + ' 0');
+      }
       if(duration) {
         // Set a timer to turn on pin
         this.currentTimeout = setTimeout(() => {
-            console.log("turning on pin " + this.gpioNum);
-            execSync('gpio write ' + this.gpioNum + ' 1');
+            if(this.mode === PinMode.EXTERNAL) {
+              if(this.gpioNum === 9) {
+                this.loadCellDataService.turnRedOff();
+              }
+              else if(this.gpioNum === 10) {
+                this.loadCellDataService.turnYellowOff();
+              }
+            }
+            else {
+              execSync('gpio write ' + this.gpioNum + ' 1');
+            }
             var curCallback = this.currentCallback
             this.currentCallback = null;
             this.currentTimeout = null;
@@ -184,13 +224,13 @@ export class GPIOService {
   yellowLEDPin: GPIOPin;
   redLEDPin: GPIOPin;
   
-  constructor() {
-    this.sim800PowerPin = new GPIOPin(sim800PowerPinNum);
-    this.yellowLEDPin = new GPIOPin(yellowLEDPinNum);
-    this.redLEDPin = new GPIOPin(redLEDPinNum);
+  constructor(LoadCellDataService) {
+    this.sim800PowerPin = new GPIOPin(sim800PowerPinNum, LoadCellDataService);
+    this.yellowLEDPin = new GPIOPin(yellowLEDPinNum, LoadCellDataService);
+    this.redLEDPin = new GPIOPin(redLEDPinNum, LoadCellDataService);
     this.sim800PowerPin.setMode(PinMode.OUT);
-    this.yellowLEDPin.setMode(PinMode.OUT);
-    this.redLEDPin.setMode(PinMode.OUT);
+    this.yellowLEDPin.setMode(PinMode.EXTERNAL);
+    this.redLEDPin.setMode(PinMode.EXTERNAL);
   }
   
   turnOnSim800 = (callback) => {

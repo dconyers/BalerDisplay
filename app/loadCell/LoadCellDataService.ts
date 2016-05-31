@@ -20,7 +20,8 @@ enum ErrorState {
   NO_DEVICE_FOUND,
   CONFIG_FAILED,
   SWITCH_FAILED,
-  WRONG_STATE
+  WRONG_STATE,
+  LED_TOGGLE_FAILED
 }
 
 process.on("exit", function() {
@@ -124,7 +125,7 @@ export class LoadCellDataService {
       return this.weight;
     }
 
-    processTerminated(exitCode) {
+    processTerminated = (exitCode) => {
       // Process terminated for some reason. Try to restart.
       console.log("loadCell process terminated with code: " + exitCode);
       this.loadCellState = LoadCellState.UNINITIALIZED;
@@ -153,6 +154,11 @@ export class LoadCellDataService {
           this.loadCellState = LoadCellState.ERROR;
           this.errorState = ErrorState.WRONG_STATE;
           console.log("WRONG_STATE");
+        }
+        else if (lines[i] === "LED_TOGGLE_FAILED") {
+          this.loadCellState = LoadCellState.ERROR;
+          this.errorState = ErrorState.LED_TOGGLE_FAILED;
+          console.log("LED_TOGGLE_FAILED");
         }
 
         switch (this.loadCellState) {
@@ -200,6 +206,22 @@ export class LoadCellDataService {
       return this.loadCellState !== LoadCellState.UNINITIALIZED &&
              this.loadCellState !== LoadCellState.WAITING_FOR_OPEN &&
              this.loadCellState !== LoadCellState.ERROR;
+    }
+    
+    turnRedOn = () => {
+      this.child.stdin.write("TURN_RED_ON\n");
+    }
+    
+    turnRedOff = () => {
+      this.child.stdin.write("TURN_RED_OFF\n");
+    }
+    
+    turnYellowOn = () => {
+      this.child.stdin.write("TURN_YELLOW_ON\n");
+    }
+    
+    turnYellowOff = () => {
+      this.child.stdin.write("TURN_YELLOW_OFF\n");
     }
 
     private getRandomIntInclusive(min: number, max: number): number {
