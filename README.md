@@ -137,6 +137,7 @@ Run the following:
 ## Printer configuration
 * `sudo apt-get install imagemagick`
 * `sudo service cups stop`
+* `sudo apt-get install hplip --reinstall`
 * `sudo cp configFiles/printers.conf /etc/cups/`
 * `sudo cp configFiles/Zebra_Technologies_ZTC_GK420t.ppd /etc/cups/ppd/`
 * `sudo service cups start`
