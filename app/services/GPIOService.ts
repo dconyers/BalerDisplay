@@ -208,7 +208,7 @@ export class GPIOService {
   
   showOverweightState = () => {
     if(!this.redLEDPin.isBlinking) {
-      this.redLEDPin.blink(1000, 1000);
+      this.redLEDPin.turnOn(0, null);
     }
     if(this.yellowLEDPin.isBlinking) {
       this.yellowLEDPin.turnOff(0, null);
