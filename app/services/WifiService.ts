@@ -57,7 +57,7 @@ export function WifiService() {
         security.shift();
         var supportedSecurity = false;
         for(var j = 0; j < security.length; j++) {
-          if(security[j] == "WPA" || security[j] == "WPA2") {
+          if(security[j] == "WPA" || security[j] == "WPA2" || security[j] == "WPA1") {
             if(!(security.length > j + 1 && security[j + 1] == "Enterprise")) {
               // We don't support enterprise wifi security
               supportedSecurity = true;
