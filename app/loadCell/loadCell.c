@@ -349,8 +349,16 @@ loadCellError_type setup() {
   }
   
   // Start with LEDs off
-  USB_SPI_STATUS retCode = CP213x_SetGpioModeAndLevel(9, GPIO_MODE_OUTPUT_PP, 0);
-  USB_SPI_STATUS retCode = CP213x_SetGpioModeAndLevel(10, GPIO_MODE_OUTPUT_PP, 0);
+  retCode = CP213x_SetGpioModeAndLevel(9, GPIO_MODE_OUTPUT_PP, 0);
+  if(retCode) {
+    fprintf(stderr, "Failed CP213x_SetChipSelect\n");
+    return CONFIG_FAILED;
+  }
+  retCode = CP213x_SetGpioModeAndLevel(10, GPIO_MODE_OUTPUT_PP, 0);
+  if(retCode) {
+    fprintf(stderr, "Failed CP213x_SetChipSelect\n");
+    return CONFIG_FAILED;
+  }
   
   pthread_mutex_lock(&mutexLoadCellStatus);
   loadCellStatus = IDLE;
