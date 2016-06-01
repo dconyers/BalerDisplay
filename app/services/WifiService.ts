@@ -1,6 +1,6 @@
 const execSync = require('child_process').execSync;
 const exec = require('child_process').exec;
-const reSSID = /[^\s]+\s+([^s]+.*)\n/;
+const reSSID = /[^\s]+\s+([^s]+.*)/;
 
 export function WifiService() {
   class SSID {
