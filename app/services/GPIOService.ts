@@ -43,6 +43,7 @@ export class GPIOPin {
   blinkOnDur: number;
   blinkOffDur: number;
   mode: PinMode;
+  isOn: boolean;
   
   constructor(gpioNum: number,
               private loadCellDataService: LoadCellDataService) {
@@ -54,6 +55,7 @@ export class GPIOPin {
     this.blinkOffDur = 0;
     this.isBlinking = false;
     this.mode = PinMode.UNKNOWN;
+    this.isOn = false;
   }
 
   setMode = (mode: PinMode) => {
@@ -85,6 +87,7 @@ export class GPIOPin {
       this.currentCallback = callback;
     }
     try {
+      this.isOn = true;
       if(this.mode === PinMode.EXTERNAL) {
         if(this.gpioNum === 9) {
           this.loadCellDataService.turnRedOn();
@@ -99,6 +102,7 @@ export class GPIOPin {
       if(duration) {
         // Set a timer to turn off pin
         this.currentTimeout = setTimeout(() => {
+            this.isOn = false;
             if(this.mode === PinMode.EXTERNAL) {
               if(this.gpioNum === 9) {
                 this.loadCellDataService.turnRedOff();
@@ -147,6 +151,7 @@ export class GPIOPin {
       this.currentCallback = callback;
     }
     try{
+      this.isOn = false;
       if(this.mode === PinMode.EXTERNAL) {
         if(this.gpioNum === 9) {
           this.loadCellDataService.turnRedOff();
@@ -162,6 +167,7 @@ export class GPIOPin {
         // Set a timer to turn on pin
         this.currentTimeout = setTimeout(() => {
             if(this.mode === PinMode.EXTERNAL) {
+              this.isOn = true;
               if(this.gpioNum === 9) {
                 this.loadCellDataService.turnRedOn();
               }
@@ -241,13 +247,13 @@ export class GPIOService {
     if(!this.yellowLEDPin.isBlinking) {
       this.yellowLEDPin.blink(1500, 1500);
     }
-    if(this.redLEDPin.isBlinking) {
+    if(this.redLEDPin.isOn) {
       this.redLEDPin.turnOff(0, null);
     }
   }
   
   showOverweightState = () => {
-    if(!this.redLEDPin.isBlinking) {
+    if(!this.redLEDPin.isOn) {
       this.redLEDPin.turnOn(0, null);
     }
     if(this.yellowLEDPin.isBlinking) {
@@ -256,7 +262,7 @@ export class GPIOService {
   }
   
   showDefaultState = () => {
-    if(this.redLEDPin.isBlinking) {
+    if(this.redLEDPin.isOn) {
       this.redLEDPin.turnOff(0, null);
     }
     if(this.yellowLEDPin.isBlinking) {
