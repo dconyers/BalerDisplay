@@ -53,8 +53,8 @@ export class LoadCellDataService {
         } catch (exception) {
           $log.error("Failed to launchChildAndListen in LoadCellDataService constructor: " + exception);
         }
-        this.$interval(() => this.getWeight(), 4000);
-        this.$interval(() => this.simulateData(), 2000);
+        this.$interval(() => this.getWeight(), 1000);
+//        this.$interval(() => this.simulateData(), 2000);
     }
 
     private launchChildAndListen() {

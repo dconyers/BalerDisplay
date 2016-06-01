@@ -466,7 +466,7 @@ void termIOLoop() {
       printRsp(rsp);
     }
     else if(strcmp(buf,"TURN_YELLOW_OFF\n") == 0) {
-      rsp = turnYellowOn();
+      rsp = turnYellowOff();
       printRsp(rsp);
     }
     else if(strcmp(buf,"EXIT\n") == 0) {

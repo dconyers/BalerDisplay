@@ -101,10 +101,10 @@ export class GPIOPin {
         this.currentTimeout = setTimeout(() => {
             if(this.mode === PinMode.EXTERNAL) {
               if(this.gpioNum === 9) {
-                this.loadCellDataService.turnRedOn();
+                this.loadCellDataService.turnRedOff();
               }
               else if(this.gpioNum === 10) {
-                this.loadCellDataService.turnYellowOn();
+                this.loadCellDataService.turnYellowOff();
               }
             }
             else {
@@ -163,10 +163,10 @@ export class GPIOPin {
         this.currentTimeout = setTimeout(() => {
             if(this.mode === PinMode.EXTERNAL) {
               if(this.gpioNum === 9) {
-                this.loadCellDataService.turnRedOff();
+                this.loadCellDataService.turnRedOn();
               }
               else if(this.gpioNum === 10) {
-                this.loadCellDataService.turnYellowOff();
+                this.loadCellDataService.turnYellowOn();
               }
             }
             else {
