@@ -348,6 +348,10 @@ loadCellError_type setup() {
     return CONFIG_FAILED;
   }
   
+  // Start with LEDs off
+  USB_SPI_STATUS retCode = CP213x_SetGpioModeAndLevel(9, GPIO_MODE_OUTPUT_PP, 0);
+  USB_SPI_STATUS retCode = CP213x_SetGpioModeAndLevel(10, GPIO_MODE_OUTPUT_PP, 0);
+  
   pthread_mutex_lock(&mutexLoadCellStatus);
   loadCellStatus = IDLE;
   if(waitingToSample ==  1) {
