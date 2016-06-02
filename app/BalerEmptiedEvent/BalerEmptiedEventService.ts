@@ -37,20 +37,21 @@ export class BalerEmptiedEventService {
       this.$log.debug("got BalerEmptied event max: " + maxWeight + " current: " + currentWeight);
       let pic_fname: string;
       let currentBaleType: BaleType;
+      // Between Here...
       let baleEmptyPromise: q.Promise<any> = this.pictureService.takePicturePromise()
         .then((filename: string) => {
           pic_fname = filename;
           return baleTypesService.getCurrentBaleType();
         })
         .then((currBaleType: BaleType) => {
-          this.$log.debug("currBaleTypegot back");
-          this.$log.debug(currBaleType);
+          // this.$log.debug("currBaleTypegot back");
+          // this.$log.debug(currBaleType);
           currentBaleType = currBaleType;
           return workersService.getCurrentWorker();
         })
         .then((currentWorker: BalerWorker) => {
-          this.$log.debug("got back currentWorker");
-          this.$log.debug(currentWorker);
+          // this.$log.debug("got back currentWorker");
+          // this.$log.debug(currentWorker);
           let balerEmptiedEvent: BalerEmptiedEvent = {
             baleType: currentBaleType,
             weight: maxWeight,
@@ -60,13 +61,14 @@ export class BalerEmptiedEventService {
             worker: currentWorker
           };
 
-          this.$log.debug("original inserted: " + balerEmptiedEvent);
-          this.$log.debug(balerEmptiedEvent);
+          // this.$log.debug("original inserted: " + balerEmptiedEvent);
+          // this.$log.debug(balerEmptiedEvent);
           return balerEmptiedEventDataStoreService.insertRowPromise(balerEmptiedEvent);
         })
         .catch((exception) => {
           this.$log.error("balerEmptiedEventDataStoreService.insertRowPromise failed: " + exception);
         });
+        // .... and here.
 
       baleEmptyPromise
         .then((balerEmptiedEvent: BalerEmptiedEvent) => {
@@ -77,7 +79,8 @@ export class BalerEmptiedEventService {
         })
         .catch((exception) => {
           console.log(exception);
-        });
+        })
+        .done();
 
       baleEmptyPromise.then((balerEmptiedEvent: BalerEmptiedEvent) => {
         this.loadBalerEmptiedEvents();
