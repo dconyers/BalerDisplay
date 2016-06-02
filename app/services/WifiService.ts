@@ -1,6 +1,6 @@
 const execSync = require('child_process').execSync;
 const exec = require('child_process').exec;
-const reSSID = /[^\s]+\s+([^s]+.*)\n/;
+const reSSID = /[^\s]+\s+([^s]+.*)/;
 
 export function WifiService() {
   class SSID {
@@ -57,7 +57,7 @@ export function WifiService() {
         security.shift();
         var supportedSecurity = false;
         for(var j = 0; j < security.length; j++) {
-          if(security[j] == "WPA" || security[j] == "WPA2") {
+          if(security[j] == "WPA" || security[j] == "WPA2" || security[j] == "WPA1") {
             if(!(security.length > j + 1 && security[j + 1] == "Enterprise")) {
               // We don't support enterprise wifi security
               supportedSecurity = true;
