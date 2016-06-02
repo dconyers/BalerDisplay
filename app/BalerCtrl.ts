@@ -47,7 +47,7 @@ export class BalerCtrl {
     labels: { position: "inside", interval: 200 },
     pointer: { style: { fill: "#2e79bb" }, width: 5 },
     animationDuration: 0,
-    caption: { value: "Loading, please wait...", position: "bottom", offset: [0, 10], visible: true }
+    caption: { value: "", position: "bottom", offset: [0, 10], visible: true }
   };
 
 
