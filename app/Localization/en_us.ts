@@ -36,6 +36,8 @@ const resources: ITranslationTable = {
     TAKE_PICTURE: "Take Picture",
     CLOSE: "Close",
     CONFIRM: "Confirm",
+    CANCEL: "Cancel",
+    CONFIRM_PRINT: "Confirm & Print",
     BALER_EMPTIED_CONFIRMATION_TITLE: "Baler Emptied Confirmation",
     TAKING_PICTURE: "Taking Picture",
     PICTURE_TAKEN: "Picture Taken",

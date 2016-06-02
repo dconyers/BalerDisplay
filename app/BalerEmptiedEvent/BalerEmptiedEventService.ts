@@ -72,20 +72,16 @@ export class BalerEmptiedEventService {
 
       baleEmptyPromise
         .then((balerEmptiedEvent: BalerEmptiedEvent) => {
+          this.loadBalerEmptiedEvents();
+          return this.openConfirmation(balerEmptiedEvent).result;
+        })
+        .then((balerEmptiedEvent: BalerEmptiedEvent) => {
           this.qrService.createLabelImage(balerEmptiedEvent).then((path: string) => {
             console.log("createLabelImage done");
             this.qrService.printLabelImage(path);
           });
+          return balerEmptiedEvent;
         })
-        .catch((exception) => {
-          console.log(exception);
-        })
-        .done();
-
-      baleEmptyPromise.then((balerEmptiedEvent: BalerEmptiedEvent) => {
-        this.loadBalerEmptiedEvents();
-        return this.openConfirmation(balerEmptiedEvent).result;
-      })
         .then((balerEmptiedEvent: BalerEmptiedEvent) => {
           this.$log.debug("about to update with");
           this.$log.debug(balerEmptiedEvent);
@@ -95,7 +91,6 @@ export class BalerEmptiedEventService {
           this.loadBalerEmptiedEvents();
           this.$log.debug("return from update:" + updatedRowCount);
         })
-        .then()
         .catch((exception) => {
           this.$log.error("balerEmptiedEventDataStoreService.insertRowPromise failed: " + exception);
         })
