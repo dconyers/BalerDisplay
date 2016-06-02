@@ -1,3 +1,4 @@
+
 .bjn-big-image
 {
   margin: auto;
@@ -42,8 +43,7 @@
 
 .panel-body {
   overflow: hidden;
-  padding: 5px 5px 5px 5px;
-  /*padding: 0px  0px 0px 0px;*/
+  padding: 0px  0px 0px 0px;
   /*margin: 5px 5px 5px 5px;*/
 }
 
@@ -79,7 +79,7 @@
 
 .bjn-main-content
 {
-  height: 425px;
+  height: 430px;
 }
 .balerstats
 {
