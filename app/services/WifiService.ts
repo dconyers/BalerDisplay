@@ -257,8 +257,7 @@ wep-key0=${ssid.key}
     catch(err) {
       console.log("sudo sh -c 'umask 077; echo ... > \"/etc/NetworkManager/system-connections/" + ssid.conName + "\"' failed with: " + err.message);
     }
-    // Need to give nmcli a little time to load the new file
-    setTimeout(() => {
+    this.restartNM.then( () => {
       exec("nmcli c up id \'" + ssid.conName + "\'", (err, stdout, stderr) => {
         if(err) {
           console.log("nmcli c up id failed with: " + err);
@@ -267,7 +266,27 @@ wep-key0=${ssid.key}
           console.log("nmcli outputed error: " + stderr);
         }
       });
-    },
-    2000);
+    })
+    .catch((exception) => {
+      console.log(exception);
+    });
+  };
+  
+  this.restartNM = (): Promise => {
+    return new Promise((resolve, reject) => {
+      exec("sudo service NetworkManager restart", (err, stdout, stderr) => {
+        if(err) {
+          console.log("sudo service NetworkManager restart failed with: " + err);
+          reject(err);
+        }
+        if(stderr) {
+          console.log("sudo service NetworkManager restart failed with: " + stderr);
+          reject(stderr);
+        }
+        if(!(err || stderr)) {
+          resolve();
+        }
+      });
+    });
   };
 }
