@@ -190,6 +190,24 @@ DEVICE:                                 --
   this.makeSSIDObj = (ssid: string, key: string, conName: string, security: string) => {
     return new SSID(ssid, key, conName, security);
   };
+
+  this.restartNM = (): Promise => {
+    return new Promise((resolve, reject) => {
+      exec("sudo service NetworkManager restart", (err, stdout, stderr) => {
+        if(err) {
+          console.log("sudo service NetworkManager restart failed with: " + err);
+          reject(err);
+        }
+        if(stderr) {
+          console.log("sudo service NetworkManager restart failed with: " + stderr);
+          reject(stderr);
+        }
+        if(!(err || stderr)) {
+          resolve();
+        }
+      });
+    });
+  };
   
   this.saveSSID = (ssid: SSID) => {
     if(ssid.conName === "") {
@@ -257,36 +275,23 @@ wep-key0=${ssid.key}
     catch(err) {
       console.log("sudo sh -c 'umask 077; echo ... > \"/etc/NetworkManager/system-connections/" + ssid.conName + "\"' failed with: " + err.message);
     }
-    this.restartNM.then( () => {
-      exec("nmcli c up id \'" + ssid.conName + "\'", (err, stdout, stderr) => {
-        if(err) {
-          console.log("nmcli c up id failed with: " + err);
-        }
-        if(stderr) {
-          console.log("nmcli outputed error: " + stderr);
-        }
-      });
+    this.restartNM().then( () => {
+      // wait for networkmanager to completely start
+      setTimeout(() => {
+        exec("nmcli c up id \'" + ssid.conName + "\'", (err, stdout, stderr) => {
+          if(err) {
+            console.log("nmcli c up id failed with: " + err);
+          }
+          if(stderr) {
+            console.log("nmcli outputed error: " + stderr);
+          }
+        });
+      },
+      2000);
     })
     .catch((exception) => {
       console.log(exception);
     });
   };
   
-  this.restartNM = (): Promise => {
-    return new Promise((resolve, reject) => {
-      exec("sudo service NetworkManager restart", (err, stdout, stderr) => {
-        if(err) {
-          console.log("sudo service NetworkManager restart failed with: " + err);
-          reject(err);
-        }
-        if(stderr) {
-          console.log("sudo service NetworkManager restart failed with: " + stderr);
-          reject(stderr);
-        }
-        if(!(err || stderr)) {
-          resolve();
-        }
-      });
-    });
-  };
 }
