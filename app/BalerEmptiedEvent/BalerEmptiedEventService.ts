@@ -37,6 +37,7 @@ export class BalerEmptiedEventService {
       this.$log.debug("got BalerEmptied event max: " + maxWeight + " current: " + currentWeight);
       let pic_fname: string;
       let currentBaleType: BaleType;
+      let nextBaleID: number;
       // Between Here...
       let baleEmptyPromise: q.Promise<any> = this.pictureService.takePicturePromise()
         .then((filename: string) => {
@@ -47,12 +48,18 @@ export class BalerEmptiedEventService {
           // this.$log.debug("currBaleTypegot back");
           // this.$log.debug(currBaleType);
           currentBaleType = currBaleType;
+          return balerEmptiedEventDataStoreService.getNextBaleIDPromise();
+        })
+        .then((baleID: number) => {
+          nextBaleID = baleID;
           return workersService.getCurrentWorker();
         })
         .then((currentWorker: BalerWorker) => {
           // this.$log.debug("got back currentWorker");
           // this.$log.debug(currentWorker);
+          this.$log.debug("Creating new balerEmptiedEvent with ID: " + nextBaleID);
           let balerEmptiedEvent: BalerEmptiedEvent = {
+            baleID: nextBaleID,
             baleType: currentBaleType,
             weight: maxWeight,
             baleDate: new Date(),
@@ -61,8 +68,6 @@ export class BalerEmptiedEventService {
             worker: currentWorker
           };
 
-          // this.$log.debug("original inserted: " + balerEmptiedEvent);
-          // this.$log.debug(balerEmptiedEvent);
           return balerEmptiedEventDataStoreService.insertRowPromise(balerEmptiedEvent);
         })
         .catch((exception) => {
@@ -92,7 +97,7 @@ export class BalerEmptiedEventService {
           this.$log.debug("return from update:" + updatedRowCount);
         })
         .catch((exception) => {
-          this.$log.error("balerEmptiedEventDataStoreService.insertRowPromise failed: " + exception);
+          this.$log.error("balerEmptiedEventDataStoreService::Confirmation Dialog Processing failed: " + exception);
         })
         .done();
     });
@@ -105,7 +110,7 @@ export class BalerEmptiedEventService {
   openConfirmation(myBalerEmptiedEvent: BalerEmptiedEvent): any {
 
     if (this.modal !== null) {
-      this.modal.dismiss("Previous Instance Unconfirmed, dismissing");
+      this.modal.dismiss("Previous Instance Unconfirmed, dismissing dialog");
     }
 
     this.modal = this.$uibModal.open({

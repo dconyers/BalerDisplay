@@ -36,4 +36,17 @@ export class BalerEmptiedEventDataStore extends Persistence.PersistentDataStore<
         return [];
     };
 
+    getNextBaleIDPromise(): q.Promise<number> {
+      return this.loadDataPromise({baleID: -1}, 1)
+      .then((baleEvents: Array<BalerEmptiedEvent>) => {
+        this.$log.debug("getNextBaleIDPromise returned array of size: " + baleEvents.length);
+        if (baleEvents.length < 1 || baleEvents[0].baleID === null) {
+          this.$log.debug("getNextBaleIDPromise got 0 length or null value for baleID, setting to 0");
+          return 0;
+        }
+        this.$log.debug("getNextBaleIDPromise got id: " + baleEvents[0].baleID);
+        return baleEvents[0].baleID + 1;
+      });
+    };
+
 };
