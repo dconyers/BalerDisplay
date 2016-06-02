@@ -45,10 +45,10 @@ export class LoadCellMonitorService extends events.EventEmitter {
       this.checkBalerStatus();
       // Control LEDs:
       this.baleTypesService.getCurrentBaleType().then((returnVal: BaleType) => {
-        if(sample.weight > returnVal.max) {
+        if (sample.weight > returnVal.max) {
           this.gpioService.showOverweightState();
         }
-        else if(sample.weight > returnVal.min) {
+        else if (sample.weight > returnVal.min) {
           this.gpioService.showWarningState();
         }
         else {
@@ -65,7 +65,12 @@ export class LoadCellMonitorService extends events.EventEmitter {
         if (maxDelta > LoadCellMonitorService.MIN_BALE_WEIGHT) {
           this.$log.debug("Identified Baler Emptying Event, Emitting Event.");
           this.emit("BalerEmptiedEvent", maxWeight, currentWeight);
-          this.baleWeightRecordDataStore.deleteRowsPromise({}, {multi: true}).done();
+          this.baleWeightRecordDataStore.remove({}, {multi: true}, (err: Error, n: number ) => {
+            if (err !== null) {
+              this.$log.error("Called baleWeightRecordDataStore.remove() and received Received error: " + err);
+            }
+          });
+
         }
       });
     }

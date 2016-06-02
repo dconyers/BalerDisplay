@@ -17,12 +17,14 @@ export class QRService {
   */
   createLabelImage(baleEvent: BalerEmptiedEvent): Promise {
     let data = "Baletype: " + baleEvent.baleType.material +
+      "\nbaleID: " + baleEvent.baleID +
       "\nweight: " + baleEvent.weight +
       "\nbaleDate: " + baleEvent.baleDate.toLocaleDateString("en-US") + " " + baleEvent.baleDate.toLocaleTimeString("en-US");
     let pngData = qr.imageSync("http://chickenpotpie.asuscomm.com/" +
       "?material=" + encodeURIComponent(baleEvent.baleType.material) +
       "&weight=" + encodeURIComponent(baleEvent.weight.toString()) +
       "&worker=" + encodeURIComponent(baleEvent.worker.pin.toString()) +
+      "&baleID=" + encodeURIComponent(baleEvent.baleID.toString()) +
       "&date=" + encodeURIComponent(baleEvent.baleDate.toLocaleDateString("en-US") + " " + baleEvent.baleDate.toLocaleTimeString("en-US")),
       { type: 'png', ec_level: 'H' });
     let tmpName = tmp.tmpNameSync({template: "./tmp/qr-XXXXXX.png"});

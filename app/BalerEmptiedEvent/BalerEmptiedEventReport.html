@@ -1,7 +1,7 @@
 <table class="table table-bordered table-hover table-condensed">
   <tr style="font-weight: bold">
       <td style="width:15%">Bale Date</td>
-      <td style="width:15%">Bale Time</td>
+      <td style="width:15%">Bale ID</td>
       <td style="width:15%">Material Type</td>
       <td style="width:15%">Weight</td>
       <td style="width:15%">Transmitted?</td>
@@ -10,15 +10,17 @@
   <tr ng-repeat="BalerEmptiedEvent in balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents">
       <td>
           <span>
-            {{ BalerEmptiedEvent.baleDate.toLocaleDateString("en-US") || 'empty' }}
+            {{ BalerEmptiedEvent.baleDate | date:'medium' }}
           </span>
       </td>
 
       <td>
-          <span>
-            {{ BalerEmptiedEvent.baleDate.toLocaleTimeString("en-US") || 'empty' }}
-          </span>
-      </td>
+        <span>
+          <a ng-click="balerEmptiedEventReportCtrl.openLightboxModal($index)">
+            {{ BalerEmptiedEvent.baleID || 'empty' }}
+          </a>
+        </span>
+    </td>
 
       <td>
         <span>
@@ -28,7 +30,7 @@
 
     <td>
         <span>
-          {{ BalerEmptiedEvent.weight || 'empty' }}
+          {{ BalerEmptiedEvent.weight | number:0 }}
         </span>
     </td>
 

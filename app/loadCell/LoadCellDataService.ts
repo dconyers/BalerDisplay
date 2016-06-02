@@ -30,7 +30,7 @@ process.on("exit", function() {
 
 export class LoadCellDataService {
 
-    weight: number = 850;
+    weight: number = 0;
     loadCellState: LoadCellState = LoadCellState.UNINITIALIZED;
     errorState: ErrorState = ErrorState.NONE;
     calSlope: number;
@@ -48,13 +48,13 @@ export class LoadCellDataService {
     ];
 
     constructor(private $log: ng.ILogService, private $interval: ng.IIntervalService) {
-        try {
-          this.launchChildAndListen();
-        } catch (exception) {
-          $log.error("Failed to launchChildAndListen in LoadCellDataService constructor: " + exception);
-        }
-        this.$interval(() => this.getWeight(), 1000);
-//        this.$interval(() => this.simulateData(), 2000);
+      try {
+        this.launchChildAndListen();
+      } catch (exception) {
+        $log.error("Failed to launchChildAndListen in LoadCellDataService constructor: " + exception);
+      }
+      this.$interval(() => this.getWeight(), 1000);
+      // this.$interval(() => this.simulateData(), 100);
     }
 
     private launchChildAndListen() {
@@ -170,7 +170,8 @@ export class LoadCellDataService {
             break;
           case LoadCellState.WAITING_FOR_WEIGHT:
             this.loadCellState = LoadCellState.OPEN;
-            this.weight = parseFloat(lines[i]);
+            // Weight should never be less than zero.
+            this.weight = Math.max(parseFloat(lines[i]), 0);
             break;
           case LoadCellState.WAITING_FOR_ZERO_PROMPT:
             if (lines[i] === "EMPTY_AND_PRESS_ENTER") {
@@ -207,19 +208,19 @@ export class LoadCellDataService {
              this.loadCellState !== LoadCellState.WAITING_FOR_OPEN &&
              this.loadCellState !== LoadCellState.ERROR;
     }
-    
+
     turnRedOn = () => {
       this.child.stdin.write("TURN_RED_ON\n");
     }
-    
+
     turnRedOff = () => {
       this.child.stdin.write("TURN_RED_OFF\n");
     }
-    
+
     turnYellowOn = () => {
       this.child.stdin.write("TURN_YELLOW_ON\n");
     }
-    
+
     turnYellowOff = () => {
       this.child.stdin.write("TURN_YELLOW_OFF\n");
     }
@@ -231,7 +232,7 @@ export class LoadCellDataService {
     private simulateData(): void {
         this.weight +=  this.getRandomIntInclusive(-10, 40);
         if (this.weight > 1200) {
-          this.weight = 800;
+          this.weight = 800.1234567890;
         }
     }
 };

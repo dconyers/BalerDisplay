@@ -17,6 +17,7 @@ export class BalerCtrl {
   static $inject: string[] = [
     "$scope",
     "$log",
+    "$interval",
     "LoadCellDataService",
     "BaleTypesService",
     "BaleTypesDataStoreService",
@@ -52,6 +53,7 @@ export class BalerCtrl {
 
   constructor(private $scope: ng.IScope,
     private $log: ng.ILogService,
+    private $interval: ng.IIntervalService,
     private loadCellDataService: LoadCellDataService,
     private baleTypesService: BaleTypesService,
     private baleTypesDataStoreService: BaleTypesDataStore,
@@ -90,10 +92,12 @@ export class BalerCtrl {
     this.$scope.$on("jqxGaugeCreated", (event) => {
       this.$scope.$watch(() => {
         return this.loadCellDataService.getLoadCellWeight();
-      }, () => {
-        this.balerData.currentWeight = this.loadCellDataService.getLoadCellWeight();
-        this.gaugeSettings.caption.value = "" + this.balerData.currentWeight.toFixed(0) + " lbs.";
-        this.gaugeSettings.apply("caption", this.gaugeSettings.caption);
+      }, (newValue, oldValue) => {
+        if (oldValue !== newValue) {
+          this.balerData.currentWeight = newValue;
+          this.gaugeSettings.caption.value = "" + this.balerData.currentWeight.toFixed(0) + " lbs.";
+          this.gaugeSettings.apply("caption", this.gaugeSettings.caption);
+        }
       });
     });
   }

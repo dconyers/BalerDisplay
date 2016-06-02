@@ -68,7 +68,7 @@ ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.
     <span translate class="info-title">{{"LAST_BALE_WEIGHT"}}
     </span>
     <span class="badge">
-      {{balerEmptiedEventReportCtrl.balerEmptiedEventService.getNewestBalerEmptiedEvent().weight}}
+      {{balerEmptiedEventReportCtrl.balerEmptiedEventService.getNewestBalerEmptiedEvent().weight | number:0}}
     </span>
   </li>
   <li class="list-group-item no-side-borders">

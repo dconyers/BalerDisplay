@@ -76,9 +76,9 @@ export class PictureSrvc {
   takePicture(pathname: string, callback): void {
     let child;
     let obj = this;
+    this.curCallback = callback;
     if (this.state === PictureState.Ready) {
       this.state = PictureState.Busy;
-      this.curCallback = callback;
       this.curPathname = pathname;
       let cmd = "fswebcam -r " + this.width + "x" + this.height + " -S 10 "
                    /* fswebcam outputs everything to stderr, with actual errors
