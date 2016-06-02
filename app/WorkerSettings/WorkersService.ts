@@ -16,10 +16,9 @@ export class WorkersService {
 
     public getCurrentWorker(): q.Promise<BalerWorker> {
         return this.workersDataStoreService.findOnePromise({current: true}).then((retVal: BalerWorker) => {
-            this.$log.debug("getCurrentWorker return: " + retVal);
             return retVal;
         }).catch((exception: any) => {
-                this.$log.error("Really Got exception: "  + exception);
+                this.$log.error("getCurrentWorker got exception: "  + exception);
                 return exception;
         });
     }
