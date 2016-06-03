@@ -30,6 +30,7 @@ import {WorkerSelectorService} from "./WorkerSettings/WorkerSelectorService";
 import {WorkerSelectorDlgCtrl} from "./WorkerSettings/WorkerSelectorDlgCtrl";
 import {WorkersService} from "./WorkerSettings/WorkersService";
 import {WorkerSettingsCtrl} from "./WorkerSettings/WorkerSettingsCtrl";
+import {GeneralConfigurationDataStore} from "./MachineSettings/GeneralConfigurationDataStore";
 
 angular.module("balerApp", [
     "ui.bootstrap",
@@ -62,7 +63,8 @@ angular.module("balerApp", [
     .service("LoadCellMonitorService", LoadCellMonitorService)
     .service("PictureSrvc", PictureSrvc)
     .service("WorkersDataStoreService", WorkersDataStore)
-    .service("WorkerSelectorService", WorkersDataStore)
+    .service("GeneralConfigurationDataStoreService", GeneralConfigurationDataStore)
+    .service("WorkerSelectorService", WorkerSelectorService)
     .service("WorkersService", WorkersService)
     .service("QRService", QRService)
     .service("PrinterService", PrinterService)
@@ -122,6 +124,15 @@ angular.module("balerApp", [
             })
             .done();
     }])
+  .run(["GeneralConfigurationDataStoreService", "$log", (generalConfigurationDataStore, $log) => {
+    generalConfigurationDataStore.initializeDataStore().then(() => {
+      $log.debug("GeneralConfigurationStoreService.initializeDataStore success:");
+    })
+      .catch((exception) => {
+        $log.error("Got exception: " + exception);
+      })
+      .done();
+  }])
     .run(["LoadCellMonitorService", "$log", (loadCellMonitorService, $log) => {
         loadCellMonitorService.startMonitor();
     }])
