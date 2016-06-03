@@ -95,21 +95,21 @@ Run the following:
 	`sudo cp configFiles/pppd /etc/sudoers.d/`
 
 * Setup pppd:
-  * `sudo cp configFiles/sim800 to /etc/ppp/peers/`
+  * `sudo cp configFiles/sim800 /etc/ppp/peers/`
   * Note: script is currently setup to use Cricket network, application will need to turn off pppd and edit config file to change APN.
   * `sudo cp configFiles/1add-default-route /etc/ppp/ip-up.d/`
 
 * Setup chatscript that pppd will use to issue AT commands:
-  * `sudo cp configFiles/gprs to /etc/chatscripts/`
+  * `sudo cp configFiles/gprs /etc/chatscripts/`
   * `sudo chgrp dip /etc/chatscripts/gprs`
   * `sudo chmod 664 /etc/chatscripts/gprs`
   * `sudo chmod 770 /etc/chatscripts`
 
 * Need to add user to dialout group to access sim800 as serial port:
-    `sudo usermod -a -G dialout bjn`
+    `sudo usermod -a -G dialout baler`
 
 * Need to add user to dip group to access use pppd and modify configuration files.
-  * `sudo usermod -a -G dip bjn`
+  * `sudo usermod -a -G dip baler`
 
 * Install python-pip and pyserial to allow communication with AT commands:
   * `sudo apt-get install python-pip`
