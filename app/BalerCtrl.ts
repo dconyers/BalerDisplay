@@ -94,11 +94,18 @@ export class BalerCtrl {
         return this.loadCellDataService.getLoadCellWeight();
       }, (newValue, oldValue) => {
         if (oldValue !== newValue) {
-          this.balerData.currentWeight = newValue;
-          this.gaugeSettings.caption.value = "" + this.balerData.currentWeight.toFixed(0) + " lbs.";
-          this.gaugeSettings.apply("caption", this.gaugeSettings.caption);
+          this.updateCaption(newValue);
         }
       });
+
+      // Since it was just created, initialize the caption
+      this.updateCaption(this.loadCellDataService.getLoadCellWeight());
     });
+  }
+
+  private updateCaption(weight: number) {
+    this.balerData.currentWeight = this.loadCellDataService.getLoadCellWeight();
+    this.gaugeSettings.caption.value = "" + this.balerData.currentWeight.toFixed(0) + " lbs.";
+    this.gaugeSettings.apply("caption", this.gaugeSettings.caption);
   }
 };
