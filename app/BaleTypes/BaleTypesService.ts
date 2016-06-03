@@ -18,7 +18,7 @@ export class BaleTypesService {
         return this.baleTypesDataStoreService.findOnePromise({currentType: true}).then((retVal: BaleType) => {
             return retVal;
         }).catch((exception: any) => {
-                this.$log.error("Really Got exception: "  + exception);
+                this.$log.error("BaleTypesService::getCurrentBaleType Got exception: "  + exception);
                 return exception;
         });
     }
