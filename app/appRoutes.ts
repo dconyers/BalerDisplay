@@ -12,7 +12,7 @@ function config ($routeProvider) {
     }).
     when("/SettingsMenu", {
       title: "SETTINGS_MENU",
-      templateUrl: "SettingsMenu/SettingsMenu.html",
+      templateUrl: "Settings/SettingsMenu/SettingsMenu.html",
       controller: "SettingsMenuCtrl",
       controllerAs: "SettingsMenuCtrl"
     }).
@@ -30,13 +30,13 @@ function config ($routeProvider) {
     }).
     when("/NetworkSettings", {
       title: "NETWORK_SETTINGS",
-      templateUrl: "NetworkSettings/NetworkSettings.html",
+      templateUrl: "Settings/NetworkSettings/NetworkSettings.html",
       controller: "NetworkSettingsCtrl",
       controllerAs: "networkSettingsCtrl"
     }).
     when("/WorkerSettings", {
       title: "WORKER_SETTINGS",
-      templateUrl: "WorkerSettings/WorkerSettings.html",
+      templateUrl: "Settings/WorkerSettings/WorkerSettings.html",
       controller: "WorkerSettingsCtrl",
       controllerAs: "workerSettingsCtrl"
     }).
@@ -48,7 +48,7 @@ function config ($routeProvider) {
     }).
     when("/MachineSettings", {
       title: "MACHINE_SETTINGS",
-      templateUrl: "MachineSettings/MachineSettings.html",
+      templateUrl: "Settings/MachineSettings/MachineSettings.html",
       controller: "MachineSettingsCtrl",
       controllerAs: "machineSettingsCtrl"
     }).

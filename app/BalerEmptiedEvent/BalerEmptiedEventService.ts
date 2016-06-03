@@ -6,8 +6,8 @@ import {BaleTypesService} from "../BaleTypes/BaleTypesService";
 import {BaleType} from "../BaleTypes/BaleType";
 import {PictureSrvc} from "../services/PictureSrvc";
 import {QRService} from "../services/QRService";
-import {WorkersService} from "../WorkerSettings/WorkersService";
-import {BalerWorker} from "../WorkerSettings/BalerWorker";
+import {WorkersService} from "../Settings/WorkerSettings/WorkersService";
+import {BalerWorker} from "../Settings/WorkerSettings/BalerWorker";
 
 export class BalerEmptiedEventService {
 

@@ -1,5 +1,5 @@
 import {BaleType} from "../BaleTypes/BaleType";
-import {BalerWorker} from "../WorkerSettings/BalerWorker";
+import {BalerWorker} from "../Settings/WorkerSettings/BalerWorker";
 
 
 export interface BalerEmptiedEvent {

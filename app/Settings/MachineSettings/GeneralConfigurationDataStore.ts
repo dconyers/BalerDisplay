@@ -1,7 +1,7 @@
 import NeDBDataStore = require("nedb");
 import * as GeneralConfiguration from  "./GeneralConfigurationRecord";
 import * as q from "q";
-import * as Persistence from "../persistence/PersistentDataStore";
+import * as Persistence from "../../persistence/PersistentDataStore";
 
 export class GeneralConfigurationDataStore extends Persistence.PersistentDataStore<GeneralConfiguration.GeneralConfigurationRecord> {
 

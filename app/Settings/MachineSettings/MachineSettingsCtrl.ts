@@ -1,5 +1,5 @@
 import * as q from "q";
-import {LoadCellDataService} from "../loadCell/LoadCellDataService";
+import {LoadCellDataService} from "../../loadCell/LoadCellDataService";
 import {GeneralConfigurationDataStore} from "../MachineSettings/GeneralConfigurationDataStore";
 import * as GeneralConfiguration from  "../MachineSettings/GeneralConfigurationRecord";
 

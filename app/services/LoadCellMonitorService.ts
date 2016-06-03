@@ -1,5 +1,5 @@
-import {GeneralConfigurationDataStore} from "../MachineSettings/GeneralConfigurationDataStore";
-import * as GeneralConfiguration from  "../MachineSettings/GeneralConfigurationRecord";
+import {GeneralConfigurationDataStore} from "../Settings/MachineSettings/GeneralConfigurationDataStore";
+import * as GeneralConfiguration from  "../Settings/MachineSettings/GeneralConfigurationRecord";
 import {LoadCellDataService} from "../loadCell/LoadCellDataService";
 import {BaleWeightRecord} from "../BaleWeightRecord/BaleWeightRecord";
 import {BaleWeightRecordDataStore} from "../BaleWeightRecord/BaleWeightRecordDataStore";
