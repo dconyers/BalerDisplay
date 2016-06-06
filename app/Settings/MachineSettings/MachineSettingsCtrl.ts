@@ -39,7 +39,7 @@ export class MachineSettingsCtrl {
   setCal() {
     let obj = this;
     this.$uibModal.open({
-      templateUrl: "./MachineSettings/SetCalModal.html",
+      templateUrl: "./Settings/MachineSettings/SetCalModal.html",
       controller: "SetCalModalCtrl",
       controllerAs: "setCalModalCtrl",
     });
@@ -48,7 +48,7 @@ export class MachineSettingsCtrl {
   calibrate() {
     let obj = this;
     this.$uibModal.open({
-      templateUrl: "./MachineSettings/CalibrationModal.html",
+      templateUrl: "./Settings/MachineSettings/CalibrationModal.html",
       controller: "CalibrationModalCtrl",
       controllerAs: "calibrationModalCtrl",
       backdrop: "static",
@@ -58,7 +58,7 @@ export class MachineSettingsCtrl {
 
   testCam() {
     this.$uibModal.open({
-      templateUrl: "./MachineSettings/CameraTestModal.html",
+      templateUrl: "./Settings/MachineSettings/CameraTestModal.html",
       controller: "CameraTestModalCtrl",
       controllerAs: "cameraTestModalCtrl",
     });
