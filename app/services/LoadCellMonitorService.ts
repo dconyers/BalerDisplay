@@ -22,6 +22,8 @@ export class LoadCellMonitorService extends events.EventEmitter {
         "GeneralConfigurationDataStoreService",
     ];
 
+    private timerPromise: ng.IPromise<any> = undefined;
+
     constructor(private $log: ng.ILogService,
                 private $interval: ng.IIntervalService,
                 private loadCellDataService: LoadCellDataService,
@@ -74,16 +76,34 @@ export class LoadCellMonitorService extends events.EventEmitter {
           if (maxDelta > minDelta) {
             this.$log.debug("Identified Baler Emptying Event, Emitting Event.");
             this.emit("BalerEmptiedEvent", maxWeight, currentWeight);
-            this.baleWeightRecordDataStore.remove({}, { multi: true }, (err: Error, n: number) => {
-              if (err !== null) {
-                this.$log.error("Called baleWeightRecordDataStore.remove() and received Received error: " + err);
-              }
-            });
+            this.clearBaleWeightRecordDataStore();
           }
         });
     }
 
+    public clearBaleWeightRecordDataStore(): void {
+      this.baleWeightRecordDataStore.remove({}, { multi: true }, (err: Error, n: number) => {
+        if (err !== null) {
+          this.$log.error("Called baleWeightRecordDataStore.remove() and received Received error: " + err);
+        } else {
+          this.$log.debug("LoadCellMonitorService::clearBaleWeightRecordDataStore Success!");
+        }
+      });
+    }
+
     public startMonitor(): any {
-      this.$interval(() => this.loadCellMonitorIteration(), 1000);
+      this.timerPromise = this.$interval(() => this.loadCellMonitorIteration(), 1000);
+    }
+
+    public stopMonitor(): boolean {
+      let returnVal: boolean = false;
+      if (angular.isDefined(this.timerPromise)) {
+        returnVal = this.$interval.cancel(this.timerPromise);
+        if (!returnVal) {
+          this.$log.error("LoadCellMonitorService::stopMonitor failed to cancel timer.");
+        }
+        this.timerPromise = undefined;
+      }
+      return returnVal;
     }
 }
