@@ -5,8 +5,14 @@ enum ModalState {
   START_KNOWN_SAMPLE
 }
   
-export function CalibrationModalCtrl($scope, LoadCellDataService) {
+export function CalibrationModalCtrl($scope, LoadCellDataService, LoadCellMonitorService) {
   this.modalState = ModalState.WAITING_START;
+  LoadCellMonitorService.stopMonitor();
+  
+  $scope.$on("$destroy", () => {
+    LoadCellMonitorService.clearBaleWeightRecordDataStore();
+    LoadCellMonitorService.startMonitor();
+  });
 
   this.calWeight = (knownWeight) => {
     let obj = this;
