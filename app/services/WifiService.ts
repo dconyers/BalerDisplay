@@ -191,7 +191,7 @@ DEVICE:                                 --
     return new SSID(ssid, key, conName, security);
   };
 
-  this.restartNM = (): Promise => {
+  this.restartNM = (): Promise<any> => {
     return new Promise((resolve, reject) => {
       exec("sudo service NetworkManager restart", (err, stdout, stderr) => {
         if(err) {

@@ -26,7 +26,7 @@ ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.
             <li class="list-group-item no-side-borders">
               <span translate class="info-title">{{"BalerStatsPanel.baleType"}}
               </span>
-              <span class="badge" ng-controller="BaleTypesCtrl as baleTypesCtrl">
+              <span class="baler-stat-info" ng-controller="BaleTypesCtrl as baleTypesCtrl">
                 <!-- {{balerCtrl.balerData.baleType.gui}} -->
                 <a href="#" ng-click="baleTypesCtrl.changeCurrentBaleType()">
                   {{balerCtrl.baleTypesDataStoreService.currentBaleType.gui}}
@@ -36,14 +36,14 @@ ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.
             <li class="list-group-item no-side-borders">
               <span translate class="info-title">{{"BalerStatsPanel.weightRange"}}
               </span>
-              <span class="badge">
+              <span class="baler-stat-info">
                 {{balerCtrl.baleTypesDataStoreService.currentBaleType.min}} - {{balerCtrl.baleTypesDataStoreService.currentBaleType.max}}
               </span>
             </li>
             <li class="list-group-item no-side-borders">
               <span translate class="info-title">{{"BalerStatsPanel.CURRENT_WORKER"}}
               </span>
-              <span class="badge xeditablebadge" ng-controller="WorkerSettingsCtrl as workerSettingsCtrl">
+              <span class="baler-stat-info xeditablebaler-stat-info" ng-controller="WorkerSettingsCtrl as workerSettingsCtrl">
                   <a href="#" editable-select="workerSettingsCtrl.currentWorker._id" onbeforesave="workerSettingsCtrl.currentWorkerChangeRequest($data)" onshow="workerSettingsCtrl.reloadWorkers()" e-ng-options="worker._id as worker.username for worker in workerSettingsCtrl.workers">
                     {{ workerSettingsCtrl.currentWorker.username || 'not set' }}
                   </a>
@@ -60,21 +60,21 @@ ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.
   <li class="list-group-item no-side-borders">
     <span translate class="info-title">{{"LAST_BALE_TIME"}}
     </span>
-    <span class="badge">
+    <span class="baler-stat-info">
       {{(balerEmptiedEventReportCtrl.balerEmptiedEventService.getNewestBalerEmptiedEvent().baleDate)  | date:'medium'}}
     </span>
   </li>
   <li class="list-group-item no-side-borders">
     <span translate class="info-title">{{"LAST_BALE_WEIGHT"}}
     </span>
-    <span class="badge">
+    <span class="baler-stat-info">
       {{balerEmptiedEventReportCtrl.balerEmptiedEventService.getNewestBalerEmptiedEvent().weight | number:0}}
     </span>
   </li>
   <li class="list-group-item no-side-borders">
     <span translate class="info-title">{{"LAST_BALE_MATERIAL"}}
     </span>
-    <span class="badge">
+    <span class="baler-stat-info">
       {{balerEmptiedEventReportCtrl.balerEmptiedEventService.getNewestBalerEmptiedEvent().baleType.gui}}
     </span>
   </li>
