@@ -28,6 +28,6 @@ export class BalerEmptiedEventReportCtrl {
     }
 
     public openLightboxModal(index: number) {
-      this.Lightbox.openModal(this.balerEmptiedEventService.balerEmptiedEvents, index);
+      this.Lightbox.openModal(this.balerEmptiedEventDataStoreService.balerEmptiedEvents, index);
     }
 }

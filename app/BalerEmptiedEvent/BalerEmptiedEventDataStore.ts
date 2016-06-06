@@ -15,6 +15,8 @@ export class BalerEmptiedEventDataStore extends Persistence.PersistentDataStore<
             super("BalerEmptiedEvents");
     };
 
+    balerEmptiedEvents: Array<BalerEmptiedEvent>;
+
     /**
      * Method initializes the data store by loading the database, counting the number
      * of rows and seeding it with data if necessary
@@ -32,6 +34,15 @@ export class BalerEmptiedEventDataStore extends Persistence.PersistentDataStore<
             });
     }
 
+    loadDataPromise(sortParam?: any, limit?: number): q.Promise<Array<BalerEmptiedEvent>> {
+      return super.loadDataPromise(sortParam, limit)
+      .then((returnVal: Array<BalerEmptiedEvent>) => {
+        this.balerEmptiedEvents = returnVal;
+        return returnVal;
+      });
+    }
+
+
     getInitData(): Array<BalerEmptiedEvent> {
         return [];
     };
@@ -48,5 +59,23 @@ export class BalerEmptiedEventDataStore extends Persistence.PersistentDataStore<
         return baleEvents[0].baleID + 1;
       });
     };
+
+    insertRowPromise(newRow: BalerEmptiedEvent): q.Promise<BalerEmptiedEvent> {
+      return super.insertRowPromise(newRow)
+      .then((event: BalerEmptiedEvent) => {
+        this.balerEmptiedEvents.unshift(event);
+        return event;
+      });
+    }
+
+    updateRowPromise(id: any, updated: any, options: NeDB.UpdateOptions): q.Promise<number> {
+      return super.updateRowPromise(id, updated, options)
+      .then((rowCount: number) => {
+        // Since the update occurred, reload the data (asynchronous)
+        this.loadDataPromise({createdAt: -1}, 10);
+        return rowCount;
+      });
+    }
+
 
 };

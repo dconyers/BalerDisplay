@@ -14,8 +14,6 @@ import * as GeneralConfiguration from  "../GeneralConfiguration/GeneralConfigura
 
 export class BalerEmptiedEventService {
 
-  balerEmptiedEvents: Array<BalerEmptiedEvent> = [];
-
   static $inject: string[] = [
     "$log",
     "$uibModal",
@@ -69,8 +67,6 @@ export class BalerEmptiedEventService {
             balerID: balerIDRecord.value,
             customerID: customerIDRecord.value
           };
-          this.$log.debug("Baler Emptied Event Created.");
-          this.$log.debug(balerEmptiedEvent);
           return balerEmptiedEventDataStoreService.insertRowPromise(balerEmptiedEvent);
         }).catch((exception) => {
           this.$log.error("balerEmptiedEventDataStoreService.insertRowPromise failed: " + exception);
@@ -89,16 +85,11 @@ export class BalerEmptiedEventService {
         .then((balerEmptiedEvent: BalerEmptiedEvent) => {
           return balerEmptiedEventDataStoreService.updateRowPromise(balerEmptiedEvent._id, balerEmptiedEvent, {});
         })
-        .then((updatedRowCount: number) => {
-          this.loadBalerEmptiedEvents();
-        })
         .catch((exception) => {
           this.$log.error("balerEmptiedEventDataStoreService::Confirmation Dialog Processing failed: " + exception);
         })
         .done();
     });
-
-    this.loadBalerEmptiedEvents();
   }
 
   private modal: ng.ui.bootstrap.IModalServiceInstance = null;
@@ -124,20 +115,12 @@ export class BalerEmptiedEventService {
     return this.modal;
   }
 
-  public loadBalerEmptiedEvents(): Array<BalerEmptiedEvent> {
-    this.$log.debug("BalerEmptiedEventReportCtrl::loadBalerEmptiedEvents called");
-    this.balerEmptiedEventDataStoreService.initializeDataStore().then((baleEvents: Array<BalerEmptiedEvent>) => {
-      this.$log.debug("Successfully loaded " + baleEvents.length + " Bale Events in loadBalerEmptiedEvents");
-      this.balerEmptiedEvents = baleEvents;
-    });
-    return this.balerEmptiedEvents;
-  }
-
   public getNewestBalerEmptiedEvent(): BalerEmptiedEvent {
-    if (!this.balerEmptiedEvents) {
+
+    if (!this.balerEmptiedEventDataStoreService.balerEmptiedEvents) {
       return null;
     }
-    let theEvent: BalerEmptiedEvent = this.balerEmptiedEvents[0];
+    let theEvent: BalerEmptiedEvent = this.balerEmptiedEventDataStoreService.balerEmptiedEvents[0];
     return theEvent;
   }
 }
