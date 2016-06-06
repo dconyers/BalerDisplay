@@ -625,7 +625,7 @@ loadCellError_type calibrate() {
   double input, weight2;
   loadCellError_type ret;
   int64_t samples[10];
-  int32_t calWeight1, calWeight2;
+  int64_t calWeight1, calWeight2;
   
   pthread_mutex_lock(&mutexLoadCellStatus);
   if(loadCellStatus == UNINITIALIZED) {
