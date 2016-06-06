@@ -368,3 +368,14 @@ a.list-group-item, button.list-group-item {
 .modal-body table {
   width: 100%;
 }
+
+.baler-stat-info {
+  float: right;
+}
+
+.baler-stat-info a {
+  text-decoration: underline;
+  font-weight: bold;
+  color: #2b689c;
+  border-bottom: none;
+}
