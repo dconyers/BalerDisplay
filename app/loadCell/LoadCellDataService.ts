@@ -53,8 +53,8 @@ export class LoadCellDataService {
       } catch (exception) {
         $log.error("Failed to launchChildAndListen in LoadCellDataService constructor: " + exception);
       }
-      this.$interval(() => this.getWeight(), 1000);
-      // this.$interval(() => this.simulateData(), 20000);
+      this.$interval(() => this.getWeight(), 500);
+      // this.$interval(() => this.simulateData(), 5000);
     }
 
     private launchChildAndListen() {
@@ -171,7 +171,7 @@ export class LoadCellDataService {
           case LoadCellState.WAITING_FOR_WEIGHT:
             this.loadCellState = LoadCellState.OPEN;
             // Weight should never be less than zero.
-            this.weight = Math.max(parseFloat(lines[i]), 0);
+            this.weight = Math.max(Math.round(parseFloat(lines[i])), 0);
             break;
           case LoadCellState.WAITING_FOR_ZERO_PROMPT:
             if (lines[i] === "EMPTY_AND_PRESS_ENTER") {
