@@ -107,7 +107,6 @@ export class BalerEmptiedEventService {
       controllerAs: "balerEmptiedConfirmationDlgCtrl",
       resolve: {
         balerEmptiedEvent: () => {
-          this.$log.debug("sending: " + myBalerEmptiedEvent);
           return myBalerEmptiedEvent;
         }
       }

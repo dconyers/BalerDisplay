@@ -29,7 +29,7 @@ export class BalerEmptiedConfirmationDlgCtrl {
     private pictureSrvc: PictureSrvc,
     private workersDataStore: WorkersDataStore,
     private balerEmptiedEvent: BalerEmptiedEvent) {
-      $log.debug("BalerEmptiedConfirmationDlgCtrl constructor: " + balerEmptiedEvent);
+      $log.debug("BalerEmptiedConfirmationDlgCtrl constructor.");
     }
 
   cancel() {
@@ -54,12 +54,11 @@ export class BalerEmptiedConfirmationDlgCtrl {
   }
 
   reloadWorkers(): void {
-      this.$log.debug("top of reloadWorkers");
+      this.$log.debug("BalerEmptiedConfirmationDlgCtrl::reloadWorkers - top");
       this.workersDataStore.initializeDataStore()
           .then((return_val: Array<Worker>): void => {
               return this.$q((resolve): void => {
                   this.workers = return_val;
-                  this.$log.debug("workers updated");
                   resolve();
                   this.$scope.$apply();
               });

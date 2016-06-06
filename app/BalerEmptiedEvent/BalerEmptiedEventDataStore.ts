@@ -40,9 +40,7 @@ export class BalerEmptiedEventDataStore extends Persistence.PersistentDataStore<
       this.$log.debug("BalerEmptiedEventDataStore::loadDataPromise called");
       return super.loadDataPromise(sortParam, limit)
       .then((returnVal: Array<BalerEmptiedEvent>) => {
-        this.$log.debug("BalerEmptiedEventDataStore::loadDataPromise got back data");
         this.balerEmptiedEvents = returnVal;
-        this.$log.debug(returnVal);
         return returnVal;
       });
     }

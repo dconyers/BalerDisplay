@@ -33,12 +33,11 @@ export class WorkerSettingsCtrl {
 
 
     reloadWorkers(): void {
-        this.$log.debug("top of reloadWorkers");
+        this.$log.debug("WorkerSettingsCtrl::reloadWorkers - top");
         this.workersDataStore.initializeDataStore()
             .then((return_val: Array<BalerWorker>): void => {
                 return this.$q((resolve): void => {
                     this.workers = return_val;
-                    this.$log.debug("workers updated");
                     resolve();
                     this.$scope.$apply();
                 });
