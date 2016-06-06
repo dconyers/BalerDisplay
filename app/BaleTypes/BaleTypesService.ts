@@ -14,15 +14,6 @@ export class BaleTypesService {
         $log.debug("Top of BaleTypesService constructor");
     }
 
-    public getCurrentBaleType(): q.Promise<BaleType> {
-        return this.baleTypesDataStoreService.findOnePromise({currentType: true}).then((retVal: BaleType) => {
-            return retVal;
-        }).catch((exception: any) => {
-                this.$log.error("BaleTypesService::getCurrentBaleType Got exception: "  + exception);
-                return exception;
-        });
-    }
-
     public getMaterialList(): q.Promise<String[]> {
         return this.baleTypesDataStoreService.initializeDataStore();
     }

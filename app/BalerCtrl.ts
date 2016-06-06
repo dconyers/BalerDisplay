@@ -58,6 +58,7 @@ export class BalerCtrl {
     private baleTypesService: BaleTypesService,
     private baleTypesDataStoreService: BaleTypesDataStore,
     private BalerEmptiedEventService: BalerEmptiedEventService) {
+      this.$log.debug("BalerCtrl::constructor");
     this.refreshData();
   }
 
@@ -69,8 +70,9 @@ export class BalerCtrl {
 
   private refreshData() {
     this.$log.debug("BalerCtrl::refreshData");
-    this.baleTypesService.getCurrentBaleType()
+    this.baleTypesDataStoreService.getCurrentBaleType()
       .then((returnVal: BaleType) => {
+        this.$log.debug("Current baleType is: " + returnVal.gui);
         this.balerData.baleType = returnVal;
         this.balerData.lowWeight = returnVal.min;
         this.balerData.highWeight = returnVal.max;

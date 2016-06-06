@@ -5,6 +5,8 @@ import * as Persistence from "../persistence/PersistentDataStore";
 
 export class BalerEmptiedEventDataStore extends Persistence.PersistentDataStore<BalerEmptiedEvent> {
 
+    private static CACHED_ROW_COUNT: number = 10;
+
     static $inject: string[] = [
         "$log",
     ];
@@ -25,19 +27,22 @@ export class BalerEmptiedEventDataStore extends Persistence.PersistentDataStore<
     initializeDataStore(): q.Promise<any> {
       this.$log.debug("top of BalerEmptiedEventDataStore::initializeDataStore()");
         if (this.initialized) {
-            return this.loadDataPromise({createdAt: -1}, 10);
+            return this.loadDataPromise({createdAt: -1}, BalerEmptiedEventDataStore.CACHED_ROW_COUNT);
         }
         return this.loadDatabasePromise()
             .then(() => {
                 this.initialized = true;
-                return this.loadDataPromise({createdAt: -1}, 10);
+                return this.loadDataPromise({createdAt: -1}, BalerEmptiedEventDataStore.CACHED_ROW_COUNT);
             });
     }
 
     loadDataPromise(sortParam?: any, limit?: number): q.Promise<Array<BalerEmptiedEvent>> {
+      this.$log.debug("BalerEmptiedEventDataStore::loadDataPromise called");
       return super.loadDataPromise(sortParam, limit)
       .then((returnVal: Array<BalerEmptiedEvent>) => {
+        this.$log.debug("BalerEmptiedEventDataStore::loadDataPromise got back data");
         this.balerEmptiedEvents = returnVal;
+        this.$log.debug(returnVal);
         return returnVal;
       });
     }
@@ -63,7 +68,8 @@ export class BalerEmptiedEventDataStore extends Persistence.PersistentDataStore<
     insertRowPromise(newRow: BalerEmptiedEvent): q.Promise<BalerEmptiedEvent> {
       return super.insertRowPromise(newRow)
       .then((event: BalerEmptiedEvent) => {
-        this.balerEmptiedEvents.unshift(event);
+        // Since the update occurred, reload the data (asynchronous)
+        this.loadDataPromise({createdAt: -1}, BalerEmptiedEventDataStore.CACHED_ROW_COUNT);
         return event;
       });
     }
@@ -72,7 +78,7 @@ export class BalerEmptiedEventDataStore extends Persistence.PersistentDataStore<
       return super.updateRowPromise(id, updated, options)
       .then((rowCount: number) => {
         // Since the update occurred, reload the data (asynchronous)
-        this.loadDataPromise({createdAt: -1}, 10);
+        this.loadDataPromise({createdAt: -1}, BalerEmptiedEventDataStore.CACHED_ROW_COUNT);
         return rowCount;
       });
     }

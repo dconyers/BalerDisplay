@@ -30,8 +30,12 @@ export class BaleTypeSelectorDlgCtrl {
   baleSelected(selected: BaleType) {
     this.$log.debug("baleSelected clicked with bale: " + selected.gui);
     this.$log.debug(selected);
+    selected = angular.copy(selected);
     // angular.copy used here to remove the $$hashKey value that breaks nedb
-    this.$uibModalInstance.close(angular.copy(selected));
+    this.baleTypesDataStoreService.currentBaleTypeChangeRequest(selected)
+    .then(() => {
+      this.$uibModalInstance.close(selected);
+    });
   }
 
   cancel() {

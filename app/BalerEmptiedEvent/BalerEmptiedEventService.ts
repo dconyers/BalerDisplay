@@ -2,7 +2,7 @@ import * as q from "q";
 import {BalerEmptiedEvent} from "./BalerEmptiedEvent";
 import {BalerEmptiedEventDataStore} from "./BalerEmptiedEventDataStore";
 import {LoadCellMonitorService} from "../services/LoadCellMonitorService";
-import {BaleTypesService} from "../BaleTypes/BaleTypesService";
+import {BaleTypesDataStore} from "../BaleTypes/BaleTypesDataStore";
 import {BaleType} from "../BaleTypes/BaleType";
 import {PictureSrvc} from "../services/PictureSrvc";
 import {QRService} from "../services/QRService";
@@ -19,7 +19,7 @@ export class BalerEmptiedEventService {
     "$uibModal",
     "LoadCellMonitorService",
     "BalerEmptiedEventDataStoreService",
-    "BaleTypesService",
+    "BaleTypesDataStoreService",
     "PictureSrvc",
     "WorkersService",
     "QRService",
@@ -30,7 +30,7 @@ export class BalerEmptiedEventService {
     private $uibModal,
     private loadCellMonitorService: LoadCellMonitorService,
     private balerEmptiedEventDataStoreService: BalerEmptiedEventDataStore,
-    private baleTypesService: BaleTypesService,
+    private baleTypesDataStore: BaleTypesDataStore,
     private pictureService: PictureSrvc,
     private workersService: WorkersService,
     private qrService: QRService,
@@ -42,7 +42,7 @@ export class BalerEmptiedEventService {
         q.all(
           [
             this.pictureService.takePicturePromise(),
-            baleTypesService.getCurrentBaleType(),
+            baleTypesDataStore.getCurrentBaleType(),
             balerEmptiedEventDataStoreService.getNextBaleIDPromise(),
             workersService.getCurrentWorker(),
             this.generalConfigurationDataStoreService.getGeneralConfigurationRecord(GeneralConfiguration.CUSTOMER_ID),

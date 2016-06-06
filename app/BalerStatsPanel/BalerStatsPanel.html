@@ -1,5 +1,5 @@
 <div class="jumbotron balerstats"
-ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.balerData.lowWeight && balerCtrl.balerData.currentWeight < balerCtrl.balerData.highWeight, 'balerstats-error' : balerCtrl.balerData.currentWeight > balerCtrl.balerData.highWeight}">
+ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.baleTypesDataStoreService.currentBaleType.lowWeight && balerCtrl.balerData.currentWeight < balerCtrl.baleTypesDataStoreService.currentBaleType.highWeight, 'balerstats-error' : balerCtrl.balerData.currentWeight > balerCtrl.baleTypesDataStoreService.currentBaleType.highWeight}">
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-4 nopadding" style="text-align: center">
@@ -13,7 +13,7 @@ ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.
                 <a href="#" class="thumbnail">
                   <img class="center-block"
                        ng-click="baleTypesCtrl.changeCurrentBaleType()"
-                       ng-src="./BaleTypes/images/{{balerCtrl.balerData.baleType ? balerCtrl.balerData.baleType.imageName : 'Question_mark_1.svg'}}"
+                       ng-src="./BaleTypes/images/{{balerCtrl.baleTypesDataStoreService.currentBaleType ? balerCtrl.baleTypesDataStoreService.currentBaleType.imageName : 'Question_mark_1.svg'}}"
                        height="225"
                        width="225" />
                 </a>
@@ -29,7 +29,7 @@ ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.
               <span class="badge" ng-controller="BaleTypesCtrl as baleTypesCtrl">
                 <!-- {{balerCtrl.balerData.baleType.gui}} -->
                 <a href="#" ng-click="baleTypesCtrl.changeCurrentBaleType()">
-                  {{balerCtrl.balerData.baleType.gui}}
+                  {{balerCtrl.baleTypesDataStoreService.currentBaleType.gui}}
                 </a>
               </span>
             </li>
@@ -37,7 +37,7 @@ ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.
               <span translate class="info-title">{{"BalerStatsPanel.weightRange"}}
               </span>
               <span class="badge">
-                {{balerCtrl.balerData.baleType.min}} - {{balerCtrl.balerData.baleType.max}}
+                {{balerCtrl.baleTypesDataStoreService.currentBaleType.min}} - {{balerCtrl.baleTypesDataStoreService.currentBaleType.max}}
               </span>
             </li>
             <li class="list-group-item no-side-borders">

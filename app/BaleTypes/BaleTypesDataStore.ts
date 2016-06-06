@@ -11,6 +11,8 @@ export class BaleTypesDataStore extends Persistence.PersistentDataStore<BaleType
 
     private initialized: boolean = false;
 
+    private currentBaleType: BaleType = undefined;
+
     constructor(private $log: ng.ILogService) {
             super("BaleTypes");
             this.initializeDataStore(true);
@@ -23,11 +25,12 @@ export class BaleTypesDataStore extends Persistence.PersistentDataStore<BaleType
             this.$log.debug("BaleTypesDataStore::initializeDataStore - already inited, skipping.");
             return this.loadDataPromise()
                 .then((retVal: Array<BaleType>) => {
-                        return retVal.sort((a: BaleType, b: BaleType) => {
+                        retVal = retVal.sort((a: BaleType, b: BaleType) => {
                             if (a.gui === undefined)
                                 return 1;
                             return a.gui.localeCompare(b.gui);
                         });
+                        return retVal;
                 });
         }
         return this.loadDatabasePromise()
@@ -44,11 +47,12 @@ export class BaleTypesDataStore extends Persistence.PersistentDataStore<BaleType
                 return this.loadDataPromise();
             })
             .then((retVal: Array<BaleType>) => {
-                return retVal.sort((a: BaleType, b: BaleType) => {
+                retVal = retVal.sort((a: BaleType, b: BaleType) => {
                 if (a.gui === undefined)
                   return 1;
                   return a.gui.localeCompare(b.gui);
                 });
+                return retVal;
             });
     }
 
@@ -68,4 +72,35 @@ export class BaleTypesDataStore extends Persistence.PersistentDataStore<BaleType
         ];
     };
 
+    public currentBaleTypeChangeRequest(newCurrent: BaleType): q.Promise<any> {
+      return this.getCurrentBaleType().then((currentBaleType: BaleType) => {
+          this.$log.debug("currentBaleTypeChangeRequest::got current bale type: " + currentBaleType.gui);
+          this.updateRowPromise(currentBaleType._id, { $set: { currentType: false } }, {});
+          this.$log.debug("currentBaleTypeChangeRequest::done uploading old row");
+      }).then(() => {
+        this.$log.debug("currentBaleTypeChangeRequest::updating new Bale Type to: " + newCurrent.gui);
+        return this.updateRowPromise(newCurrent._id, { $set: { currentType: true } }, {});
+      }).then(() => {
+          this.$log.debug("done updating bale type!!!!!!!!");
+          this.currentBaleType = newCurrent;
+      }).catch((exception: any) => {
+        this.$log.error("balerCtrl::currentBaleTypeChangeRequest Got exception" + exception);
+        return exception;
+      });
+    }
+
+    public getCurrentBaleType(): q.Promise<BaleType> {
+      if (!angular.isDefined(this.currentBaleType)) {
+        return this.findOnePromise({ currentType: true }).then((retVal: BaleType) => {
+          this.$log.debug("BaleTypesService::getCurrentBaleType: " + retVal.gui);
+          this.currentBaleType = retVal;
+          return retVal;
+        }).catch((exception: any) => {
+          this.$log.error("BaleTypesService::getCurrentBaleType Got exception: " + exception);
+          return exception;
+        });
+      } else {
+        return q.fcall(() => {return this.currentBaleType; });
+      }
+    }
 };

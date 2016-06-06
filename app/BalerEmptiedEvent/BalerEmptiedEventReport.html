@@ -7,7 +7,7 @@
       <td style="width:15%">Transmitted?</td>
       <td style="width:25%" translate>PHOTO</td>
   </tr>
-  <tr ng-repeat="BalerEmptiedEvent in balerEmptiedEventReportCtrl.balerEmptiedEventService.balerEmptiedEvents">
+  <tr ng-repeat="BalerEmptiedEvent in balerEmptiedEventReportCtrl.balerEmptiedEventDataStoreService.balerEmptiedEvents">
       <td>
           <span>
             {{ BalerEmptiedEvent.baleDate | date:'medium' }}

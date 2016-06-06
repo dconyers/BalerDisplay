@@ -4,7 +4,7 @@ import {LoadCellDataService} from "../loadCell/LoadCellDataService";
 import {BaleWeightRecord} from "../BaleWeightRecord/BaleWeightRecord";
 import {BaleWeightRecordDataStore} from "../BaleWeightRecord/BaleWeightRecordDataStore";
 import {GPIOService} from "../services/GPIOService";
-import {BaleTypesService} from "../BaleTypes/BaleTypesService";
+import {BaleTypesDataStore} from "../BaleTypes/BaleTypesDataStore";
 import {BaleType} from "../BaleTypes/BaleType";
 import * as q from "q";
 import events = require("events");
@@ -17,7 +17,7 @@ export class LoadCellMonitorService extends events.EventEmitter {
         "$interval",
         "LoadCellDataService",
         "BaleWeightRecordDataStoreService",
-        "BaleTypesService",
+        "BaleTypesDataStoreService",
         "GPIOService",
         "GeneralConfigurationDataStoreService",
     ];
@@ -28,7 +28,7 @@ export class LoadCellMonitorService extends events.EventEmitter {
                 private $interval: ng.IIntervalService,
                 private loadCellDataService: LoadCellDataService,
                 private baleWeightRecordDataStore: BaleWeightRecordDataStore,
-                private baleTypesService: BaleTypesService,
+                private baleTypesDataStore: BaleTypesDataStore,
                 private gpioService: GPIOService,
                 private generalConfigurationDataStoreService: GeneralConfigurationDataStore) {
         super();
@@ -48,7 +48,7 @@ export class LoadCellMonitorService extends events.EventEmitter {
       }).done();
       this.checkBalerStatus();
       // Control LEDs:
-      this.baleTypesService.getCurrentBaleType().then((returnVal: BaleType) => {
+      this.baleTypesDataStore.getCurrentBaleType().then((returnVal: BaleType) => {
         if (sample.weight > returnVal.max) {
           this.gpioService.showOverweightState();
         }

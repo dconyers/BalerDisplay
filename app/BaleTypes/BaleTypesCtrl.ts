@@ -92,29 +92,10 @@ export class BaleTypesCtrl {
     public changeCurrentBaleType(): void {
       this.$log.debug("BaleTypesCtrl::changeCurrentBaleType");
       this.baleTypeSelectorService.open().result.then((selectedItem: BaleType) => {
-        this.$log.debug("user selected new value: " + selectedItem);
-        return this.currentBaleTypeChangeRequest(selectedItem);
+        this.$log.debug("user selected new value: " + selectedItem.gui);
       }).catch(() => {
         this.$log.debug("selection cancelled");
       });
     }
-
-    public currentBaleTypeChangeRequest(newCurrent: BaleType): q.Promise<any> {
-      return this.baleTypesService.getCurrentBaleType().then((currentBaleType: BaleType) => {
-          this.$log.debug("currentBaleTypeChangeRequest::got current bale type: " + currentBaleType.gui);
-          this.baleTypesDataStore.updateRowPromise(currentBaleType._id, { $set: { currentType: false } }, {});
-          this.$log.debug("currentBaleTypeChangeRequest::done uploading old row");
-      }).then(() => {
-        this.$log.debug("currentBaleTypeChangeRequest::uploading new row");
-        return this.baleTypesDataStore.updateRowPromise(newCurrent._id, { $set: { currentType: true } }, {});
-      }).then(() => {
-
-      }).catch((exception: any) => {
-        this.$log.error("balerCtrl::currentBaleTypeChangeRequest Got exception" + exception);
-        return exception;
-      });
-    }
-
-
 
 }
