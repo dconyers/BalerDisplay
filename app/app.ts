@@ -19,6 +19,7 @@ import {BalerEmptiedEventService} from "./BalerEmptiedEvent/BalerEmptiedEventSer
 import {BalerEmptiedEventDataStore} from "./BalerEmptiedEvent/BalerEmptiedEventDataStore";
 import {BalerEmptiedConfirmationDlgCtrl} from "./BalerEmptiedEvent/BalerEmptiedConfirmationDlgCtrl";
 import {MachineSettingsCtrl} from "./Settings/MachineSettings/MachineSettingsCtrl";
+import {CustomerSettingsCtrl} from "./Settings/CustomerSettings/CustomerSettingsCtrl";
 import {SetCalModalCtrl} from "./Settings/MachineSettings/SetCalModalCtrl";
 import {CalibrationModalCtrl} from "./Settings/MachineSettings/CalibrationModalCtrl";
 import {CameraTestModalCtrl} from "./Settings/MachineSettings/CameraTestModalCtrl";
@@ -30,7 +31,7 @@ import {WorkerSelectorService} from "./Settings/WorkerSettings/WorkerSelectorSer
 import {WorkerSelectorDlgCtrl} from "./Settings/WorkerSettings/WorkerSelectorDlgCtrl";
 import {WorkersService} from "./Settings/WorkerSettings/WorkersService";
 import {WorkerSettingsCtrl} from "./Settings/WorkerSettings/WorkerSettingsCtrl";
-import {GeneralConfigurationDataStore} from "./Settings/MachineSettings/GeneralConfigurationDataStore";
+import {GeneralConfigurationDataStore} from "./GeneralConfiguration/GeneralConfigurationDataStore";
 
 angular.module("balerApp", [
     "ui.bootstrap",
@@ -80,6 +81,7 @@ angular.module("balerApp", [
     .controller("MenuCtrl", MenuCtrl)
     .controller("NetworkSettingsCtrl", NetworkSettingsCtrl)
     .controller("MachineSettingsCtrl", MachineSettingsCtrl)
+    .controller("CustomerSettingsCtrl", CustomerSettingsCtrl)
     .controller("PictureModalCtrl", PictureModalCtrl)
     .controller("SettingsMenuCtrl", SettingsMenuCtrl)
     .controller("SetCalModalCtrl", SetCalModalCtrl)

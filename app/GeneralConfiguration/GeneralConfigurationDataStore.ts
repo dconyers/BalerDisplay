@@ -1,7 +1,7 @@
 import NeDBDataStore = require("nedb");
 import * as GeneralConfiguration from  "./GeneralConfigurationRecord";
 import * as q from "q";
-import * as Persistence from "../../persistence/PersistentDataStore";
+import * as Persistence from "../persistence/PersistentDataStore";
 
 export class GeneralConfigurationDataStore extends Persistence.PersistentDataStore<GeneralConfiguration.GeneralConfigurationRecord> {
 
@@ -13,23 +13,33 @@ export class GeneralConfigurationDataStore extends Persistence.PersistentDataSto
 
     constructor(private $log: ng.ILogService) {
             super("GeneralConfiguration");
+            this.initializeDataStore(true);
     };
 
-    generalConfig: Array<GeneralConfiguration.GeneralConfigurationRecord>;
+    generalConfig: Array<GeneralConfiguration.GeneralConfigurationRecord> = null;
     /**
      * Method initializes the data store by loading the database, counting the number
      * of rows and seeding it with data if necessary
      * @return {q.Promise<any>} [description]
      */
-    initializeDataStore(): q.Promise<any> {
-        if (this.initialized) {
-            return this.loadDataPromise();
-        }
-        return this.loadDatabasePromise()
-            .then(() => {
-                this.initialized = true;
-                return this.loadDataPromise();
-            });
+    initializeDataStore(seedData?: boolean): q.Promise<any> {
+      if (this.initialized) {
+        return this.loadDataPromise();
+      }
+      return this.loadDatabasePromise()
+        .then((): q.Promise<number> => {
+          return this.countAllRows();
+        })
+        .then((return_val: number) => {
+          if (return_val === 0 && seedData) {
+            return this.insertInitializationData();
+          }
+        })
+
+        .then(() => {
+          this.initialized = true;
+          return this.loadDataPromise();
+        });
     }
 
     loadDataPromise(sortParam?: any, limit?: number): q.Promise<Array<GeneralConfiguration.GeneralConfigurationRecord>> {
@@ -43,6 +53,8 @@ export class GeneralConfigurationDataStore extends Persistence.PersistentDataSto
     getInitData(): Array<GeneralConfiguration.GeneralConfigurationRecord> {
         return [
           {key: GeneralConfiguration.MIN_BALE_DECREASE, value: GeneralConfiguration.MIN_BALE_DECREASE_DEFAULT},
+          {key: GeneralConfiguration.CUSTOMER_ID, value: GeneralConfiguration.CUSTOMER_ID_DEFAULT},
+          {key: GeneralConfiguration.BALER_ID, value: GeneralConfiguration.BALER_ID_DEFAULT},
         ];
     };
 
@@ -55,9 +67,14 @@ export class GeneralConfigurationDataStore extends Persistence.PersistentDataSto
         return returnPromise;
     }
 
-    getGeneralConfigurationRecord(key: string): GeneralConfiguration.GeneralConfigurationRecord {
-      return this.generalConfig.find(x => x.key === key);
+    getGeneralConfigurationRecord(key: string): q.Promise<GeneralConfiguration.GeneralConfigurationRecord> {
+      if (this.generalConfig !== null) {
+        let result: GeneralConfiguration.GeneralConfigurationRecord = this.generalConfig.find(x => x.key === key)
+        return q.fcall(() => {return result; });
+      }
+      return this.loadDataPromise()
+      .then(() => {
+        return this.getGeneralConfigurationRecord(key);
+      });
     }
-
-
 };

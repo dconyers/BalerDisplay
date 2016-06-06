@@ -8,6 +8,9 @@ import {PictureSrvc} from "../services/PictureSrvc";
 import {QRService} from "../services/QRService";
 import {WorkersService} from "../Settings/WorkerSettings/WorkersService";
 import {BalerWorker} from "../Settings/WorkerSettings/BalerWorker";
+import {GeneralConfigurationDataStore} from "../GeneralConfiguration/GeneralConfigurationDataStore";
+import * as GeneralConfiguration from  "../GeneralConfiguration/GeneralConfigurationRecord";
+
 
 export class BalerEmptiedEventService {
 
@@ -21,7 +24,8 @@ export class BalerEmptiedEventService {
     "BaleTypesService",
     "PictureSrvc",
     "WorkersService",
-    "QRService"
+    "QRService",
+    "GeneralConfigurationDataStoreService",
   ];
 
   constructor(private $log: ng.ILogService,
@@ -31,70 +35,62 @@ export class BalerEmptiedEventService {
     private baleTypesService: BaleTypesService,
     private pictureService: PictureSrvc,
     private workersService: WorkersService,
-    private qrService: QRService) {
+    private qrService: QRService,
+    private generalConfigurationDataStoreService: GeneralConfigurationDataStore) {
 
     loadCellMonitorService.on("BalerEmptiedEvent", (maxWeight, currentWeight) => {
       this.$log.debug("got BalerEmptied event max: " + maxWeight + " current: " + currentWeight);
-      let pic_fname: string;
-      let currentBaleType: BaleType;
-      let nextBaleID: number;
-      // Between Here...
-      let baleEmptyPromise: q.Promise<any> = this.pictureService.takePicturePromise()
-        .then((filename: string) => {
-          pic_fname = filename;
-          return baleTypesService.getCurrentBaleType();
-        })
-        .then((currBaleType: BaleType) => {
-          // this.$log.debug("currBaleTypegot back");
-          // this.$log.debug(currBaleType);
-          currentBaleType = currBaleType;
-          return balerEmptiedEventDataStoreService.getNextBaleIDPromise();
-        })
-        .then((baleID: number) => {
-          nextBaleID = baleID;
-          return workersService.getCurrentWorker();
-        })
-        .then((currentWorker: BalerWorker) => {
-          // this.$log.debug("got back currentWorker");
-          // this.$log.debug(currentWorker);
-          this.$log.debug("Creating new balerEmptiedEvent with ID: " + nextBaleID);
+      let baleEmptyPromise: q.Promise<any> =
+        q.all(
+          [
+            this.pictureService.takePicturePromise(),
+            baleTypesService.getCurrentBaleType(),
+            balerEmptiedEventDataStoreService.getNextBaleIDPromise(),
+            workersService.getCurrentWorker(),
+            this.generalConfigurationDataStoreService.getGeneralConfigurationRecord(GeneralConfiguration.CUSTOMER_ID),
+            this.generalConfigurationDataStoreService.getGeneralConfigurationRecord(GeneralConfiguration.BALER_ID)
+          ]
+        ).spread((
+          filename: string,
+          currBaleType: BaleType,
+          baleID: number,
+          currentWorker: BalerWorker,
+          customerIDRecord: GeneralConfiguration.GeneralConfigurationRecord,
+          balerIDRecord: GeneralConfiguration.GeneralConfigurationRecord
+        ) => {
           let balerEmptiedEvent: BalerEmptiedEvent = {
-            baleID: nextBaleID,
-            baleType: currentBaleType,
+            baleID: baleID,
+            baleType: currBaleType,
             weight: maxWeight,
             baleDate: new Date(),
             transmitted: false,
-            photoPath: pic_fname,
-            worker: currentWorker
+            photoPath: filename,
+            worker: currentWorker,
+            balerID: balerIDRecord.value,
+            customerID: customerIDRecord.value
           };
-
+          this.$log.debug("Baler Emptied Event Created.");
+          this.$log.debug(balerEmptiedEvent);
           return balerEmptiedEventDataStoreService.insertRowPromise(balerEmptiedEvent);
-        })
-        .catch((exception) => {
+        }).catch((exception) => {
           this.$log.error("balerEmptiedEventDataStoreService.insertRowPromise failed: " + exception);
         });
-        // .... and here.
 
       baleEmptyPromise
         .then((balerEmptiedEvent: BalerEmptiedEvent) => {
-          this.loadBalerEmptiedEvents();
           return this.openConfirmation(balerEmptiedEvent).result;
         })
         .then((balerEmptiedEvent: BalerEmptiedEvent) => {
           this.qrService.createLabelImage(balerEmptiedEvent).then((path: string) => {
-            console.log("createLabelImage done");
             this.qrService.printLabelImage(path);
           });
           return balerEmptiedEvent;
         })
         .then((balerEmptiedEvent: BalerEmptiedEvent) => {
-          this.$log.debug("about to update with");
-          this.$log.debug(balerEmptiedEvent);
           return balerEmptiedEventDataStoreService.updateRowPromise(balerEmptiedEvent._id, balerEmptiedEvent, {});
         })
         .then((updatedRowCount: number) => {
           this.loadBalerEmptiedEvents();
-          this.$log.debug("return from update:" + updatedRowCount);
         })
         .catch((exception) => {
           this.$log.error("balerEmptiedEventDataStoreService::Confirmation Dialog Processing failed: " + exception);

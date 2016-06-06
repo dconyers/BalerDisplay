@@ -12,4 +12,6 @@ export interface BalerEmptiedEvent {
     transmitted: boolean;
     photoPath: string;
     worker: BalerWorker;
+    balerID: string;
+    customerID: string;
 };

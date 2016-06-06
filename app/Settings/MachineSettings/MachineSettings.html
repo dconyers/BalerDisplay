@@ -27,7 +27,7 @@
     <div class="row no-side-borders">
       <div>
         {{ 'MIN_BALE_DECREASE' | translate }}
-        <a href="#" editable-number="machineSettingsCtrl.minBaleDecrease" onbeforesave="machineSettingsCtrl.saveMinBaleDecrease($data)" e-min="100">{{ machineSettingsCtrl.minBaleDecrease || ('PLEASE_WAIT' | translate) }}</a>
+        <a href="#" editable-number="machineSettingsCtrl.minBaleDecrease" onbeforesave="machineSettingsCtrl.saveMinBaleDecrease($data)" e-min="100" e-ng-virtual-keyboard="{kt: 'Numeric'}">{{ machineSettingsCtrl.minBaleDecrease || ('PLEASE_WAIT' | translate) }}</a>
       </div>
     </div>
   </div>

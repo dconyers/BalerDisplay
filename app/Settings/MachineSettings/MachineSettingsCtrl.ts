@@ -1,7 +1,7 @@
 import * as q from "q";
 import {LoadCellDataService} from "../../loadCell/LoadCellDataService";
-import {GeneralConfigurationDataStore} from "../MachineSettings/GeneralConfigurationDataStore";
-import * as GeneralConfiguration from  "../MachineSettings/GeneralConfigurationRecord";
+import {GeneralConfigurationDataStore} from "../../GeneralConfiguration/GeneralConfigurationDataStore";
+import * as GeneralConfiguration from "../../GeneralConfiguration/GeneralConfigurationRecord";
 
 // export function MachineSettingsCtrl($scope, $uibModal, LoadCellDataService) {
 export class MachineSettingsCtrl {

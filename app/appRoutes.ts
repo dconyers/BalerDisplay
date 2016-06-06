@@ -28,6 +28,12 @@ function config ($routeProvider) {
       controller: "CameraTestCtrl",
       controllerAs: "cameraTestCtrl"
     }).
+    when("/CustomerSettings", {
+      title: "CUSTOMER_SETTINGS",
+      templateUrl: "Settings/CustomerSettings/CustomerSettings.html",
+      controller: "CustomerSettingsCtrl",
+      controllerAs: "customerSettingsCtrl"
+    }).
     when("/NetworkSettings", {
       title: "NETWORK_SETTINGS",
       templateUrl: "Settings/NetworkSettings/NetworkSettings.html",

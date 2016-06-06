@@ -63,6 +63,9 @@ const resources: ITranslationTable = {
     PASSPHRASE: "Passphrase",
     SAVE: "Save",
     PHOTO: "Photo",
-    PREVIOUS: "Previous"
+    PREVIOUS: "Previous",
+    CUSTOMER_ID_TITLE: "Environmental Partner ID: ",
+    BALER_ID_TITLE: "Equipment Serial Number: ",
+    CUSTOMER_SETTINGS: "Partner Settings",
 };
 export = resources;

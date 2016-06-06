@@ -48,8 +48,6 @@ export class WorkerSettingsCtrl {
 
         this.workersService.getCurrentWorker()
             .then((worker: BalerWorker) => {
-                this.$log.debug("getCurrentWorker promise returned: " + worker);
-                this.$log.debug(worker);
                 this.currentWorker = worker;
                 this.$scope.$apply();
             }).done();

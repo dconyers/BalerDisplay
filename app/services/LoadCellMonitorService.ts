@@ -1,5 +1,5 @@
-import {GeneralConfigurationDataStore} from "../Settings/MachineSettings/GeneralConfigurationDataStore";
-import * as GeneralConfiguration from  "../Settings/MachineSettings/GeneralConfigurationRecord";
+import {GeneralConfigurationDataStore} from "../GeneralConfiguration/GeneralConfigurationDataStore";
+import * as GeneralConfiguration from  "../GeneralConfiguration/GeneralConfigurationRecord";
 import {LoadCellDataService} from "../loadCell/LoadCellDataService";
 import {BaleWeightRecord} from "../BaleWeightRecord/BaleWeightRecord";
 import {BaleWeightRecordDataStore} from "../BaleWeightRecord/BaleWeightRecordDataStore";
@@ -60,23 +60,27 @@ export class LoadCellMonitorService extends events.EventEmitter {
     }
 
     private checkBalerStatus(): void {
-      this.baleWeightRecordDataStore.initializeDataStore().then((baleWeights: Array<BaleWeightRecord>) => {
-        let currentWeight: number = baleWeights[baleWeights.length - 1].weight;
-        let maxWeight: number = Math.max.apply(Math, baleWeights.map((baleWeight: BaleWeightRecord) => { return baleWeight.weight; }));
-        let maxDelta: number = maxWeight - currentWeight;
-        let minDelta: number = Number(this.generalConfigurationDataStoreService.getGeneralConfigurationRecord(GeneralConfiguration.MIN_BALE_DECREASE).value);
+      q.all(
+        [
+          this.baleWeightRecordDataStore.initializeDataStore(),
+          this.generalConfigurationDataStoreService.getGeneralConfigurationRecord(GeneralConfiguration.MIN_BALE_DECREASE)
+        ])
+        .spread((baleWeights: Array<BaleWeightRecord>, minDeltaRecord: GeneralConfiguration.GeneralConfigurationRecord) => {
+          let currentWeight: number = baleWeights[baleWeights.length - 1].weight;
+          let maxWeight: number = Math.max.apply(Math, baleWeights.map((baleWeight: BaleWeightRecord) => { return baleWeight.weight; }));
+          let maxDelta: number = maxWeight - currentWeight;
+          let minDelta: number = Number(minDeltaRecord.value);
 
-        if (maxDelta > minDelta) {
-          this.$log.debug("Identified Baler Emptying Event, Emitting Event.");
-          this.emit("BalerEmptiedEvent", maxWeight, currentWeight);
-          this.baleWeightRecordDataStore.remove({}, {multi: true}, (err: Error, n: number ) => {
-            if (err !== null) {
-              this.$log.error("Called baleWeightRecordDataStore.remove() and received Received error: " + err);
-            }
-          });
-
-        }
-      });
+          if (maxDelta > minDelta) {
+            this.$log.debug("Identified Baler Emptying Event, Emitting Event.");
+            this.emit("BalerEmptiedEvent", maxWeight, currentWeight);
+            this.baleWeightRecordDataStore.remove({}, { multi: true }, (err: Error, n: number) => {
+              if (err !== null) {
+                this.$log.error("Called baleWeightRecordDataStore.remove() and received Received error: " + err);
+              }
+            });
+          }
+        });
     }
 
     public startMonitor(): any {

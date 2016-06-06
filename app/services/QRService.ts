@@ -25,6 +25,8 @@ export class QRService {
       "&weight=" + encodeURIComponent(baleEvent.weight.toString()) +
       "&worker=" + encodeURIComponent(baleEvent.worker.pin.toString()) +
       "&baleID=" + encodeURIComponent(baleEvent.baleID.toString()) +
+      "&balerID=" + encodeURIComponent(baleEvent.balerID.toString()) +
+      "&customerID=" + encodeURIComponent(baleEvent.customerID.toString()) +
       "&date=" + encodeURIComponent(baleEvent.baleDate.toLocaleDateString("en-US") + " " + baleEvent.baleDate.toLocaleTimeString("en-US")),
       { type: 'png', ec_level: 'H' });
     let tmpName = tmp.tmpNameSync({template: "./tmp/qr-XXXXXX.png"});
