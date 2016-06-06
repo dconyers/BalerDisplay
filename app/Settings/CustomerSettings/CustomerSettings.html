@@ -1,0 +1,34 @@
+<fieldset class="machine-settings-fieldset">
+  <legend translate>CALIBRATION</legend>
+  <div class="form-group">
+    <div class="row no-side-borders">
+      <label class="col-sm-2">m:</label>
+      <span type="text" class="col-sm-7">{{machineSettingsCtrl.getM()}}</span>
+      <button class="btn btn-primary col-sm-3" ng-click="machineSettingsCtrl.setCal();" translate>SET_CAL</button>
+    </div>
+    <div class="row no-side-borders">
+      <label class="col-sm-2">b:</label>
+      <span type="text" class="col-sm-7">{{machineSettingsCtrl.getB()}}</span>
+      <button class="btn btn-primary col-sm-3" ng-click="machineSettingsCtrl.calibrate();" translate ng-disabled="!machineSettingsCtrl.isLoadCellInit()">CALIBRATE</button>
+    </div>
+  </div>
+</fieldset>
+<fieldset class="machine-settings-fieldset">
+  <legend translate>CAMERA</legend>
+  <div class="form-group">
+    <div class="row no-side-borders">
+      <button class="btn btn-primary col-sm-3" ng-click="machineSettingsCtrl.testCam();" translate>TEST</button>
+    </div>
+  </div>
+</fieldset>
+<fieldset class="machine-settings-fieldset">
+  <legend translate>BALE_EVENT_SETTINGS</legend>
+  <div class="form-group">
+    <div class="row no-side-borders">
+      <div>
+        {{ 'MIN_BALE_DECREASE' | translate }}
+        <a href="#" editable-number="machineSettingsCtrl.minBaleDecrease" onbeforesave="machineSettingsCtrl.saveMinBaleDecrease($data)" e-min="100">{{ machineSettingsCtrl.minBaleDecrease || ('PLEASE_WAIT' | translate) }}</a>
+      </div>
+    </div>
+  </div>
+</fieldset>
