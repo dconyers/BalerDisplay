@@ -539,9 +539,9 @@ loadCellError_type getSample(int64_t* sample) {
       return READ_FAILED;
     }
     
-    *sample += ((int32_t)pReadBuf[0] << 24) | 
-               ((int32_t)pReadBuf[1] << 16) |
-               ((int32_t)pReadBuf[2] << 8);
+    *sample += (int32_t)(((uint32_t)pReadBuf[0] << 24) | 
+               ((uint32_t)pReadBuf[1] << 16) |
+               ((uint32_t)pReadBuf[2] << 8));
   }
   return OK;
 }
@@ -625,7 +625,7 @@ loadCellError_type calibrate() {
   double input, weight2;
   loadCellError_type ret;
   int64_t samples[10];
-  int32_t calWeight1, calWeight2;
+  int64_t calWeight1, calWeight2;
   
   pthread_mutex_lock(&mutexLoadCellStatus);
   if(loadCellStatus == UNINITIALIZED) {
@@ -731,6 +731,69 @@ void printCalibration() {
          calIntercept);
 }
 
+/* TEST FUNCTIONS */
+int32_t voltage_mock[4] = {0};
+int voltage_mock_index = 0;
+USB_SPI_STATUS CP213x_TransferReadSync_Mock(BYTE pReadBuf[],
+                             DWORD length,
+                             BOOL releaseBusAfterTransfer,
+                             DWORD timeoutMs,
+                             DWORD* pBytesActuallyRead) {
+  *pBytesActuallyRead = 4;
+  pReadBuf[0] = (voltage_mock[voltage_mock_index] >> 16) & 0xff;
+  pReadBuf[1] = ((uint32_t)(voltage_mock[voltage_mock_index]) >> 8) & 0xff;
+  pReadBuf[2] = ((uint32_t)(voltage_mock)[voltage_mock_index]) & 0xff;
+  return 0;
+}
+
+loadCellError_type getSample_Mock(int64_t* sample) {
+  BYTE pReadBuf[4];
+  DWORD pBytesActuallyRead;
+  USB_SPI_STATUS retCode;
+  struct timespec tim, tim2;
+  tim.tv_sec = 0;
+  tim.tv_nsec = 1000; // 1us
+  *sample = 0; // Make sure sample is zero because will hold sum.
+  
+  // Switch through all cells, sampling each one and summing the samples.
+  int i;
+  for(i = 0; i < 4; i++) {
+    voltage_mock_index = i;
+    retCode = CP213x_TransferReadSync_Mock(//phDevice,
+                                      pReadBuf,
+                                      4, // 4 bytes
+                                      1, // release SPI bus
+                                      1000, // timeout after a second
+                                      &pBytesActuallyRead);
+//    printf("pReadBuf[0]: %d\npReadBuf[1]: %d\npReadBuf[2]: %d\n", pReadBuf[0], pReadBuf[1], pReadBuf[2]);
+    *sample += (int32_t)(((uint32_t)pReadBuf[0] << 24) | 
+               ((uint32_t)pReadBuf[1] << 16) |
+               ((uint32_t)pReadBuf[2] << 8));
+  }
+  return OK;
+}
+
+getSample_Test() {
+  int32_t i;
+  int32_t j;
+  int64_t sample;
+  int64_t voltSum;
+  for(i = -8388608; i < 8388607; i++) {
+    voltSum = 0;
+    for(j = 0; j < 4; j++) {
+      voltage_mock[j] = i;
+      voltSum += voltage_mock[j] << 8;
+//      printf("voltage_mock[j] << 8: %d\nvoltSum: %d\n", voltage_mock[j] << 8, voltSum);
+    }
+    getSample_Mock(&sample);
+    if(sample != voltSum) {
+      printf("getSample_Test failed.\nvoltSum: %lld\nsample: %lld\nvoltage_mock[0]: %d\nvoltage_mock[1]: %d\nvoltage_mock[2]: %d\nvoltage_mock[3]: %d\n",
+             voltSum, sample, voltage_mock[0], voltage_mock[1], voltage_mock[2], voltage_mock[3]);
+      break;
+    }
+  }
+}
+
 int main(void) {
   setlinebuf(stdout);
   CP213x_Init();
@@ -740,4 +803,6 @@ int main(void) {
   pthread_cond_init(&cvIdle, NULL);
   pthread_create(&samplingThread, NULL, &sampleForever, NULL);
   termIOLoop();
+
+//  getSample_Test();
 }
