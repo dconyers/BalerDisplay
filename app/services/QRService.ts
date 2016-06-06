@@ -16,10 +16,14 @@ export class QRService {
   /* @return Promise that resolves to the path of the QR code
   */
   createLabelImage(baleEvent: BalerEmptiedEvent): Promise {
-    let data = "Baletype: " + baleEvent.baleType.material +
-      "\nbaleID: " + baleEvent.baleID +
-      "\nweight: " + baleEvent.weight +
-      "\nbaleDate: " + baleEvent.baleDate.toLocaleDateString("en-US") + " " + baleEvent.baleDate.toLocaleTimeString("en-US");
+    let data =
+        "Bale Type:    " + baleEvent.baleType.material +
+      "\nBale Date:    " + baleEvent.baleDate.toLocaleDateString("en-US") + " " + baleEvent.baleDate.toLocaleTimeString("en-US") +
+      "\nPartner ID:   " + baleEvent.customerID +
+      "\nEquipment ID: " + baleEvent.baleID +
+      "\nBale ID:      " + baleEvent.baleID +
+      "\nWeight:       " + baleEvent.weight
+      ;
     let pngData = qr.imageSync("http://chickenpotpie.asuscomm.com/" +
       "?material=" + encodeURIComponent(baleEvent.baleType.material) +
       "&weight=" + encodeURIComponent(baleEvent.weight.toString()) +
