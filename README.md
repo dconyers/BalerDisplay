@@ -78,6 +78,9 @@ Run the following:
     EOF
 
     install -b -m 755 /dev/stdin ~baler/.xinitrc << EOF
+    xset s off
+    xset -dpms
+    xset s noblank
     cd BalerDisplay/app && npm start
     EOF
 
