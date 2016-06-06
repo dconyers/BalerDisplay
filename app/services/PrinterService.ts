@@ -71,7 +71,7 @@ export class PrinterService {
     setInterval(this.checkPrinterAndSetup, 60000);
   }
   
-  printImage(path: string): Promise {
+  printImage(path: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getPrinterStateAndSerial().then((result) => {
         if(result.status === "Idle") {
@@ -99,7 +99,7 @@ export class PrinterService {
     });
   }
   
-  getPrinterStateAndSerial(): Promise {
+  getPrinterStateAndSerial(): Promise<any> {
     return new Promise((resolve, reject) => {
       exec("sudo sed -n -e 's/State \\(.*\\)/\\1/p' -e 's/DeviceURI usb:\\/\\/Zebra%20Technologies\\/ZTC%20GK420t?serial=\\(.*\\)/\\1/p' '/etc/cups/printers.conf'",
         (err, stdout, stderr) => {

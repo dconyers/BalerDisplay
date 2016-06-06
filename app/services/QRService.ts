@@ -15,7 +15,7 @@ export class QRService {
 
   /* @return Promise that resolves to the path of the QR code
   */
-  createLabelImage(baleEvent: BalerEmptiedEvent): Promise {
+  createLabelImage(baleEvent: BalerEmptiedEvent): Promise<string> {
     let data =
         "Bale Type:    " + baleEvent.baleType.material +
       "\nBale Date:    " + baleEvent.baleDate.toLocaleDateString("en-US") + " " + baleEvent.baleDate.toLocaleTimeString("en-US") +
