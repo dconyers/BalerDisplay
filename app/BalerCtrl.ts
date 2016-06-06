@@ -47,7 +47,7 @@ export class BalerCtrl {
     labels: { position: "inside", interval: 200 },
     pointer: { style: { fill: "#2e79bb" }, width: 5 },
     animationDuration: 0,
-    caption: { value: "Loading, please wait...", position: "bottom", offset: [0, 10], visible: true }
+    caption: { value: "", position: "bottom", offset: [0, 10], visible: true }
   };
 
 
@@ -69,10 +69,8 @@ export class BalerCtrl {
 
   private refreshData() {
     this.$log.debug("BalerCtrl::refreshData");
-    this.baleTypesDataStoreService.initializeDataStore()
-      .then(() => {
-        return this.baleTypesService.getCurrentBaleType();
-      }).then((returnVal: BaleType) => {
+    this.baleTypesService.getCurrentBaleType()
+      .then((returnVal: BaleType) => {
         this.balerData.baleType = returnVal;
         this.balerData.lowWeight = returnVal.min;
         this.balerData.highWeight = returnVal.max;
@@ -94,11 +92,18 @@ export class BalerCtrl {
         return this.loadCellDataService.getLoadCellWeight();
       }, (newValue, oldValue) => {
         if (oldValue !== newValue) {
-          this.balerData.currentWeight = newValue;
-          this.gaugeSettings.caption.value = "" + this.balerData.currentWeight.toFixed(0) + " lbs.";
-          this.gaugeSettings.apply("caption", this.gaugeSettings.caption);
+          this.updateCaption(newValue);
         }
       });
+
+      // Since it was just created, initialize the caption
+      this.updateCaption(this.loadCellDataService.getLoadCellWeight());
     });
+  }
+
+  private updateCaption(weight: number) {
+    this.balerData.currentWeight = this.loadCellDataService.getLoadCellWeight();
+    this.gaugeSettings.caption.value = "" + this.balerData.currentWeight.toFixed(0) + " lbs.";
+    this.gaugeSettings.apply("caption", this.gaugeSettings.caption);
   }
 };

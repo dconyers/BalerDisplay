@@ -21,3 +21,14 @@
     </div>
   </div>
 </fieldset>
+<fieldset class="machine-settings-fieldset">
+  <legend translate>BALE_EVENT_SETTINGS</legend>
+  <div class="form-group">
+    <div class="row no-side-borders">
+      <div>
+        {{ 'MIN_BALE_DECREASE' | translate }}
+        <a href="#" editable-number="machineSettingsCtrl.minBaleDecrease" onbeforesave="machineSettingsCtrl.saveMinBaleDecrease($data)" e-min="100">{{ machineSettingsCtrl.minBaleDecrease || ('PLEASE_WAIT' | translate) }}</a>
+      </div>
+    </div>
+  </div>
+</fieldset>

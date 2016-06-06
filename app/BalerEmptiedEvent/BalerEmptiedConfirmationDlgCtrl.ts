@@ -2,8 +2,8 @@ import {BalerEmptiedEvent} from "./BalerEmptiedEvent";
 import {BaleType} from "../BaleTypes/BaleType";
 import {BaleTypeSelectorService} from "../BaleTypes/BaleTypeSelectorService";
 import {PictureSrvc} from "../services/PictureSrvc";
-import {WorkersDataStore} from "../WorkerSettings/WorkersDataStore";
-import {BalerWorker} from "../WorkerSettings/BalerWorker";
+import {WorkersDataStore} from "../Settings/WorkerSettings/WorkersDataStore";
+import {BalerWorker} from "../Settings/WorkerSettings/BalerWorker";
 import * as q from "q";
 
 export class BalerEmptiedConfirmationDlgCtrl {

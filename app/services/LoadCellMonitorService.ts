@@ -1,3 +1,5 @@
+import {GeneralConfigurationDataStore} from "../Settings/MachineSettings/GeneralConfigurationDataStore";
+import * as GeneralConfiguration from  "../Settings/MachineSettings/GeneralConfigurationRecord";
 import {LoadCellDataService} from "../loadCell/LoadCellDataService";
 import {BaleWeightRecord} from "../BaleWeightRecord/BaleWeightRecord";
 import {BaleWeightRecordDataStore} from "../BaleWeightRecord/BaleWeightRecordDataStore";
@@ -10,15 +12,14 @@ import events = require("events");
 
 
 export class LoadCellMonitorService extends events.EventEmitter {
-    public static MIN_BALE_WEIGHT: number = 200;
-
     static $inject: string[] = [
         "$log",
         "$interval",
         "LoadCellDataService",
         "BaleWeightRecordDataStoreService",
         "BaleTypesService",
-        "GPIOService"
+        "GPIOService",
+        "GeneralConfigurationDataStoreService",
     ];
 
     constructor(private $log: ng.ILogService,
@@ -26,7 +27,8 @@ export class LoadCellMonitorService extends events.EventEmitter {
                 private loadCellDataService: LoadCellDataService,
                 private baleWeightRecordDataStore: BaleWeightRecordDataStore,
                 private baleTypesService: BaleTypesService,
-                private gpioService: GPIOService) {
+                private gpioService: GPIOService,
+                private generalConfigurationDataStoreService: GeneralConfigurationDataStore) {
         super();
         $log.debug("LoadCellMonitorService Constructor");
     }
@@ -62,7 +64,9 @@ export class LoadCellMonitorService extends events.EventEmitter {
         let currentWeight: number = baleWeights[baleWeights.length - 1].weight;
         let maxWeight: number = Math.max.apply(Math, baleWeights.map((baleWeight: BaleWeightRecord) => { return baleWeight.weight; }));
         let maxDelta: number = maxWeight - currentWeight;
-        if (maxDelta > LoadCellMonitorService.MIN_BALE_WEIGHT) {
+        let minDelta: number = Number(this.generalConfigurationDataStoreService.getGeneralConfigurationRecord(GeneralConfiguration.MIN_BALE_DECREASE).value);
+
+        if (maxDelta > minDelta) {
           this.$log.debug("Identified Baler Emptying Event, Emitting Event.");
           this.emit("BalerEmptiedEvent", maxWeight, currentWeight);
           this.baleWeightRecordDataStore.remove({}, {multi: true}, (err: Error, n: number ) => {

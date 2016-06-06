@@ -7,29 +7,30 @@ import {BaleTypeSelectorDlgCtrl} from "./BaleTypes/BaleTypeSelectorDlgCtrl";
 import {BaleTypesService} from "./BaleTypes/BaleTypesService";
 import {BaleWeightRecordDataStore} from "./BaleWeightRecord/BaleWeightRecordDataStore";
 import {LocalizationCtrl} from "./Localization/LocalizationCtrl";
-import {SettingsMenuCtrl} from "./SettingsMenu/SettingsMenuCtrl";
+import {SettingsMenuCtrl} from "./Settings/SettingsMenu/SettingsMenuCtrl";
 import {CameraTestCtrl} from "./CameraTest/CameraTestCtrl";
 import {MenuCtrl} from "./MenuCtrl";
 import {PictureModalCtrl} from "./CameraTest/PictureModalCtrl";
 import {PictureSrvc} from "./services/PictureSrvc";
-import {NetworkSettingsCtrl} from "./NetworkSettings/NetworkSettingsCtrl";
+import {NetworkSettingsCtrl} from "./Settings/NetworkSettings/NetworkSettingsCtrl";
 import {LoadCellMonitorService} from "./services/LoadCellMonitorService";
 import {LoadCellDataService} from "./loadCell/LoadCellDataService";
 import {BalerEmptiedEventService} from "./BalerEmptiedEvent/BalerEmptiedEventService";
 import {BalerEmptiedEventDataStore} from "./BalerEmptiedEvent/BalerEmptiedEventDataStore";
 import {BalerEmptiedConfirmationDlgCtrl} from "./BalerEmptiedEvent/BalerEmptiedConfirmationDlgCtrl";
-import {MachineSettingsCtrl} from "./MachineSettings/MachineSettingsCtrl";
-import {SetCalModalCtrl} from "./MachineSettings/SetCalModalCtrl";
-import {CalibrationModalCtrl} from "./MachineSettings/CalibrationModalCtrl";
-import {CameraTestModalCtrl} from "./MachineSettings/CameraTestModalCtrl";
+import {MachineSettingsCtrl} from "./Settings/MachineSettings/MachineSettingsCtrl";
+import {SetCalModalCtrl} from "./Settings/MachineSettings/SetCalModalCtrl";
+import {CalibrationModalCtrl} from "./Settings/MachineSettings/CalibrationModalCtrl";
+import {CameraTestModalCtrl} from "./Settings/MachineSettings/CameraTestModalCtrl";
 import {GPIOService} from "./services/GPIOService";
 import {QRService} from "./services/QRService";
 import {PrinterService} from "./services/PrinterService";
-import {WorkersDataStore} from "./WorkerSettings/WorkersDataStore";
-import {WorkerSelectorService} from "./WorkerSettings/WorkerSelectorService";
-import {WorkerSelectorDlgCtrl} from "./WorkerSettings/WorkerSelectorDlgCtrl";
-import {WorkersService} from "./WorkerSettings/WorkersService";
-import {WorkerSettingsCtrl} from "./WorkerSettings/WorkerSettingsCtrl";
+import {WorkersDataStore} from "./Settings/WorkerSettings/WorkersDataStore";
+import {WorkerSelectorService} from "./Settings/WorkerSettings/WorkerSelectorService";
+import {WorkerSelectorDlgCtrl} from "./Settings/WorkerSettings/WorkerSelectorDlgCtrl";
+import {WorkersService} from "./Settings/WorkerSettings/WorkersService";
+import {WorkerSettingsCtrl} from "./Settings/WorkerSettings/WorkerSettingsCtrl";
+import {GeneralConfigurationDataStore} from "./Settings/MachineSettings/GeneralConfigurationDataStore";
 
 angular.module("balerApp", [
     "ui.bootstrap",
@@ -62,7 +63,8 @@ angular.module("balerApp", [
     .service("LoadCellMonitorService", LoadCellMonitorService)
     .service("PictureSrvc", PictureSrvc)
     .service("WorkersDataStoreService", WorkersDataStore)
-    .service("WorkerSelectorService", WorkersDataStore)
+    .service("GeneralConfigurationDataStoreService", GeneralConfigurationDataStore)
+    .service("WorkerSelectorService", WorkerSelectorService)
     .service("WorkersService", WorkersService)
     .service("QRService", QRService)
     .service("PrinterService", PrinterService)
@@ -122,6 +124,15 @@ angular.module("balerApp", [
             })
             .done();
     }])
+  .run(["GeneralConfigurationDataStoreService", "$log", (generalConfigurationDataStore, $log) => {
+    generalConfigurationDataStore.initializeDataStore().then(() => {
+      $log.debug("GeneralConfigurationStoreService.initializeDataStore success:");
+    })
+      .catch((exception) => {
+        $log.error("Got exception: " + exception);
+      })
+      .done();
+  }])
     .run(["LoadCellMonitorService", "$log", (loadCellMonitorService, $log) => {
         loadCellMonitorService.startMonitor();
     }])
