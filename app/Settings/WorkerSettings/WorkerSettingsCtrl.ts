@@ -37,7 +37,7 @@ export class WorkerSettingsCtrl {
             if (updateCount !== 1) {
                 return "Error, Expected updateCount of 1, got: " + updateCount;
             }
-            return true;
+            return this.workersService.reloadWorkers();
         });
     }
 
