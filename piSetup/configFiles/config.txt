@@ -1185,3 +1185,4 @@ dtparam=audio=on
 ##     Default 35.
 ##
 #dtparam=pwr_led_gpio=35
+lcd_rotate=2
