@@ -49,12 +49,12 @@ export class QRService {
                " +swap" +
                " -append" +
                " -gravity North" +
-               " -geometry +0+350" +
-               " -scale 350x400" +
+               " -geometry +0+2100" +
+               " -resize 2100x2400" +
                " ./tmp/template.png" +
                " +swap" +
                " -composite" +
-               " \\( +clone -crop 350x400+0+325 -rotate -90 -scale 200x -geometry +0+15 \\)" +
+               " \\( +clone -crop 2100x2400+0+2000 -rotate -90 -resize 1200x -geometry +0+90 \\)" +
                " -composite" +
                " -rotate 90 " +
                tmpName,
