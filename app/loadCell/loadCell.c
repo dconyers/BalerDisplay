@@ -36,8 +36,11 @@ int  waitingToSample = 0;
 
 volatile double curWeight;
 pthread_mutex_t mutexCurWeight;
-volatile double calSlope;
-volatile double calIntercept;
+typedef struct {
+  double calSlope;
+  double calIntercept;
+} calStruct_type;
+volatile calStruct_type calStruct;
 pthread_t samplingThread;
 const char* calFilePath = "loadCell/calibrationSettings";
 //CP213x_DEVICE phDevice;
@@ -180,41 +183,29 @@ int64_t quick_select(int64_t arr[], int n)
 #undef ELEM_SWAP
 
 void saveCal() {
-  FILE* fd = fopen(calFilePath, "w");
-  fprintf(fd, "%lf\n", calSlope);
-  fprintf(fd, "%lf\n", calIntercept);
+  FILE* fd = fopen(calFilePath, "wb");
+  fwrite(&calStruct, sizeof(calStruct_type), 1, fd);
   fclose(fd);
 }
 
 void loadCal() {
-  int valid = 0;
-  char buf[32];
-  double input;
-  FILE* fd = fopen(calFilePath, "a+");
-  calSlope = 0;
-  calIntercept = 0;
-  if(fgets(buf, 32, fd)) {
-    if(sscanf(buf, "%lf", &input) == 1) {
-      valid = 1;
-      calSlope = input;
-    }
-  }
-  if(!valid) {
+  calStruct_type calStructBuffer;
+  FILE* fd = fopen(calFilePath, "ab+");
+  calStruct.calSlope = 0;
+  calStruct.calIntercept = 0;
+  
+  if(fread(&calStructBuffer, sizeof(calStruct_type), 1, fd) != 1) {
     // Error reading configuration, just use defaults: 0,0
     fclose(fd);
     return;
   }
   
-  if(fgets(buf, 32, fd)) {
-    if(sscanf(buf, "%lf", &input) == 1) {
-      calIntercept = input;
-    }
-  }
+  calStruct = calStructBuffer;
   fclose(fd);
 }
 
 double sampleToWeight(int64_t sample) {
-  return calSlope*(double)sample + calIntercept;
+  return calStruct.calSlope*(double)sample + calStruct.calIntercept;
 }
 
 void* sampleForever(void* args) {
@@ -606,8 +597,8 @@ void setCalibration() {
     pthread_mutex_unlock(&mutexLoadCellStatus);
     return;
   }
-  calSlope = inputSlope;
-  calIntercept = inputIntercept;
+  calStruct.calSlope = inputSlope;
+  calStruct.calIntercept = inputIntercept;
   
   pthread_mutex_lock(&mutexLoadCellStatus);
   loadCellStatus = prevStatus;
@@ -694,8 +685,8 @@ loadCellError_type calibrate() {
   }
   calWeight2 = quick_select(samples, 10);
   
-  calSlope = -weight2/((double)calWeight1 - (double)calWeight2);
-  calIntercept = -calSlope*(double)calWeight1;
+  calStruct.calSlope = -weight2/((double)calWeight1 - (double)calWeight2);
+  calStruct.calIntercept = -calStruct.calSlope*(double)calWeight1;
   
   printf("CALIBRATION_COMPLETE\n");
   printCalibration();
@@ -727,8 +718,8 @@ void printWeight() {
 
 void printCalibration() {
   printf("%f\n%f\n",
-         calSlope,
-         calIntercept);
+         calStruct.calSlope,
+         calStruct.calIntercept);
 }
 
 /* TEST FUNCTIONS */
