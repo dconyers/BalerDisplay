@@ -20,6 +20,7 @@ export class QRService {
         "Bale Type:    " + baleEvent.baleType.material +
       "\nBale Date:    " + baleEvent.baleDate.toLocaleDateString("en-US") + " " + baleEvent.baleDate.toLocaleTimeString("en-US") +
       "\nPartner ID:   " + baleEvent.customerID +
+      "\nWorker:       " + baleEvent.worker.username +
       "\nEquipment ID: " + baleEvent.baleID +
       "\nBale ID:      " + baleEvent.baleID +
       "\nWeight:       " + baleEvent.weight
@@ -27,7 +28,7 @@ export class QRService {
     let pngData = qr.imageSync("http://chickenpotpie.asuscomm.com/" +
       "?material=" + encodeURIComponent(baleEvent.baleType.material) +
       "&weight=" + encodeURIComponent(baleEvent.weight.toString()) +
-      "&worker=" + encodeURIComponent(baleEvent.worker.pin.toString()) +
+      "&worker=" + encodeURIComponent(baleEvent.worker.username.toString()) +
       "&baleID=" + encodeURIComponent(baleEvent.baleID.toString()) +
       "&balerID=" + encodeURIComponent(baleEvent.balerID.toString()) +
       "&customerID=" + encodeURIComponent(baleEvent.customerID.toString()) +
