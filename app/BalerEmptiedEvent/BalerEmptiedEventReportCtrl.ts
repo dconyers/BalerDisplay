@@ -3,6 +3,7 @@ import {BalerEmptiedEvent} from "./BalerEmptiedEvent";
 import {BalerEmptiedEventService} from "./BalerEmptiedEventService";
 import {BalerEmptiedEventDataStore} from "./BalerEmptiedEventDataStore";
 import {LoadCellMonitorService} from "../services/LoadCellMonitorService";
+import {QRService} from "../services/QRService";
 
 
 export class BalerEmptiedEventReportCtrl {
@@ -13,7 +14,8 @@ export class BalerEmptiedEventReportCtrl {
         "BalerEmptiedEventService",
         "BalerEmptiedEventDataStoreService",
         "LoadCellMonitorService",
-        "Lightbox"
+        "Lightbox",
+        "QRService"
     ];
 
     lightboxArray = [];
@@ -23,11 +25,18 @@ export class BalerEmptiedEventReportCtrl {
                 private balerEmptiedEventService: BalerEmptiedEventService,
                 private balerEmptiedEventDataStoreService: BalerEmptiedEventDataStore,
                 private loadCellMonitorService: LoadCellMonitorService,
-                private Lightbox) {
+                private Lightbox,
+                private QRService) {
         this.$log.debug("Top of BalerEmptiedEventReportCtrl constructor");
     }
 
     public openLightboxModal(index: number) {
       this.Lightbox.openModal(this.balerEmptiedEventDataStoreService.balerEmptiedEvents, index);
+    }
+
+    public printBaleEvent(e: BalerEmptiedEvent) {
+      this.QRService.createLabelImage(e).then((path: string) => {
+        this.QRService.printLabelImage(path);
+      });
     }
 }
