@@ -355,6 +355,7 @@ a.list-group-item, button.list-group-item {
 
 .status-icons {
   margin-right: 30px !important;
+  margin-top: 5px;
 }
 
 .wifi-settings input, .wifi-settings label {
