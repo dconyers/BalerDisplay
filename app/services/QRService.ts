@@ -25,7 +25,7 @@ export class QRService {
       "\nBale ID:      " + baleEvent.baleID +
       "\nWeight:       " + baleEvent.weight
       ;
-    let pngData = qr.imageSync("http://chickenpotpie.asuscomm.com/" +
+    let pngData = qr.imageSync("http://bjnbaler.com/" +
       "?material=" + encodeURIComponent(baleEvent.baleType.material) +
       "&weight=" + encodeURIComponent(baleEvent.weight.toString()) +
       "&worker=" + encodeURIComponent(baleEvent.worker.username.toString()) +
