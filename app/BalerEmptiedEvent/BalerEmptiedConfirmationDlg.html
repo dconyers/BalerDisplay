@@ -22,7 +22,7 @@
       <li class="list-group-item no-side-borders">
         <span translate class="info-title">{{"BalerStatsPanel.baleType"}}
         </span>
-        <span class="badge" >
+        <span class="baler-stat-info" >
           <a href="#" ng-click="balerEmptiedConfirmationDlgCtrl.userChangeBaleTypeRequest()">
             {{balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.baleType.gui}}
           </a>
@@ -31,7 +31,7 @@
       <li class="list-group-item no-side-borders">
         <span translate class="info-title">{{"BalerStatsPanel.CURRENT_WORKER"}}
         </span>
-        <span class="badge xeditablebadge" ng-controller="WorkerSettingsCtrl as workerSettingsCtrl">
+        <span class="baler-stat-info xeditable" ng-controller="WorkerSettingsCtrl as workerSettingsCtrl">
             <a href="#" editable-select="balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.worker._id" onbeforesave="balerEmptiedConfirmationDlgCtrl.currentWorkerChangeRequest($data)" onshow="balerEmptiedConfirmationDlgCtrl.workersService.reloadWorkers()" e-ng-options="worker._id as worker.username for worker in balerEmptiedConfirmationDlgCtrl.workersService.workers">
               {{ balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.worker.username || 'not set' }}
             </a>
@@ -40,14 +40,14 @@
       <li class="list-group-item no-side-borders">
         <span translate class="info-title">{{"LAST_BALE_WEIGHT"}}
         </span>
-        <span class="badge">
+        <span class="baler-stat-info">
           {{balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.weight | number:0}}
         </span>
       </li>
       <li class="list-group-item no-side-borders">
         <span translate class="info-title">{{"LAST_BALE_TIME"}}
         </span>
-        <span class="badge">
+        <span class="baler-stat-info">
           {{balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.baleDate | date:'medium'}}
         </span>
       </li>

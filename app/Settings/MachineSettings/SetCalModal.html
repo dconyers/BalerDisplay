@@ -1,9 +1,9 @@
 <div class="modalWithMargin">
     <label>m:
-      <input type="number" class="form-control" id="calSlope" ng-model="setCalModalCtrl.m" ng-virtual-keyboard>
+      <input type="number" class="form-control" id="calSlope" ng-model="setCalModalCtrl.m" e-ng-virtual-keyboard="{kt: 'Numeric'}">
     </label>
     <label>b:
-      <input type="number" class="form-control" id="calIntercept" ng-model="setCalModalCtrl.b" ng-virtual-keyboard>
+      <input type="number" class="form-control" id="calIntercept" ng-model="setCalModalCtrl.b" e-ng-virtual-keyboard="{kt: 'Numeric'}">
     </label>
     <button type="submit" class="btn btn-primary" ng-click="setCalModalCtrl.update(setCalModalCtrl.m, setCalModalCtrl.b);" translate>SET_CAL</button>
 </div>
