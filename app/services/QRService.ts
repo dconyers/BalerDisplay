@@ -21,11 +21,11 @@ export class QRService {
       "\nBale Date:    " + baleEvent.baleDate.toLocaleDateString("en-US") + " " + baleEvent.baleDate.toLocaleTimeString("en-US") +
       "\nPartner ID:   " + baleEvent.customerID +
       "\nWorker:       " + baleEvent.worker.username +
-      "\nEquipment ID: " + baleEvent.baleID +
+      "\nEquipment ID: " + baleEvent.balerID +
       "\nBale ID:      " + baleEvent.baleID +
       "\nWeight:       " + baleEvent.weight
       ;
-    let pngData = qr.imageSync("http://chickenpotpie.asuscomm.com/" +
+    let pngData = qr.imageSync("http://bjnbaler.com/" +
       "?material=" + encodeURIComponent(baleEvent.baleType.material) +
       "&weight=" + encodeURIComponent(baleEvent.weight.toString()) +
       "&worker=" + encodeURIComponent(baleEvent.worker.username.toString()) +
