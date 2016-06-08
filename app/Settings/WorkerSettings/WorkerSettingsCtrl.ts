@@ -97,23 +97,13 @@ export class WorkerSettingsCtrl {
     }
 
     public currentWorkerChangeRequest(newCurrentID: string): q.Promise<any> {
-        this.$log.debug("top of currentWorkerChangeRequest: " + newCurrentID);
-        this.$log.debug(newCurrentID);
-      return this.workersService.getCurrentWorker().then((currentWorker: BalerWorker) => {
-          this.$log.debug("currentWorkerChangeRequest::got current bale type: " + currentWorker.username);
-          this.workersDataStore.updateRowPromise(currentWorker._id, { $set: { current: false } }, {});
-          this.$log.debug("currentWorkerChangeRequest::done uploading old row");
-      }).then(() => {
-        this.$log.debug("currentWorkerChangeRequest::uploading new row");
-        return this.workersDataStore.updateRowPromise(newCurrentID, { $set: { current: true } }, {});
-      }).then(() => {
-          this.reloadWorkers();
+      this.$log.debug("top of currentWorkerChangeRequest: " + newCurrentID);
+      this.$log.debug(newCurrentID);
+      return this.workersService.changeCurrentWorker(newCurrentID).then((currentWorker: BalerWorker) => {
+        this.reloadWorkers();
       }).catch((exception: any) => {
         this.$log.error("balerCtrl::currentWorkerChangeRequest Got exception" + exception);
         return exception;
       });
     }
-
-
-
 }

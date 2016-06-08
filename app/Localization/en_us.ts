@@ -68,5 +68,10 @@ const resources: ITranslationTable = {
     BALER_ID_TITLE: "Equipment Serial Number: ",
     CUSTOMER_SETTINGS: "Partner Settings",
     REPRINT: "Reprint",
+    BALE_DATE: "Date",
+    BALE_ID: "Bale ID",
+    BALE_TYPE: "Material",
+    TRANSMITTED_STATUS: "Uploaded",
+    WORKER: "Worker",
 };
 export = resources;

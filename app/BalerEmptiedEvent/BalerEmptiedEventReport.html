@@ -1,10 +1,11 @@
 <table class="table table-bordered table-hover table-condensed">
   <tr style="font-weight: bold">
-      <td style="width:15%">Bale Date</td>
-      <td style="width:15%">Bale ID</td>
-      <td style="width:15%">Material Type</td>
-      <td style="width:15%">Weight</td>
-      <td style="width:15%">Transmitted?</td>
+      <td style="width:15%" translate>BALE_DATE</td>
+      <td style="width:10%" translate>BALE_ID</td>
+      <td style="width:10%" translate>WORKER</td>
+      <td style="width:15%" translate>BALE_TYPE</td>
+      <td style="width:10%" translate>Weight</td>
+      <td style="width:15%" translate>TRANSMITTED_STATUS</td>
       <td style="width:25%" translate>PHOTO</td>
   </tr>
   <tr ng-repeat="BalerEmptiedEvent in balerEmptiedEventReportCtrl.balerEmptiedEventDataStoreService.balerEmptiedEvents">
@@ -14,12 +15,18 @@
           </span>
       </td>
 
-      <td>
+    <td>
         <span>
           <a ng-click="balerEmptiedEventReportCtrl.openLightboxModal($index)">
             {{ BalerEmptiedEvent.baleID || 'empty' }}
           </a>
         </span>
+    </td>
+
+    <td>
+      <span>
+          {{ BalerEmptiedEvent.worker.username || 'empty' }}
+      </span>
     </td>
 
       <td>

@@ -3,6 +3,7 @@ import {BaleType} from "../BaleTypes/BaleType";
 import {BaleTypeSelectorService} from "../BaleTypes/BaleTypeSelectorService";
 import {PictureSrvc} from "../services/PictureSrvc";
 import {WorkersDataStore} from "../Settings/WorkerSettings/WorkersDataStore";
+import {WorkersService} from "../Settings/WorkerSettings/WorkersService";
 import {BalerWorker} from "../Settings/WorkerSettings/BalerWorker";
 import * as q from "q";
 
@@ -16,7 +17,8 @@ export class BalerEmptiedConfirmationDlgCtrl {
     "BaleTypeSelectorService",
     "PictureSrvc",
     "WorkersDataStoreService",
-    "balerEmptiedEvent"
+    "balerEmptiedEvent",
+    "WorkersService"
   ];
 
   workers: Array<Worker> = [];
@@ -28,7 +30,8 @@ export class BalerEmptiedConfirmationDlgCtrl {
     private baleTypeSelectorService: BaleTypeSelectorService,
     private pictureSrvc: PictureSrvc,
     private workersDataStore: WorkersDataStore,
-    private balerEmptiedEvent: BalerEmptiedEvent) {
+    private balerEmptiedEvent: BalerEmptiedEvent,
+    private workersService: WorkersService) {
       $log.debug("BalerEmptiedConfirmationDlgCtrl constructor.");
     }
 
@@ -80,12 +83,20 @@ export class BalerEmptiedConfirmationDlgCtrl {
     });
   }
 
-  public currentWorkerChangeRequest(requestedWorker: BalerWorker): q.Promise<any> {
-      this.$log.debug("top of currentWorkerChangeRequest: " + requestedWorker);
-      this.$log.debug(requestedWorker);
-      this.balerEmptiedEvent.worker = requestedWorker;
-
-      return null;
+  public currentWorkerChangeRequest(newCurrentID: string): q.Promise<any> {
+      // this.$log.debug("top of currentWorkerChangeRequest: " + requestedWorker);
+      // this.$log.debug(requestedWorker);
+      // this.balerEmptiedEvent.worker = requestedWorker;
+      //
+      // return null;
+      this.$log.debug("top of currentWorkerChangeRequest: " + newCurrentID);
+      this.$log.debug(newCurrentID);
+      return this.workersService.changeCurrentWorker(newCurrentID).then((currentWorker: BalerWorker) => {
+        this.balerEmptiedEvent.worker = currentWorker;
+      }).catch((exception: any) => {
+        this.$log.error("balerCtrl::currentWorkerChangeRequest Got exception" + exception);
+        return exception;
+      });
   }
 
 };
