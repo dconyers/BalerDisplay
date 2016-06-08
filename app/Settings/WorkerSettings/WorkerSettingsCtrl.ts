@@ -17,40 +17,14 @@ export class WorkerSettingsCtrl {
         "WorkerSelectorService"
     ];
 
-    workers: Array<BalerWorker> = [];
-    currentWorker: BalerWorker = undefined;
-
     constructor(private $scope,
                 private $log: ng.ILogService,
                 private $filter,
                 private $http,
                 private $q,
                 private workersDataStore: WorkersDataStore,
-                private workersService: WorkersService,
+                public workersService: WorkersService,
                 private workerSelectorService: WorkerSelectorService) {
-                  this.reloadWorkers();
-    }
-
-
-    reloadWorkers(): void {
-        this.$log.debug("WorkerSettingsCtrl::reloadWorkers - top");
-        this.workersDataStore.initializeDataStore()
-            .then((return_val: Array<BalerWorker>): void => {
-                return this.$q((resolve): void => {
-                    this.workers = return_val;
-                    resolve();
-                    this.$scope.$apply();
-                });
-            }).catch(function(error) {
-                this.$log.error("Got error from find_synch: " + error);
-            }).done();
-
-        this.workersService.getCurrentWorker()
-            .then((worker: BalerWorker) => {
-                this.currentWorker = worker;
-                this.$scope.$apply();
-            }).done();
-
     }
 
     saveWorker(data: BalerWorker, id: any): q.Promise<any> {
@@ -76,7 +50,7 @@ export class WorkerSettingsCtrl {
             if (deleteCount !== 1) {
                 return "Error, Expected deleteCount of 1, got: " + deleteCount;
             }
-            return this.reloadWorkers();
+            return this.workersService.reloadWorkers();
         });
     }
 
@@ -90,7 +64,7 @@ export class WorkerSettingsCtrl {
         };
         this.workersDataStore.insertRowPromise(inserted)
         .then((): any => {
-            return this.reloadWorkers();
+            return this.workersService.reloadWorkers();
         }).catch(function(error) {
             this.$log.error("addWorker returned error: " + error);
         }).done();
@@ -99,11 +73,6 @@ export class WorkerSettingsCtrl {
     public currentWorkerChangeRequest(newCurrentID: string): q.Promise<any> {
       this.$log.debug("top of currentWorkerChangeRequest: " + newCurrentID);
       this.$log.debug(newCurrentID);
-      return this.workersService.changeCurrentWorker(newCurrentID).then((currentWorker: BalerWorker) => {
-        this.reloadWorkers();
-      }).catch((exception: any) => {
-        this.$log.error("balerCtrl::currentWorkerChangeRequest Got exception" + exception);
-        return exception;
-      });
+      return this.workersService.changeCurrentWorker(newCurrentID);
     }
 }

@@ -32,7 +32,7 @@
         <span translate class="info-title">{{"BalerStatsPanel.CURRENT_WORKER"}}
         </span>
         <span class="badge xeditablebadge" ng-controller="WorkerSettingsCtrl as workerSettingsCtrl">
-            <a href="#" editable-select="balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.worker._id" onbeforesave="balerEmptiedConfirmationDlgCtrl.currentWorkerChangeRequest($data)" onshow="balerEmptiedConfirmationDlgCtrl.reloadWorkers()" e-ng-options="worker._id as worker.username for worker in balerEmptiedConfirmationDlgCtrl.workers">
+            <a href="#" editable-select="balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.worker._id" onbeforesave="balerEmptiedConfirmationDlgCtrl.currentWorkerChangeRequest($data)" onshow="balerEmptiedConfirmationDlgCtrl.workersService.reloadWorkers()" e-ng-options="worker._id as worker.username for worker in balerEmptiedConfirmationDlgCtrl.workersService.workers">
               {{ balerEmptiedConfirmationDlgCtrl.balerEmptiedEvent.worker.username || 'not set' }}
             </a>
         </span>

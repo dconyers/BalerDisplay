@@ -44,8 +44,8 @@ ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.
               <span translate class="info-title">{{"BalerStatsPanel.CURRENT_WORKER"}}
               </span>
               <span class="baler-stat-info xeditablebaler-stat-info" ng-controller="WorkerSettingsCtrl as workerSettingsCtrl">
-                  <a href="#" editable-select="workerSettingsCtrl.currentWorker._id" onbeforesave="workerSettingsCtrl.currentWorkerChangeRequest($data)" onshow="workerSettingsCtrl.reloadWorkers()" e-ng-options="worker._id as worker.username for worker in workerSettingsCtrl.workers">
-                    {{ workerSettingsCtrl.currentWorker.username || 'not set' }}
+                  <a href="#" editable-select="workerSettingsCtrl.workersService.currentWorker._id" onbeforesave="workerSettingsCtrl.currentWorkerChangeRequest($data)" onshow="workerSettingsCtrl.workersService.reloadWorkers()" e-ng-options="worker._id as worker.username for worker in workerSettingsCtrl.workersService.workers">
+                    {{ workerSettingsCtrl.workersService.currentWorker.username || 'not set' }}
                   </a>
               </span>
             </li>

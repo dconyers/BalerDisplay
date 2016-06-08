@@ -21,8 +21,6 @@ export class BalerEmptiedConfirmationDlgCtrl {
     "WorkersService"
   ];
 
-  workers: Array<Worker> = [];
-
   constructor(private $scope: ng.IScope,
     private $uibModalInstance,
     private $log,
@@ -56,22 +54,6 @@ export class BalerEmptiedConfirmationDlgCtrl {
     });
   }
 
-  reloadWorkers(): void {
-      this.$log.debug("BalerEmptiedConfirmationDlgCtrl::reloadWorkers - top");
-      this.workersDataStore.initializeDataStore()
-          .then((return_val: Array<Worker>): void => {
-              return this.$q((resolve): void => {
-                  this.workers = return_val;
-                  resolve();
-                  this.$scope.$apply();
-              });
-          }).catch(function(error) {
-              this.$log.error("Got error from find_synch: " + error);
-          }).done();
-  }
-
-
-
   userChangeBaleTypeRequest(): void {
     this.$log.debug("Current baleType is: " + this.balerEmptiedEvent.baleType.gui);
     this.baleTypeSelectorService.open().result.then((selectedItem: BaleType) => {
@@ -92,6 +74,7 @@ export class BalerEmptiedConfirmationDlgCtrl {
       this.$log.debug("top of currentWorkerChangeRequest: " + newCurrentID);
       this.$log.debug(newCurrentID);
       return this.workersService.changeCurrentWorker(newCurrentID).then((currentWorker: BalerWorker) => {
+        this.$log.debug("Got back current Worker of: " + currentWorker.username);
         this.balerEmptiedEvent.worker = currentWorker;
       }).catch((exception: any) => {
         this.$log.error("balerCtrl::currentWorkerChangeRequest Got exception" + exception);

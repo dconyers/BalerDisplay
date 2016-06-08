@@ -126,6 +126,9 @@ angular.module("balerApp", [
             })
             .done();
     }])
+    .run(["WorkersService", "$log", (workersService, $log) => {
+        workersService.reloadWorkers();
+    }])
   .run(["GeneralConfigurationDataStoreService", "$log", (generalConfigurationDataStore, $log) => {
     generalConfigurationDataStore.initializeDataStore().then(() => {
       $log.debug("GeneralConfigurationStoreService.initializeDataStore success:");
