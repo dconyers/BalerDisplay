@@ -150,5 +150,6 @@ angular.module("balerApp", [
                 [[], ["0", "0"], [], ["\u23CE", "Enter"]]
             ], "lang": ["en-us"]
         };
+        VKI_CONFIG.relative = false;
     }])
     ;

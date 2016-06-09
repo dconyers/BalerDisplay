@@ -8,7 +8,7 @@
   </div>
   <div ng-show="calibrationModalCtrl.showKnown()">
     <p translate>BALER_KNOWN_WIEGHT</p>
-    <input type="number" class="form-control" ng-model="calibrationModalCtrl.knownWeight" ng-virtual-keyboard></input>
+    <input type="number" class="form-control" ng-model="calibrationModalCtrl.knownWeight" ng-virtual-keyboard="{kt: 'Numeric'}"></input>
     <button class="btn btn-primary" ng-click="calibrationModalCtrl.calWeight(calibrationModalCtrl.knownWeight)">NEXT</button>
   </div>
 </div>

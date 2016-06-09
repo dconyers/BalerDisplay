@@ -28,13 +28,13 @@
     </td>
     <td>
       <!-- editable username (text with validation) -->
-      <span editable-text="baleType.min" e-name="min" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
+      <span editable-text="baleType.min" e-name="min" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard="{kt: 'Numeric'}">
         {{ baleType.min || 'empty' }}
       </span>
     </td>
     <td>
       <!-- editable username (text with validation) -->
-      <span editable-text="baleType.max" e-name="max" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard>
+      <span editable-text="baleType.max" e-name="max" e-form="rowform" onbeforesave="" e-required e-ng-virtual-keyboard="{kt: 'Numeric'}">
         {{ baleType.max || 'empty' }}
       </span>
     </td>

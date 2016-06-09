@@ -387,3 +387,8 @@ a.list-group-item, button.list-group-item {
   color: #2b689c;
   border-bottom: none;
 }
+
+/* For Material settings controls */
+table td .editable-wrap .editable-controls > input {
+  width: 100%;
+}
