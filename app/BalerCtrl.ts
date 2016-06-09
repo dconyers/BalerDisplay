@@ -26,7 +26,7 @@ export class BalerCtrl {
 
   materialList: string[] = [];
 
-  balerData: BalerData = {
+  public balerData: BalerData = {
     baleType: undefined,
     lowWeight: undefined,
     currentWeight: undefined,
@@ -56,7 +56,7 @@ export class BalerCtrl {
     private $interval: ng.IIntervalService,
     private loadCellDataService: LoadCellDataService,
     private baleTypesService: BaleTypesService,
-    private baleTypesDataStoreService: BaleTypesDataStore,
+    public baleTypesDataStoreService: BaleTypesDataStore,
     private BalerEmptiedEventService: BalerEmptiedEventService) {
       this.$log.debug("BalerCtrl::constructor");
     this.refreshData();
