@@ -56,9 +56,9 @@
 
 
 @-webkit-keyframes border-pulsate-warning {
-    0%   { border-color: rgba(255, 255, 0, 1); }
-    50% { border-color: rgba(255, 255, 0, 0); }
-    100%   { border-color: rgba(255, 255, 0, 1); }
+    0%   { border-color: rgba(0, 255, 0, 1); }
+    50% { border-color: rgba(0, 255, 0, 0); }
+    100%   { border-color: rgba(0, 255, 0, 1); }
 }
 
 .balerstats-warning
