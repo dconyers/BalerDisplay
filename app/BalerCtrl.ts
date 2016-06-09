@@ -98,6 +98,15 @@ export class BalerCtrl {
         }
       });
 
+      this.$scope.$watch(() => {
+        return this.baleTypesDataStoreService.currentBaleType;
+      }, (newValue, oldValue) => {
+        if (oldValue !== newValue) {
+          this.refreshData();
+        }
+      });
+
+
       // Since it was just created, initialize the caption
       this.updateCaption(this.loadCellDataService.getLoadCellWeight());
     });
