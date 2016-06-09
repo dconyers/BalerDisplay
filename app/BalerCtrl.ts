@@ -26,7 +26,7 @@ export class BalerCtrl {
 
   materialList: string[] = [];
 
-  balerData: BalerData = {
+  public balerData: BalerData = {
     baleType: undefined,
     lowWeight: undefined,
     currentWeight: undefined,
@@ -34,8 +34,8 @@ export class BalerCtrl {
   };
 
   gaugeSettings: any = {
-    ranges: [{ startValue: 0, endValue: 1000, endWidth: 10, startWidth: 1, style: { fill: "#4cb848", stroke: "#4cb848" }, startDistance: 0, endDistance: 0 },
-      { startValue: 900, endValue: 1200, endWidth: 15, startWidth: 10, style: { fill: "#fad00b", stroke: "#fad00b" }, startDistance: 0, endDistance: 0 },
+    ranges: [{ startValue: 0, endValue: 1000, endWidth: 10, startWidth: 1, style: { fill: "#fad00b", stroke: "#fad00b" }, startDistance: 0, endDistance: 0 },
+      { startValue: 900, endValue: 1200, endWidth: 15, startWidth: 10, style: { fill: "#4cb848", stroke: "#4cb848" }, startDistance: 0, endDistance: 0 },
       { startValue: 1200, endValue: 1200 * 1.2, endWidth: 20, startWidth: 15, style: { fill: "#e53d37", stroke: "#e53d37" }, startDistance: 0, endDistance: 0 }],
     cap: { size: "5%", style: { fill: "#2e79bb", stroke: "#2e79bb" } },
     max: 1200 * 1.2,
@@ -56,7 +56,7 @@ export class BalerCtrl {
     private $interval: ng.IIntervalService,
     private loadCellDataService: LoadCellDataService,
     private baleTypesService: BaleTypesService,
-    private baleTypesDataStoreService: BaleTypesDataStore,
+    public baleTypesDataStoreService: BaleTypesDataStore,
     private BalerEmptiedEventService: BalerEmptiedEventService) {
       this.$log.debug("BalerCtrl::constructor");
     this.refreshData();
@@ -97,6 +97,15 @@ export class BalerCtrl {
           this.updateCaption(newValue);
         }
       });
+
+      this.$scope.$watch(() => {
+        return this.baleTypesDataStoreService.currentBaleType;
+      }, (newValue, oldValue) => {
+        if (oldValue !== newValue) {
+          this.refreshData();
+        }
+      });
+
 
       // Since it was just created, initialize the caption
       this.updateCaption(this.loadCellDataService.getLoadCellWeight());

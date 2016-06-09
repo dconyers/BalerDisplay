@@ -11,7 +11,7 @@ export class BaleTypesDataStore extends Persistence.PersistentDataStore<BaleType
 
     private initialized: boolean = false;
 
-    private currentBaleType: BaleType = undefined;
+    public currentBaleType: BaleType = undefined;
 
     constructor(private $log: ng.ILogService) {
             super("BaleTypes");

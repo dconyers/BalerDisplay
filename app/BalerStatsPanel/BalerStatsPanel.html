@@ -1,5 +1,5 @@
 <div class="jumbotron balerstats"
-ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.baleTypesDataStoreService.currentBaleType.lowWeight && balerCtrl.balerData.currentWeight < balerCtrl.baleTypesDataStoreService.currentBaleType.highWeight, 'balerstats-error' : balerCtrl.balerData.currentWeight > balerCtrl.baleTypesDataStoreService.currentBaleType.highWeight}">
+ng-class="{'balerstats-warning' : balerCtrl.balerData.currentWeight > balerCtrl.baleTypesDataStoreService.currentBaleType.min && balerCtrl.balerData.currentWeight < balerCtrl.baleTypesDataStoreService.currentBaleType.max, 'balerstats-error' : balerCtrl.balerData.currentWeight > balerCtrl.baleTypesDataStoreService.currentBaleType.max}">
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-4 nopadding" style="text-align: center">
